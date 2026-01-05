@@ -19,6 +19,8 @@ export function ApartmentDetail() {
   const { content } = useStore();
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [selectedDates, setSelectedDates] = useState<{ start: string; end: string } | null>(null);
+  const [isSelectionValid, setIsSelectionValid] = useState(false);
 
   const apartment = content.apartments.find((apt) => apt.slug === slug);
 
@@ -211,7 +213,14 @@ export function ApartmentDetail() {
                     <span>Disponibilidade</span>
                   </div>
                   {apartment.icalUrl ? (
-                    <AvailabilityCalendar icalUrl={apartment.icalUrl} />
+                    <AvailabilityCalendar 
+                      icalUrl={apartment.icalUrl} 
+                      minNights={apartment.minNights}
+                      onDateSelection={(startDate, endDate, isValid) => {
+                        setSelectedDates({ start: startDate, end: endDate });
+                        setIsSelectionValid(isValid);
+                      }}
+                    />
                   ) : (
                     <div className="bg-white rounded-xl border border-gray-200 p-4 text-center text-gray-500 text-sm">
                       <Calendar className="h-8 w-8 mx-auto mb-2 opacity-50" />
@@ -220,15 +229,25 @@ export function ApartmentDetail() {
                   )}
                 </div>
 
-                <a
-                  href={apartment.bookingUrl || content.bookingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary w-full text-center inline-flex items-center justify-center gap-2"
-                >
-                  Reservar Agora
-                  <ArrowRight className="h-5 w-5" />
-                </a>
+                {selectedDates && isSelectionValid ? (
+                  <a
+                    href={`${apartment.bookingUrl || content.bookingUrl}&f_ini=${selectedDates.start}&f_fin=${selectedDates.end}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary w-full text-center inline-flex items-center justify-center gap-2"
+                  >
+                    Reservar Agora
+                    <ArrowRight className="h-5 w-5" />
+                  </a>
+                ) : (
+                  <button
+                    disabled
+                    className="btn-primary w-full text-center inline-flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
+                  >
+                    Reservar Agora
+                    <ArrowRight className="h-5 w-5" />
+                  </button>
+                )}
 
                 {/* Reviews Button */}
                 {apartment.reviewsUrl && (

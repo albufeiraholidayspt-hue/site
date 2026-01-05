@@ -20,6 +20,7 @@ export function Home() {
   const [isVideoVisible, setIsVideoVisible] = useState(false);
   const [currentHeroImage, setCurrentHeroImage] = useState(0);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [apartmentsSelection, setApartmentsSelection] = useState<Record<string, { dates: { start: string; end: string } | null; isValid: boolean }>>({});
 
   // Copy promo code to clipboard
   const copyPromoCode = (code: string) => {
@@ -254,7 +255,16 @@ export function Home() {
                       <Calendar className="h-4 w-4 text-primary-500" />
                       <span>Disponibilidade</span>
                     </div>
-                    <AvailabilityCalendar icalUrl={apartment.icalUrl} />
+                    <AvailabilityCalendar 
+                      icalUrl={apartment.icalUrl} 
+                      minNights={apartment.minNights}
+                      onDateSelection={(startDate, endDate, isValid) => {
+                        setApartmentsSelection(prev => ({
+                          ...prev,
+                          [apartment.id]: { dates: { start: startDate, end: endDate }, isValid }
+                        }));
+                      }}
+                    />
                   </div>
                   
                   {/* Actions */}
@@ -265,14 +275,23 @@ export function Home() {
                     >
                       Ver Detalhes
                     </Link>
-                    <a
-                      href={apartment.bookingUrl || content.bookingUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 btn-primary text-center text-sm py-2"
-                    >
-                      Reservar
-                    </a>
+                    {apartmentsSelection[apartment.id]?.dates && apartmentsSelection[apartment.id]?.isValid ? (
+                      <a
+                        href={`${apartment.bookingUrl || content.bookingUrl}&f_ini=${apartmentsSelection[apartment.id]?.dates?.start || ''}&f_fin=${apartmentsSelection[apartment.id]?.dates?.end || ''}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 btn-primary text-center text-sm py-2"
+                      >
+                        Reservar
+                      </a>
+                    ) : (
+                      <button
+                        disabled
+                        className="flex-1 btn-primary text-center text-sm py-2 opacity-50 cursor-not-allowed"
+                      >
+                        Reservar
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

@@ -79,13 +79,6 @@ export function GalleryUploadImgBB({ images, onChange, label, maxImages = 40 }: 
     }
   };
 
-  const handleRemoveImage = (index: number) => {
-    if (window.confirm('Tem certeza que deseja remover esta imagem?')) {
-      const newImages = images.filter((_, i) => i !== index);
-      onChange(newImages);
-    }
-  };
-
   // Funções de upload múltiplo
   const handleMultipleFileUpload = async (files: FileList) => {
     if (images.length >= maxImages) {
@@ -299,44 +292,44 @@ export function GalleryUploadImgBB({ images, onChange, label, maxImages = 40 }: 
                   className="w-full h-32 object-cover"
                 />
                 
-                {/* Botão de remover - sempre visível */}
-                <button
-                  type="button"
-                  onClick={() => handleRemoveImage(index)}
-                  className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg opacity-90"
-                  title="Remover imagem"
-                >
-                  <X className="h-3 w-3" />
-                </button>
+                {/* Botão de remover - com z-index alto e sem conflitos */}
+                <div className="absolute top-2 right-2 z-20">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      console.log('Botão remover clicado - index:', index);
+                      if (window.confirm('Tem certeza que deseja remover esta imagem?')) {
+                        const newImages = images.filter((_, i) => i !== index);
+                        onChange(newImages);
+                      }
+                    }}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    }}
+                    className="p-1.5 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg cursor-pointer"
+                    title="Remover imagem"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
                 
-                {/* Overlay com informações e controles */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                  {/* Número da imagem */}
+                {/* Overlay com informações */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
                   <div className="absolute top-2 left-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
                     {index + 1}
                   </div>
-                  
-                  {/* Controles */}
                   <div className="absolute bottom-2 right-2 flex items-center gap-1">
-                    {/* Botão de arrastar */}
-                    <div className="p-1 bg-white/90 rounded text-gray-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="p-1 bg-white/90 rounded text-gray-600">
                       <GripVertical className="h-3 w-3" />
                     </div>
-                    
-                    {/* Botão de remover - sempre visível */}
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveImage(index)}
-                      className="p-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors shadow-lg"
-                      title="Remover imagem"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
                   </div>
                 </div>
                 
                 {/* Informações em tooltip */}
-                <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-2 transform translate-y-full group-hover:translate-y-0 transition-transform">
+                <div className="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-2 transform translate-y-full group-hover:translate-y-0 transition-transform pointer-events-none">
                   <div className="text-xs truncate">
                     Imagem {index + 1}
                   </div>
