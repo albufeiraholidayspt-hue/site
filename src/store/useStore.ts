@@ -3,11 +3,23 @@ import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
 import { SiteContent, User, Apartment, Promotion, SeoSettings, SocialLinks, Review } from '../types';
 import { initialContent } from '../data/initialContent';
 
-// Custom storage with error handling
+// Custom storage com backup automático
 const customStorage: StateStorage = {
   getItem: (name: string): string | null => {
     try {
-      return localStorage.getItem(name);
+      const item = localStorage.getItem(name);
+      
+      // Tentar recuperar do auto-backup se o principal falhar
+      if (!item && name === 'albufeira-holidays-storage') {
+        const backup = localStorage.getItem('albufeira-holidays-auto-backup');
+        if (backup) {
+          console.log('🔄 Recuperando do auto-backup...');
+          const backupData = JSON.parse(backup);
+          return JSON.stringify({ state: backupData.content });
+        }
+      }
+      
+      return item;
     } catch (error) {
       console.error('Error reading from localStorage:', error);
       return null;
@@ -16,6 +28,21 @@ const customStorage: StateStorage = {
   setItem: (name: string, value: string): void => {
     try {
       localStorage.setItem(name, value);
+      
+      // Criar auto-backup quando for o storage principal
+      if (name === 'albufeira-holidays-storage') {
+        try {
+          const parsed = JSON.parse(value);
+          const backupData = {
+            timestamp: new Date().toISOString(),
+            content: parsed.state?.content
+          };
+          localStorage.setItem('albufeira-holidays-auto-backup', JSON.stringify(backupData));
+          console.log('💾 Auto-backup criado:', new Date().toLocaleTimeString());
+        } catch (backupError) {
+          console.warn('Could not create auto-backup:', backupError);
+        }
+      }
     } catch (error) {
       console.error('Error writing to localStorage:', error);
       // Try to clear old data and retry
@@ -63,13 +90,24 @@ const mergeApartments = (stored: Apartment[], initial: Apartment[]): Apartment[]
   return initial.map(initialApt => {
     const storedApt = stored.find(s => s.id === initialApt.id);
     if (storedApt) {
-      // Preserva os dados do stored, mas adiciona novos campos do initial se não existirem
+      // Preserva TODOS os dados do stored, mas garante que novos campos existam
       return {
         ...initialApt,
         ...storedApt,
-        // Garante que novos campos opcionais existem
+        // Garante que campos importantes existam
         icalUrl: storedApt.icalUrl ?? initialApt.icalUrl ?? '',
         bookingUrl: storedApt.bookingUrl ?? initialApt.bookingUrl ?? '',
+        reviewsUrl: storedApt.reviewsUrl ?? initialApt.reviewsUrl ?? initialApt.reviewsUrl,
+        videoUrl: storedApt.videoUrl ?? initialApt.videoUrl ?? '',
+        videoStartTime: storedApt.videoStartTime ?? initialApt.videoStartTime ?? 0,
+        enableAnimation: storedApt.enableAnimation ?? initialApt.enableAnimation ?? true,
+        heroImagePosition: storedApt.heroImagePosition ?? initialApt.heroImagePosition ?? 'center',
+        additionalInfo: storedApt.additionalInfo ?? initialApt.additionalInfo ?? '',
+        // Preserva imagens do stored se existirem, senão usa do initial
+        images: storedApt.images && storedApt.images.length > 0 ? storedApt.images : initialApt.images,
+        heroImage: storedApt.heroImage || initialApt.heroImage,
+        // Preserva features do stored se existirem, senão usa do initial
+        features: storedApt.features && storedApt.features.length > 0 ? storedApt.features : initialApt.features,
       };
     }
     return initialApt;
@@ -198,12 +236,12 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'albufeira-holidays-storage',
-      version: 14,
+      version: 15,
       storage: createJSONStorage(() => customStorage),
       migrate: (persistedState: unknown, version: number) => {
         const state = persistedState as AppState;
         
-        if (version < 14 && state?.content) {
+        if (version < 15 && state?.content) {
           // Migrar dados preservando alterações do utilizador
           return {
             ...state,

@@ -3,9 +3,15 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "description": "Albufeira Holidays - Apartamentos de férias no coração de Albufeira com vista mar",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "node scripts/auto-sync-content.cjs && tsc && vite build",
+    "build:clean": "tsc && vite build",
+    "sync": "node scripts/auto-sync-content.cjs",
+    "deploy": "./scripts/deploy.sh",
+    "deploy:build": "npm run build && echo '📋 Build pronto! Upload da pasta dist para Netlify.'",
+    "watch": "./scripts/watch.sh",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },

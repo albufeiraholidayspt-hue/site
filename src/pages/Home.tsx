@@ -31,10 +31,15 @@ export function Home() {
   // Hero slideshow effect
   useEffect(() => {
     const images = content.hero.backgroundImages || [content.hero.backgroundImage];
-    if (images.length <= 1) return;
+    const validImages = images.filter(img => img && img.trim() !== '');
+    
+    if (validImages.length <= 1) return;
+
+    // Reset current image if images change
+    setCurrentHeroImage(0);
 
     const interval = setInterval(() => {
-      setCurrentHeroImage((prev) => (prev + 1) % images.length);
+      setCurrentHeroImage((prev) => (prev + 1) % validImages.length);
     }, 6000); // Change image every 6 seconds
 
     return () => clearInterval(interval);
@@ -84,26 +89,28 @@ export function Home() {
             </div>
           ) : (
             <div className="absolute inset-0">
-              {(content.hero.backgroundImages && content.hero.backgroundImages.length > 0 
-                ? content.hero.backgroundImages 
-                : [content.hero.backgroundImage]
-              ).map((image, index) => (
-                <div
-                  key={index}
-                  className={`absolute inset-0 transition-opacity duration-1000 ${
-                    index === currentHeroImage ? 'opacity-100' : 'opacity-0'
-                  }`}
-                >
+              {(() => {
+                const images = content.hero.backgroundImages || [content.hero.backgroundImage];
+                const validImages = images.filter(img => img && img.trim() !== '');
+                return validImages.map((image, index) => (
                   <div
-                    className={`absolute inset-0 bg-gray-200 bg-cover bg-center ${
-                      content.hero.enableAnimation !== false ? (index % 2 === 0 ? 'animate-kenburns' : 'animate-kenburns-alt') : ''
+                    key={index}
+                    className={`absolute inset-0 transition-opacity duration-1000 ${
+                      index === currentHeroImage ? 'opacity-100' : 'opacity-0'
                     }`}
-                    style={{
-                      backgroundImage: image ? `url(${image})` : 'none',
-                    }}
-                  />
-                </div>
-              ))}
+                  >
+                    <div
+                      className={`absolute inset-0 bg-cover bg-center ${
+                        false ? (index % 2 === 0 ? 'animate-kenburns' : 'animate-kenburns-alt') : ''
+                      }`}
+                      style={{
+                        backgroundImage: image ? `url(${image})` : 'none',
+                        backgroundColor: image ? 'transparent' : '#1f2937'
+                      }}
+                    />
+                  </div>
+                ));
+              })()}
             </div>
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-white" />

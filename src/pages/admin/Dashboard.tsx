@@ -16,8 +16,10 @@ import {
   Star,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
-import { ImageUpload } from '../../components/ImageUpload';
-import { GalleryUpload } from '../../components/GalleryUpload';
+import { ImageUploadImgBB } from '../../components/ImageUploadImgBB';
+import { GalleryUploadImgBB } from '../../components/GalleryUploadImgBB';
+import { AutoExport } from '../../components/AutoExport';
+import '../../utils/contentSync'; // Importa para disponibilizar globalmente
 
 // Lista de todas as comodidades disponíveis
 const AVAILABLE_FEATURES = [
@@ -186,6 +188,7 @@ export function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-100">
+      <AutoExport enabled={false} />
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -315,7 +318,7 @@ export function Dashboard() {
                       )}
                     </div>
                     
-                    <ImageUpload
+                    <ImageUploadImgBB
                       label="Ou faça upload de uma imagem"
                       value=""
                       onChange={(url) => {
@@ -329,7 +332,7 @@ export function Dashboard() {
                         Adicione várias imagens para criar um slideshow automático no fundo.
                       </p>
                       
-                      <GalleryUpload
+                      <GalleryUploadImgBB
                         label="Imagens do Slideshow"
                         images={content.hero.backgroundImages || []}
                         onChange={(images) => updateHero({ backgroundImages: images })}
@@ -415,7 +418,7 @@ export function Dashboard() {
                           />
                         </div>
 
-                        <ImageUpload
+                        <ImageUploadImgBB
                           label="Imagem (alternativa ao vídeo)"
                           value={content.about.image}
                           onChange={(url) => updateAbout({ image: url })}
@@ -897,7 +900,7 @@ export function Dashboard() {
                               </div>
                             </div>
 
-                            <ImageUpload
+                            <ImageUploadImgBB
                               label="Imagem Principal"
                               value={apartment.heroImage}
                               onChange={(url) => updateApartment(apartment.id, { heroImage: url })}
@@ -933,7 +936,7 @@ export function Dashboard() {
                               </p>
                             </div>
 
-                            <GalleryUpload
+                            <GalleryUploadImgBB
                               label="Galeria de Imagens"
                               images={apartment.images}
                               onChange={(images) => updateApartment(apartment.id, { images })}

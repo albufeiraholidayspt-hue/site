@@ -55,23 +55,45 @@ export function AvailabilityCalendar({ icalUrl }: AvailabilityCalendarProps) {
 
   // Fetch iCal data
   useEffect(() => {
-    if (!icalUrl) return;
+    if (!icalUrl) {
+      setLoading(false);
+      return;
+    }
 
     const fetchIcal = async () => {
       setLoading(true);
+      const timeoutId = setTimeout(() => {
+        setLoading(false);
+        console.log('iCal fetch timeout');
+      }, 10000); // 10 second timeout
+
       try {
         // Try using a CORS proxy
         const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(icalUrl)}`;
-        const response = await fetch(proxyUrl);
+        const controller = new AbortController();
+        const timeoutId2 = setTimeout(() => controller.abort(), 8000); // 8 second fetch timeout
+        
+        const response = await fetch(proxyUrl, { 
+          signal: controller.signal,
+          headers: {
+            'Accept': 'text/calendar,text/plain,*/*'
+          }
+        });
+        
+        clearTimeout(timeoutId2);
         
         if (response.ok) {
           const data = await response.text();
-          const parsed = parseIcal(data);
-          setBookedDates(parsed);
+          if (data && data.trim()) {
+            const parsed = parseIcal(data);
+            setBookedDates(parsed);
+          }
         }
       } catch (error) {
         console.log('Could not fetch iCal data:', error);
+        // Silently fail - don't show error to user
       } finally {
+        clearTimeout(timeoutId);
         setLoading(false);
       }
     };
