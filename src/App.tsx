@@ -6,15 +6,12 @@ import { Contact } from './pages/Contact';
 import { Login } from './pages/admin/Login';
 import { Dashboard } from './pages/admin/Dashboard';
 import UploadDemo from './pages/UploadDemo';
-import { CacheBuster } from './components/CacheBuster';
+import { DataBackup } from './components/DataBackup';
 
 function App() {
-  // Versão baseada na data atual para forçar updates
-  const currentVersion = new Date().toISOString().split('T')[0];
-
   return (
     <>
-      <CacheBuster version={currentVersion} />
+      <DataBackup />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
