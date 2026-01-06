@@ -7,7 +7,7 @@ export function Footer() {
 
   return (
     <footer className="bg-white border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="md:col-span-1">
@@ -46,12 +46,17 @@ export function Footer() {
                 <Mail className="h-5 w-5 text-orange-500" />
                 <span className="text-sm">{content.contact.email}</span>
               </a>
-              <div className="flex items-start gap-3 text-gray-600">
+              <a
+                href={`https://maps.google.com/?q=${encodeURIComponent(content.contact.address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 text-gray-600 hover:text-orange-500 transition-colors"
+              >
                 <div className="w-8 h-8 rounded-lg bg-white border border-gray-300 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <MapPin className="h-4 w-4 text-orange-500" />
                 </div>
                 <span className="text-sm leading-relaxed">{content.contact.address}</span>
-              </div>
+              </a>
             </div>
           </div>
 
@@ -143,7 +148,7 @@ export function Footer() {
       
       {/* Bottom - Full Width Browser */}
       <div className="bg-orange-500 -mx-4 sm:-mx-6 lg:-mx-8 mt-8 pt-6 pb-6">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white text-sm">
             © {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
           </p>
