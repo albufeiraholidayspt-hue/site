@@ -6,6 +6,7 @@ export function Footer() {
   const { content } = useStore();
 
   return (
+    <>
     <footer className="bg-white border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
@@ -138,28 +139,29 @@ export function Footer() {
             )}
           </div>
         </div>
-      
-      {/* Container Laranja - Largura da página */}
-      <div className="bg-orange-500 mt-8 pt-6 pb-6 flex flex-col md:flex-row justify-center items-center gap-4">
-        <p className="text-white text-sm">
-          © {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
-        </p>
-        <div className="flex items-center gap-4">
-          <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
-            Política de Privacidade
-          </a>
-          <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
-            Termos de Uso
-          </a>
-          <Link
-            to="/admin"
-            className="text-white hover:text-orange-100 text-sm transition-colors"
-          >
-            Área Reservada
-          </Link>
-        </div>
+      </div>
+    </footer>
+    
+    {/* Container Laranja - Fora do footer */}
+    <div className="bg-orange-500 pt-6 pb-6 flex flex-col md:flex-row justify-center items-center gap-4">
+      <p className="text-white text-sm">
+        © {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
+      </p>
+      <div className="flex items-center gap-4">
+        <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
+          Política de Privacidade
+        </a>
+        <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
+          Termos de Uso
+        </a>
+        <Link
+          to="/admin"
+          className="text-white hover:text-orange-100 text-sm transition-colors"
+        >
+          Área Reservada
+        </Link>
       </div>
     </div>
-    </footer>
+    </>
   );
 }
