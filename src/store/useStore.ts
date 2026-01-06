@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { SiteContent, User, Apartment, Promotion, SeoSettings, SocialLinks, Review } from '../types';
 import { initialContent } from '../data/initialContent';
-import { jsonbinStorage } from '../lib/jsonbinStorage';
+import { supabaseStorage } from '../lib/supabaseStorage';
 
 interface AppState {
   content: SiteContent;
@@ -148,7 +148,7 @@ export const useStore = create<AppState>()(
     {
       name: 'albufeira-holidays-storage',
       version: 15,
-      storage: createJSONStorage(() => jsonbinStorage),
+      storage: createJSONStorage(() => supabaseStorage),
       migrate: (persistedState: unknown, version: number) => {
         const state = persistedState as AppState;
         
