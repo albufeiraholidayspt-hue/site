@@ -26,65 +26,6 @@ export function Footer() {
               <p>Capital Social 10.000 Euros</p>
               <p>Albufeira | Algarve</p>
             </div>
-
-            {/* Social Links */}
-            <div className="flex gap-3 mb-4">
-              {content.socialLinks?.facebook && (
-                <a
-                  href={content.socialLinks.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-500 hover:text-orange-600 transition-colors"
-                  title="Facebook"
-                >
-                  <Facebook className="h-5 w-5" />
-                </a>
-              )}
-              {content.socialLinks?.instagram && (
-                <a
-                  href={content.socialLinks.instagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-500 hover:text-orange-600 transition-colors"
-                  title="Instagram"
-                >
-                  <Instagram className="h-5 w-5" />
-                </a>
-              )}
-              {content.socialLinks?.twitter && (
-                <a
-                  href={content.socialLinks.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-500 hover:text-orange-600 transition-colors"
-                  title="Twitter"
-                >
-                  <Twitter className="h-5 w-5" />
-                </a>
-              )}
-              {content.socialLinks?.youtube && (
-                <a
-                  href={content.socialLinks.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-500 hover:text-orange-600 transition-colors"
-                  title="YouTube"
-                >
-                  <Youtube className="h-5 w-5" />
-                </a>
-              )}
-              {content.socialLinks?.whatsapp && (
-                <a
-                  href={content.socialLinks.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-500 hover:text-orange-600 transition-colors"
-                  title="WhatsApp"
-                >
-                  <MessageCircle className="h-5 w-5" />
-                </a>
-              )}
-            </div>
           </div>
 
           {/* Contact */}
@@ -95,25 +36,91 @@ export function Footer() {
                 href={`tel:${content.contact.phone.replace(/\s/g, '')}`}
                 className="flex items-center gap-3 text-gray-600 hover:text-orange-500 transition-colors"
               >
-                <Phone className="h-5 w-5 text-orange-500" />
+                <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                  <Phone className="h-4 w-4 text-orange-600" />
+                </div>
                 <span className="text-sm">{content.contact.phone}</span>
               </a>
               <a
                 href={`mailto:${content.contact.email}`}
                 className="flex items-center gap-3 text-gray-600 hover:text-orange-500 transition-colors"
               >
-                <Mail className="h-5 w-5 text-orange-500" />
+                <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                  <Mail className="h-4 w-4 text-orange-600" />
+                </div>
                 <span className="text-sm">{content.contact.email}</span>
               </a>
               <div className="flex items-start gap-3 text-gray-600">
-                <MapPin className="h-5 w-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
+                  <MapPin className="h-4 w-4 text-orange-600" />
+                </div>
                 <span className="text-sm leading-relaxed">{content.contact.address}</span>
               </div>
             </div>
           </div>
 
-          {/* Livro de Reclamações */}
-          <div className="flex flex-col items-center justify-center">
+          {/* Social Links */}
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-4">Redes Sociais</h3>
+            <div className="flex gap-3 mb-6">
+              {content.socialLinks?.facebook && (
+                <a
+                  href={content.socialLinks.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 hover:bg-orange-200 transition-colors"
+                  title="Facebook"
+                >
+                  <Facebook className="h-5 w-5" />
+                </a>
+              )}
+              {content.socialLinks?.instagram && (
+                <a
+                  href={content.socialLinks.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 hover:bg-orange-200 transition-colors"
+                  title="Instagram"
+                >
+                  <Instagram className="h-5 w-5" />
+                </a>
+              )}
+              {content.socialLinks?.twitter && (
+                <a
+                  href={content.socialLinks.twitter}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 hover:bg-orange-200 transition-colors"
+                  title="Twitter"
+                >
+                  <Twitter className="h-5 w-5" />
+                </a>
+              )}
+              {content.socialLinks?.youtube && (
+                <a
+                  href={content.socialLinks.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 hover:bg-orange-200 transition-colors"
+                  title="YouTube"
+                >
+                  <Youtube className="h-5 w-5" />
+                </a>
+              )}
+              {content.socialLinks?.whatsapp && (
+                <a
+                  href={content.socialLinks.whatsapp}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 hover:bg-orange-200 transition-colors"
+                  title="WhatsApp"
+                >
+                  <MessageCircle className="h-5 w-5" />
+                </a>
+              )}
+            </div>
+            
+            {/* Livro de Reclamações */}
             {content.socialLinks?.livroReclamacoes && (
               <a
                 href={content.socialLinks.livroReclamacoes}
@@ -125,7 +132,7 @@ export function Footer() {
                 <img 
                   src="/livro-reclamacoes.png" 
                   alt="Livro de Reclamações" 
-                  className="h-10 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
+                  className="h-8 w-auto"
                 />
                 <div className="text-left">
                   <span className="text-xs text-orange-600 block">LIVRO DE</span>
