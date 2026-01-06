@@ -121,9 +121,11 @@ export function Footer() {
                 className="inline-flex items-center gap-3 p-3 bg-orange-100 rounded-lg hover:bg-orange-200 transition-colors group"
                 title="Livro de Reclamações"
               >
-                <svg className="h-6 w-6 text-orange-600" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-                </svg>
+                <img 
+                  src="/livro-reclamacoes.png" 
+                  alt="Livro de Reclamações" 
+                  className="h-8 w-auto"
+                />
                 <div className="text-left">
                   <span className="text-xs text-orange-600 block">LIVRO DE</span>
                   <span className="text-sm font-semibold text-orange-700">RECLAMAÇÕES</span>
