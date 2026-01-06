@@ -4,8 +4,8 @@ class JSONBinAPI {
   private baseURL: string;
 
   constructor() {
-    // URL real do JSONBin
-    this.baseURL = 'https://api.jsonbin.io/v3/b/695d0dcc43b1c97be91d10d9';
+    // Novo URL do JSONBin
+    this.baseURL = 'https://api.jsonbin.io/v3/b/695d114343b1c97be91d181a';
   }
 
   static getInstance(): JSONBinAPI {
