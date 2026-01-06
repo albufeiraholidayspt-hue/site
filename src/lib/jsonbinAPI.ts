@@ -24,7 +24,7 @@ class JSONBinAPI {
     try {
       const response = await fetch(this.baseURL + '/latest', {
         headers: {
-          'X-Master-Key': '$2a$10$h9piqeXbWlDcWcVqUy74AO1FMW6jJDxJWe315GZPwrEK0i6YLZtK'
+          'X-ACCESS-KEY': '$2a$10$26I68LojzyK6SaORFNxuOOgjVNUFy86IhLe5DEv5fvzNWREHhlb6S'
         }
       });
       if (!response.ok) throw new Error('Failed to load data');
@@ -51,7 +51,7 @@ class JSONBinAPI {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'X-Master-Key': '$2a$10$h9piqeXbWlDcWcVqUy74AO1FMW6jJDxJWe315GZPwrEK0i6YLZtK',
+          'X-ACCESS-KEY': '$2a$10$26I68LojzyK6SaORFNxuOOgjVNUFy86IhLe5DEv5fvzNWREHhlb6S',
           'X-Bin-Meta': '{"name":"Albufeira Holidays","private":false}'
         },
         body: JSON.stringify({
