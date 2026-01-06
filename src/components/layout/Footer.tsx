@@ -13,7 +13,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-6">
               <img 
-                src="/logo.png" 
+                src="/logo-symbol.png" 
                 alt="Albufeira Holidays" 
                 className="h-12 w-auto brightness-0 invert transition-transform group-hover:scale-105"
               />
