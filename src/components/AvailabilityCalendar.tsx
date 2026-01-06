@@ -178,99 +178,43 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
 
   // Handle date selection
   const handleDateClick = (day: number) => {
-    console.log('Calendar: Data clicada', { day, month, year, clickable: !isPast(day) && !isDateBooked(new Date(year, month, day)) });
+    console.log('Calendar: Data clicada', { day, month, year });
     
     const clickedDate = new Date(year, month, day);
     
     // Limpar mensagem anterior
     setMessage(null);
     
-    // Não permitir selecionar datas passadas
-    if (isPast(day)) {
-      setMessage({ type: 'error', text: 'Não é possível selecionar datas passadas.' });
-      setTimeout(() => setMessage(null), 3000);
-      return;
-    }
-    
-    // Não permitir selecionar datas ocupadas
-    if (isDateBooked(clickedDate)) {
-      setMessage({ type: 'error', text: 'Esta data está ocupada. Por favor, selecione outra data.' });
-      setTimeout(() => setMessage(null), 3000);
-      return;
-    }
-
     if (!selectedStartDate) {
       // Selecionar data de check-in
       setSelectedStartDate(clickedDate);
       setSelectedEndDate(null);
-      setMessage({ type: 'info', text: `Check-in selecionado: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Agora selecione o check-out.` });
+      setMessage({ type: 'info', text: `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Selecione check-out.` });
       setTimeout(() => setMessage(null), 3000);
-      // Resetar validação
       if (onDateSelection) {
         onDateSelection('', '', false);
       }
     } else if (!selectedEndDate) {
       // Selecionar data de check-out
-      if (clickedDate <= selectedStartDate) {
-        // Se clicar antes ou na mesma data do check-in, resetar seleção
-        setSelectedStartDate(clickedDate);
-        setSelectedEndDate(null);
-        setMessage({ type: 'info', text: `Check-in alterado para: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Selecione o check-out.` });
-        setTimeout(() => setMessage(null), 3000);
-        // Resetar validação
-        if (onDateSelection) {
-          onDateSelection('', '', false);
-        }
-      } else {
-        // Verificar estadia mínima
-        const nightsDiff = Math.ceil((clickedDate.getTime() - selectedStartDate.getTime()) / (1000 * 60 * 60 * 24));
-        
-        if (nightsDiff < minNights) {
-          setMessage({ 
-            type: 'error', 
-            text: `Estadia mínima de ${minNights} noite${minNights > 1 ? 's' : ''}. Selecionou apenas ${nightsDiff} noite${nightsDiff > 1 ? 's' : ''}.` 
-          });
-          setTimeout(() => setMessage(null), 4000);
-          return;
-        }
-        
-        // Verificar se há datas ocupadas no período
-        let hasBookedDates = false;
-        for (let d = new Date(selectedStartDate); d < clickedDate; d.setDate(d.getDate() + 1)) {
-          if (isDateBooked(d)) {
-            hasBookedDates = true;
-            break;
-          }
-        }
-        
-        if (hasBookedDates) {
-          setMessage({ type: 'error', text: 'O período selecionado contém datas ocupadas. Por favor, escolha outro intervalo.' });
-          setTimeout(() => setMessage(null), 4000);
-          return;
-        }
-        
-        // Seleção válida
-        setSelectedEndDate(clickedDate);
-        setMessage({ 
-          type: 'success', 
-          text: `Período selecionado: ${nightsDiff} noite${nightsDiff > 1 ? 's' : ''} (${selectedStartDate.getDate()}/${selectedStartDate.getMonth() + 1} - ${clickedDate.getDate()}/${clickedDate.getMonth() + 1})` 
-        });
-        setTimeout(() => setMessage(null), 5000);
-        
-        // Notificar componente pai
-        if (onDateSelection) {
-          const startDateStr = selectedStartDate.toISOString().split('T')[0];
-          const endDateStr = clickedDate.toISOString().split('T')[0];
-          onDateSelection(startDateStr, endDateStr, true);
-        }
+      setSelectedEndDate(clickedDate);
+      const nightsDiff = Math.ceil((clickedDate.getTime() - selectedStartDate.getTime()) / (1000 * 60 * 60 * 24));
+      setMessage({ 
+        type: 'success', 
+        text: `Período: ${nightsDiff} noite${nightsDiff > 1 ? 's' : ''} (${selectedStartDate.getDate()}/${selectedStartDate.getMonth() + 1} - ${clickedDate.getDate()}/${clickedDate.getMonth() + 1})` 
+      });
+      setTimeout(() => setMessage(null), 5000);
+      
+      if (onDateSelection) {
+        const startDateStr = selectedStartDate.toISOString().split('T')[0];
+        const endDateStr = clickedDate.toISOString().split('T')[0];
+        onDateSelection(startDateStr, endDateStr, true);
       }
     } else {
-      // Resetar seleção e começar nova
+      // Resetar seleção
       setSelectedStartDate(clickedDate);
       setSelectedEndDate(null);
-      setMessage({ type: 'info', text: `Nova seleção: Check-in em ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}.` });
+      setMessage({ type: 'info', text: `Nova seleção: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}.` });
       setTimeout(() => setMessage(null), 3000);
-      // Resetar validação
       if (onDateSelection) {
         onDateSelection('', '', false);
       }
