@@ -119,18 +119,18 @@ export function Footer() {
                 href={content.socialLinks.livroReclamacoes}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col items-center gap-2 p-3 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-colors group"
+                className="inline-flex items-center gap-3 p-3 bg-orange-100 rounded-lg hover:bg-orange-200 transition-colors group"
                 title="Livro de Reclamações"
               >
-                <div className="text-center">
-                  <span className="text-xs text-gray-500 block">LIVRO DE</span>
-                  <span className="text-sm font-semibold text-gray-700">RECLAMAÇÕES</span>
-                </div>
                 <img 
                   src="/livro-reclamacoes.png" 
                   alt="Livro de Reclamações" 
-                  className="h-6 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
+                  className="h-10 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
                 />
+                <div className="text-left">
+                  <span className="text-xs text-orange-600 block">LIVRO DE</span>
+                  <span className="text-sm font-semibold text-orange-700">RECLAMAÇÕES</span>
+                </div>
               </a>
             )}
           </div>
