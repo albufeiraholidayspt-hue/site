@@ -7,11 +7,11 @@ export function Footer() {
 
   return (
     <footer className="bg-white border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link to="/" className="flex items-center gap-3 mb-4">
+            <Link to="/" className="flex items-center gap-3 mb-3">
               <img 
                 src="/logo-symbol.png" 
                 alt="Albufeira Holidays" 
@@ -22,30 +22,24 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold text-gray-900 mb-4">Contacto</h3>
-            <div className="space-y-3">
+            <h3 className="font-semibold text-gray-900 mb-3">Contacto</h3>
+            <div className="space-y-2">
               <a
                 href={`tel:${content.contact.phone.replace(/\s/g, '')}`}
                 className="flex items-center gap-3 text-gray-600 hover:text-orange-500 transition-colors"
               >
-                <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
-                  <Phone className="h-4 w-4 text-orange-600" />
-                </div>
+                <Phone className="h-5 w-5 text-orange-500" />
                 <span className="text-sm">{content.contact.phone}</span>
               </a>
               <a
                 href={`mailto:${content.contact.email}`}
                 className="flex items-center gap-3 text-gray-600 hover:text-orange-500 transition-colors"
               >
-                <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
-                  <Mail className="h-4 w-4 text-orange-600" />
-                </div>
+                <Mail className="h-5 w-5 text-orange-500" />
                 <span className="text-sm">{content.contact.email}</span>
               </a>
               <div className="flex items-start gap-3 text-gray-600">
-                <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="h-4 w-4 text-orange-600" />
-                </div>
+                <MapPin className="h-5 w-5 text-orange-500 flex-shrink-0 mt-0.5" />
                 <span className="text-sm leading-relaxed">{content.contact.address}</span>
               </div>
             </div>
@@ -53,14 +47,14 @@ export function Footer() {
 
           {/* Social Links */}
           <div>
-            <h3 className="font-semibold text-gray-900 mb-4">Redes Sociais</h3>
-            <div className="flex gap-3 mb-6">
+            <h3 className="font-semibold text-gray-900 mb-3">Redes Sociais</h3>
+            <div className="flex gap-4 mb-4">
               {content.socialLinks?.facebook && (
                 <a
                   href={content.socialLinks.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 hover:bg-orange-200 transition-colors"
+                  className="text-gray-400 hover:text-orange-500 transition-colors"
                   title="Facebook"
                 >
                   <Facebook className="h-5 w-5" />
@@ -71,7 +65,7 @@ export function Footer() {
                   href={content.socialLinks.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 hover:bg-orange-200 transition-colors"
+                  className="text-gray-400 hover:text-orange-500 transition-colors"
                   title="Instagram"
                 >
                   <Instagram className="h-5 w-5" />
@@ -82,7 +76,7 @@ export function Footer() {
                   href={content.socialLinks.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 hover:bg-orange-200 transition-colors"
+                  className="text-gray-400 hover:text-orange-500 transition-colors"
                   title="Twitter"
                 >
                   <Twitter className="h-5 w-5" />
@@ -93,7 +87,7 @@ export function Footer() {
                   href={content.socialLinks.youtube}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 hover:bg-orange-200 transition-colors"
+                  className="text-gray-400 hover:text-orange-500 transition-colors"
                   title="YouTube"
                 >
                   <Youtube className="h-5 w-5" />
@@ -104,7 +98,7 @@ export function Footer() {
                   href={content.socialLinks.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 hover:bg-orange-200 transition-colors"
+                  className="text-gray-400 hover:text-orange-500 transition-colors"
                   title="WhatsApp"
                 >
                   <MessageCircle className="h-5 w-5" />
@@ -118,17 +112,17 @@ export function Footer() {
                 href={content.socialLinks.livroReclamacoes}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 p-3 bg-orange-100 rounded-lg hover:bg-orange-200 transition-colors group"
+                className="inline-flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-colors group"
                 title="Livro de Reclamações"
               >
                 <img 
                   src="/livro-reclamacoes.png" 
                   alt="Livro de Reclamações" 
-                  className="h-8 w-auto"
+                  className="h-6 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
                 />
                 <div className="text-left">
-                  <span className="text-xs text-orange-600 block">LIVRO DE</span>
-                  <span className="text-sm font-semibold text-orange-700">RECLAMAÇÕES</span>
+                  <span className="text-xs text-gray-500 block">LIVRO DE</span>
+                  <span className="text-sm font-semibold text-gray-700">RECLAMAÇÕES</span>
                 </div>
               </a>
             )}
@@ -136,7 +130,7 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="bg-orange-500 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 mt-8 pt-6 pb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="bg-orange-500 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 mt-6 pt-4 pb-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white text-sm">
             © {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
           </p>
