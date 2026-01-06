@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { SiteContent, User, Apartment, Promotion, SeoSettings, SocialLinks, Review } from '../types';
 import { initialContent } from '../data/initialContent';
-import { mongodbStorage } from '../lib/mongodbStorage';
+import { mongodbAPIStorage } from '../lib/mongodbAPIStorage';
 
 interface AppState {
   content: SiteContent;
@@ -148,7 +148,7 @@ export const useStore = create<AppState>()(
     {
       name: 'albufeira-holidays-storage',
       version: 15,
-      storage: createJSONStorage(() => mongodbStorage),
+      storage: createJSONStorage(() => mongodbAPIStorage),
       migrate: (persistedState: unknown, version: number) => {
         const state = persistedState as AppState;
         
