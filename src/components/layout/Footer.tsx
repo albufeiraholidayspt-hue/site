@@ -140,7 +140,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="bg-orange-500 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 mt-8 pt-6 pb-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white text-sm">
-            © {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
+            &copy; {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
           </p>
           <div className="flex items-center gap-4">
             <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
