@@ -85,35 +85,6 @@ interface AppState {
   resetContent: () => void;
 }
 
-// Função para fazer merge de apartamentos preservando dados existentes
-const mergeApartments = (stored: Apartment[], initial: Apartment[]): Apartment[] => {
-  return initial.map(initialApt => {
-    const storedApt = stored.find(s => s.id === initialApt.id);
-    if (storedApt) {
-      // Preserva TODOS os dados do stored, mas garante que novos campos existam
-      return {
-        ...initialApt,
-        ...storedApt,
-        // Garante que campos importantes existam
-        icalUrl: storedApt.icalUrl ?? initialApt.icalUrl ?? '',
-        bookingUrl: storedApt.bookingUrl ?? initialApt.bookingUrl ?? '',
-        reviewsUrl: storedApt.reviewsUrl ?? initialApt.reviewsUrl ?? initialApt.reviewsUrl,
-        videoUrl: storedApt.videoUrl ?? initialApt.videoUrl ?? '',
-        videoStartTime: storedApt.videoStartTime ?? initialApt.videoStartTime ?? 0,
-        enableAnimation: storedApt.enableAnimation ?? initialApt.enableAnimation ?? true,
-        heroImagePosition: storedApt.heroImagePosition ?? initialApt.heroImagePosition ?? 'center',
-        additionalInfo: storedApt.additionalInfo ?? initialApt.additionalInfo ?? '',
-        // Preserva imagens do stored se existirem, senão usa do initial
-        images: storedApt.images && storedApt.images.length > 0 ? storedApt.images : initialApt.images,
-        heroImage: storedApt.heroImage || initialApt.heroImage,
-        // Preserva features do stored se existirem, senão usa do initial
-        features: storedApt.features && storedApt.features.length > 0 ? storedApt.features : initialApt.features,
-      };
-    }
-    return initialApt;
-  });
-};
-
 const ADMIN_CREDENTIALS = {
   username: 'admin',
   password: 'albufeira2024',

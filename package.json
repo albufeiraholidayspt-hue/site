@@ -6,8 +6,8 @@
   "description": "Albufeira Holidays - Apartamentos de férias no coração de Albufeira com vista mar",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/auto-sync-content.cjs && tsc && vite build",
-    "build:clean": "tsc && vite build",
+    "build": "tsc && vite build",
+    "build:full": "node scripts/auto-sync-content.cjs && tsc && vite build",
     "sync": "node scripts/auto-sync-content.cjs",
     "deploy": "./scripts/deploy.sh",
     "deploy:build": "npm run build && echo '📋 Build pronto! Upload da pasta dist para Netlify.'",
