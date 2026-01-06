@@ -37,7 +37,7 @@ export class MobileDebug {
     console.log('🔍 TESTANDO SUPABASE...');
     
     try {
-      const supabaseUrl = 'https://lposelwkdhfgyqpxeyw.supabase.co';
+      const supabaseUrl = 'https://lposelwkdhpfgyqpxeyw.supabase.co';
       console.log('🔗 URL Supabase:', supabaseUrl);
       
       // Testar conectividade

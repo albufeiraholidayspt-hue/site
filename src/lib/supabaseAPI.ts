@@ -20,13 +20,13 @@ class SupabaseAPI {
 
   private initializeClient() {
     try {
-      // Configuração real do Supabase
-      const supabaseUrl = 'https://lposelwkdhfgyqpxeyw.supabase.co';
+      // Configuração REAL do Supabase com URL correta
+      const supabaseUrl = 'https://lposelwkdhpfgyqpxeyw.supabase.co';
       const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxwb3NlbHdrZGhwZmd5cXB4ZXl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MDM2MzUsImV4cCI6MjA4MzI3OTYzNX0.Nf6IgklIQTEkbI85JBa_7q9P8lAUJay-lTtHM882qFw';
       
       this.supabase = createClient(supabaseUrl, supabaseKey);
       this.isReady = true;
-      console.log('✅ Supabase client inicializado com sucesso');
+      console.log('✅ Supabase client inicializado com sucesso - URL CORRIGIDA');
     } catch (error) {
       console.error('❌ Erro ao inicializar Supabase:', error);
       this.isReady = false;
