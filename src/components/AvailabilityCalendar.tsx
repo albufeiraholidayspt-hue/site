@@ -303,7 +303,7 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
     const date = new Date(year, month, day);
     const booked = isDateBooked(date);
     const past = isPast(day);
-    const todayClass = isToday(day);
+    const today = isToday(day);
     const selected = isDateSelected(day);
     const inRange = isDateInSelectedRange(day);
     const clickable = !past && !booked;
@@ -319,7 +319,7 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
           ${!booked && !past && !selected && !inRange ? 'bg-green-50 text-green-700 hover:bg-green-100' : ''}
           ${selected ? 'bg-primary-500 text-white font-bold' : ''}
           ${inRange && !selected ? 'bg-primary-100 text-primary-700' : ''}
-          ${todayClass && !selected ? 'ring-2 ring-primary-500 font-bold' : ''}
+          ${today && !selected ? 'ring-2 ring-primary-500 font-bold' : ''}
         `}
         title={clickable ? 'Clique para selecionar datas' : booked ? 'Indisponível' : 'Data passada'}
       >
