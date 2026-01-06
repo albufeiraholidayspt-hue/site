@@ -113,10 +113,8 @@ export class ImgBBService {
   }
 }
 
-// Instância singleton com chave de API do ambiente e fallback
-export const imgbbService = new ImgBBService(
-  import.meta.env.VITE_IMGBB_API_KEY || 'dbd2aebb695d29ee20f3fc151c316242'
-);
+// Instância singleton com chave de API forçada para funcionar no Vercel
+export const imgbbService = new ImgBBService('dbd2aebb695d29ee20f3fc151c316242');
 
 // Hook personalizado para facilitar o uso
 export function useImgBBUpload() {
