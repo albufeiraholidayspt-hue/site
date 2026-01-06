@@ -54,7 +54,7 @@ export function Footer() {
                   href={content.socialLinks.facebook}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-orange-500 transition-colors"
+                  className="text-orange-500 hover:text-orange-600 transition-colors"
                   title="Facebook"
                 >
                   <Facebook className="h-5 w-5" />
@@ -65,7 +65,7 @@ export function Footer() {
                   href={content.socialLinks.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-orange-500 transition-colors"
+                  className="text-orange-500 hover:text-orange-600 transition-colors"
                   title="Instagram"
                 >
                   <Instagram className="h-5 w-5" />
@@ -76,7 +76,7 @@ export function Footer() {
                   href={content.socialLinks.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-orange-500 transition-colors"
+                  className="text-orange-500 hover:text-orange-600 transition-colors"
                   title="Twitter"
                 >
                   <Twitter className="h-5 w-5" />
@@ -87,7 +87,7 @@ export function Footer() {
                   href={content.socialLinks.youtube}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-orange-500 transition-colors"
+                  className="text-orange-500 hover:text-orange-600 transition-colors"
                   title="YouTube"
                 >
                   <Youtube className="h-5 w-5" />
@@ -98,7 +98,7 @@ export function Footer() {
                   href={content.socialLinks.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-orange-500 transition-colors"
+                  className="text-orange-500 hover:text-orange-600 transition-colors"
                   title="WhatsApp"
                 >
                   <MessageCircle className="h-5 w-5" />
@@ -130,7 +130,7 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="bg-orange-500 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 mt-6 pt-4 pb-4 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="bg-orange-500 mt-6 pt-4 pb-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white text-sm">
             © {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
           </p>
