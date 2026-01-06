@@ -8,6 +8,7 @@ import { Dashboard } from './pages/admin/Dashboard';
 import UploadDemo from './pages/UploadDemo';
 import { DataBackup } from './components/DataBackup';
 import MobileCacheBuster from './lib/mobileCacheBuster';
+import MobileDebug from './lib/mobileDebug';
 import { useEffect } from 'react';
 
 function App() {
@@ -15,6 +16,19 @@ function App() {
     // Inicializar Mobile Cache Buster (sem elementos visuais)
     const cacheBuster = MobileCacheBuster.getInstance();
     cacheBuster.initMobileOptimizations();
+    
+    // Debug completo no mobile
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) {
+      console.log('📱 Mobile detectado - iniciando debug completo...');
+      const debug = MobileDebug.getInstance();
+      debug.debugFullSystem();
+    }
+    
+    // Adicionar debug global para fácil acesso
+    (window as any).mobileDebug = MobileDebug.getInstance();
+    console.log('🔍 Debug disponível em: window.mobileDebug.debugFullSystem()');
+    console.log('🔄 Reset disponível em: window.mobileDebug.forceFullReset()');
   }, []);
 
   return (
