@@ -150,51 +150,9 @@ export const useStore = create<AppState>()(
       version: 15,
       storage: createJSONStorage(() => supabaseStorage),
       migrate: (persistedState: unknown, version: number) => {
-        const state = persistedState as AppState;
-        
-        if (version < 15 && state?.content) {
-          // Migrar dados PRESERVANDO completamente as alterações do utilizador
-          console.log('🔄 Migrando dados da versão', version, 'para 15');
-          
-          return {
-            ...state,
-            content: {
-              // Preservar TODAS as alterações do utilizador
-              hero: { 
-                ...initialContent.hero, 
-                ...state.content.hero,
-                // Garantir campos novos mas NÃO sobrepôr campos existentes
-                videoUrl: state.content.hero?.videoUrl ?? initialContent.hero.videoUrl ?? '',
-                videoStartTime: state.content.hero?.videoStartTime ?? initialContent.hero.videoStartTime ?? 0,
-                backgroundImages: state.content.hero?.backgroundImages ?? initialContent.hero.backgroundImages ?? [],
-                enableAnimation: state.content.hero?.enableAnimation ?? initialContent.hero.enableAnimation ?? true,
-              },
-              about: { 
-                ...initialContent.about, 
-                ...state.content.about,
-                videoUrl: state.content.about?.videoUrl ?? initialContent.about.videoUrl,
-                videoStartTime: state.content.about?.videoStartTime ?? initialContent.about.videoStartTime,
-              },
-              contact: { ...initialContent.contact, ...state.content.contact },
-              // PRESERVAR completamente os apartamentos do utilizador
-              apartments: state.content.apartments && state.content.apartments.length > 0 
-                ? state.content.apartments 
-                : initialContent.apartments,
-              reviews: state.content.reviews ?? initialContent.reviews,
-              socialLinks: { ...initialContent.socialLinks, ...(state.content.socialLinks || {}) },
-              seo: { ...initialContent.seo, ...(state.content.seo || {}) },
-              promotions: state.content.promotions ?? initialContent.promotions,
-              bookingUrl: state.content.bookingUrl ?? initialContent.bookingUrl,
-            },
-          };
-        } else if (!state?.content) {
-          // Se não há conteúdo, usar initialContent
-          console.log('📋 Usando conteúdo inicial (sem dados anteriores)');
-          return { state: { content: initialContent, user: { username: '', isAuthenticated: false } } };
-        }
-        
-        console.log('✅ Conteúdo migrado/preservado com sucesso');
-        return state;
+        // Sem migração - deixar Supabase carregar os dados diretamente
+        console.log(' Carregando dados do Supabase, versão:', version);
+        return persistedState;
       },
     }
   )
