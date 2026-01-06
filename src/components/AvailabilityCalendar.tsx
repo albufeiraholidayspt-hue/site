@@ -83,100 +83,103 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
 
     const fetchIcal = async () => {
       setLoading(true);
+      
+      // Timeout reduzido para melhor UX
       const timeoutId = setTimeout(() => {
         setLoading(false);
-        console.log('iCal fetch timeout');
-      }, 15000); // Aumentado para 15 segundos
+        console.log('iCal fetch timeout - usando modo livre');
+        setBookedDates([]);
+      }, 8000); // Reduzido para 8 segundos
 
       try {
-        // Tentar múltiplas abordagens para CORS
-        const proxies = [
-          // Primeiro tentar proxy próprio do Vercel
-          `/api/proxy-ical?url=${encodeURIComponent(icalUrl)}`,
-          // Depois proxies públicos
-          `https://api.allorigins.win/raw?url=${encodeURIComponent(icalUrl)}`,
-          `https://corsproxy.io/?${encodeURIComponent(icalUrl)}`,
-          `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(icalUrl)}`,
-          `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(icalUrl)}`
-        ];
-
-        let data = null;
-
-        for (const proxyUrl of proxies) {
-          try {
-            console.log('Tentando proxy:', proxyUrl.split('?')[0]);
-            const controller = new AbortController();
-            const timeoutId2 = setTimeout(() => controller.abort(), 10000); // 10 segundos por proxy
-            
-            const response = await fetch(proxyUrl, { 
-              signal: controller.signal,
-              headers: {
-                'Accept': 'text/calendar,text/plain,application/octet-stream,*/*',
-                'User-Agent': 'Mozilla/5.0 (compatible; AlbufeiraHolidays/1.0)'
-              }
-            });
-            
-            clearTimeout(timeoutId2);
-            
-            if (response.ok) {
-              const textData = await response.text();
-              if (textData && textData.trim() && (textData.includes('BEGIN:VCALENDAR') || textData.includes('DTSTART'))) {
-                data = textData;
-                console.log('iCal data obtido com sucesso via:', proxyUrl.split('?')[0]);
-                break;
-              }
-            }
-          } catch (error) {
-            console.log('Proxy falhou:', proxyUrl.split('?')[0], error instanceof Error ? error.message : 'Unknown error');
-            continue;
-          }
-        }
-
-        // Se nenhum proxy funcionou, tentar direto (pode funcionar em alguns casos)
-        if (!data) {
-          try {
-            console.log('Tentando acesso direto ao iCal...');
-            const response = await fetch(icalUrl, {
-              headers: {
-                'Accept': 'text/calendar,text/plain,*/*',
-                'User-Agent': 'Mozilla/5.0 (compatible; AlbufeiraHolidays/1.0)'
-              }
-            });
-            
-            if (response.ok) {
-              const textData = await response.text();
-              if (textData && textData.trim() && (textData.includes('BEGIN:VCALENDAR') || textData.includes('DTSTART'))) {
-                data = textData;
-                console.log('iCal data obtido com sucesso via acesso direto');
-              }
-            }
-          } catch (directError) {
-            console.log('Acesso direto falhou:', directError instanceof Error ? directError.message : 'Unknown error');
-          }
-        }
-
-        if (data) {
-          const parsed = parseIcal(data);
-          console.log('✅ iCal processado com sucesso:', parsed.length, 'datas ocupadas');
+        // Cache localStorage para evitar requests repetidos
+        const cacheKey = `ical-${icalUrl}`;
+        const cached = localStorage.getItem(cacheKey);
+        const cacheTime = localStorage.getItem(`${cacheKey}-time`);
+        const now = Date.now();
+        
+        // Se cache existe e tem menos de 1 hora, usar cache
+        if (cached && cacheTime && (now - parseInt(cacheTime)) < 3600000) {
+          console.log('📋 Usando cache iCal');
+          const parsed = parseIcal(cached);
           setBookedDates(parsed);
-        } else {
-          console.log('⚠️ Todos os proxies falharam. Usando modo livre.');
-          // Em produção, mostrar mensagem informativa mas permitir seleção
-          if (window.location.hostname !== 'localhost') {
-            setMessage({ 
-              type: 'info', 
-              text: 'Dados de disponibilidade temporariamente indisponíveis. Calendário em modo livre.' 
-            });
-            setTimeout(() => setMessage(null), 5000);
-          }
-          setBookedDates([]);
+          setLoading(false);
+          clearTimeout(timeoutId);
+          return;
         }
+
+        // Tentar proxy próprio primeiro (mais rápido)
+        try {
+          console.log('🚀 Tentando proxy rápido...');
+          const controller = new AbortController();
+          const proxyTimeout = setTimeout(() => controller.abort(), 5000); // 5 segundos
+          
+          const response = await fetch(`/api/proxy-ical?url=${encodeURIComponent(icalUrl)}`, { 
+            signal: controller.signal,
+            headers: {
+              'Accept': 'text/calendar,text/plain,*/*'
+            }
+          });
+          
+          clearTimeout(proxyTimeout);
+          
+          if (response.ok) {
+            const data = await response.text();
+            if (data && data.trim() && (data.includes('BEGIN:VCALENDAR') || data.includes('DTSTART'))) {
+              // Salvar no cache
+              localStorage.setItem(cacheKey, data);
+              localStorage.setItem(`${cacheKey}-time`, now.toString());
+              
+              const parsed = parseIcal(data);
+              console.log('✅ iCal via proxy rápido:', parsed.length, 'datas');
+              setBookedDates(parsed);
+              setLoading(false);
+              clearTimeout(timeoutId);
+              return;
+            }
+          }
+        } catch (proxyError) {
+          console.log('Proxy rápido falhou, tentando outros...');
+        }
+
+        // Se proxy rápido falhar, tentar um proxy público apenas
+        try {
+          console.log('🔄 Tentando proxy público...');
+          const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(icalUrl)}`, {
+            headers: {
+              'Accept': 'text/calendar,text/plain,*/*'
+            }
+          });
+          
+          if (response.ok) {
+            const data = await response.text();
+            if (data && data.trim() && (data.includes('BEGIN:VCALENDAR') || data.includes('DTSTART'))) {
+              // Salvar no cache
+              localStorage.setItem(cacheKey, data);
+              localStorage.setItem(`${cacheKey}-time`, now.toString());
+              
+              const parsed = parseIcal(data);
+              console.log('✅ iCal via proxy público:', parsed.length, 'datas');
+              setBookedDates(parsed);
+              setLoading(false);
+              clearTimeout(timeoutId);
+              return;
+            }
+          }
+        } catch (publicError) {
+          console.log('Proxy público falhou também');
+        }
+
+        // Se tudo falhar, usar modo livre
+        console.log('⚠️ Todos os proxies falharam. Usando modo livre.');
+        setBookedDates([]);
+        
       } catch (error) {
-        console.log('Erro geral ao buscar iCal:', error);
+        console.log('Erro geral iCal:', error);
         setBookedDates([]);
       } finally {
-        clearTimeout(timeoutId);
         setLoading(false);
+        clearTimeout(timeoutId);
       }
     };
 
