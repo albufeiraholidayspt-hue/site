@@ -138,23 +138,25 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="bg-orange-500 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 mt-8 pt-6 pb-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-white text-sm">
-            &copy; {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
-          </p>
-          <div className="flex items-center gap-4">
-            <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
-              Política de Privacidade
-            </a>
-            <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
-              Termos de Uso
-            </a>
-            <Link
-              to="/admin"
-              className="text-white hover:text-orange-100 text-sm transition-colors"
-            >
-              Área Reservada
-            </Link>
+        <div className="bg-orange-500 -mx-4 sm:-mx-6 lg:-mx-8 mt-8 pt-6 pb-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-white text-sm">
+              &copy; {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
+            </p>
+            <div className="flex items-center gap-4">
+              <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
+                Política de Privacidade
+              </a>
+              <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
+                Termos de Uso
+              </a>
+              <Link
+                to="/admin"
+                className="text-white hover:text-orange-100 text-sm transition-colors"
+              >
+                Área Reservada
+              </Link>
+            </div>
           </div>
         </div>
       </div>
