@@ -102,7 +102,7 @@ export function Home() {
                   >
                     <div
                       className={`absolute inset-0 bg-cover bg-center ${
-                        false ? (index % 2 === 0 ? 'animate-kenburns' : 'animate-kenburns-alt') : ''
+                        index === currentHeroImage ? 'animate-kenburns' : ''
                       }`}
                       style={{
                         backgroundImage: image ? `url(${image})` : 'none',
