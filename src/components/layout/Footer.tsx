@@ -139,10 +139,10 @@ export function Footer() {
           </div>
         </div>
         
-        {/* Container Laranja - Dentro do container principal */}
+        {/* Container Laranja - Dentro do footer */}
         <div className="bg-orange-500 mt-8 pt-6 pb-6 flex flex-col md:flex-row justify-center items-center gap-4">
           <p className="text-white text-sm">
-            &copy; {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
+            © {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
           </p>
           <div className="flex items-center gap-4">
             <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
