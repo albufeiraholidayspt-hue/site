@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, ArrowUpRight, Facebook, Instagram, Twitter, Youtube, MessageCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube, MessageCircle } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 
 export function Footer() {
@@ -8,7 +8,7 @@ export function Footer() {
   return (
     <footer className="bg-orange-50 border-t border-orange-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center gap-3 mb-4">
@@ -21,23 +21,6 @@ export function Footer() {
             <p className="text-orange-700 text-sm leading-relaxed">
               Apartamentos de férias premium no coração de Albufeira.
             </p>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="font-semibold text-orange-900 mb-4">Apartamentos</h3>
-            <div className="space-y-2">
-              {content.apartments.map((apt) => (
-                <Link
-                  key={apt.id}
-                  to={`/apartamento/${apt.slug}`}
-                  className="flex items-center gap-2 text-orange-600 hover:text-orange-500 transition-colors text-sm group"
-                >
-                  <span>{apt.name}</span>
-                  <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </Link>
-              ))}
-            </div>
           </div>
 
           {/* Contact */}
