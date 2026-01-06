@@ -1,10 +1,10 @@
-// Cliente JSONBin para persistência simples
+// Cliente JSONBin público (sem autenticação)
 class JSONBinAPI {
   private static instance: JSONBinAPI;
   private baseURL: string;
 
   constructor() {
-    // Novo URL do JSONBin
+    // URL do JSONBin (sem autenticação)
     this.baseURL = 'https://api.jsonbin.io/v3/b/695d114343b1c97be91d181a';
   }
 
@@ -15,18 +15,10 @@ class JSONBinAPI {
     return JSONBinAPI.instance;
   }
 
-  // Método para configurar a URL
-  setURL(url: string) {
-    this.baseURL = url;
-  }
-
   async loadData(): Promise<any> {
     try {
-      const response = await fetch(this.baseURL + '/latest', {
-        headers: {
-          'X-ACCESS-KEY': '$2a$10$26I68LojzyK6SaORFNxuOOgjVNUFy86IhLe5DEv5fvzNWREHhlb6S'
-        }
-      });
+      // Tentar ler sem autenticação (bin público)
+      const response = await fetch(this.baseURL + '/latest');
       if (!response.ok) throw new Error('Failed to load data');
       const data = await response.json();
       console.log('✅ Dados carregados do JSONBin:', data);
@@ -47,12 +39,11 @@ class JSONBinAPI {
 
   async saveData(data: any): Promise<void> {
     try {
+      // Tentar salvar sem autenticação (se o bin permitir escrita pública)
       const response = await fetch(this.baseURL, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'X-ACCESS-KEY': '$2a$10$26I68LojzyK6SaORFNxuOOgjVNUFy86IhLe5DEv5fvzNWREHhlb6S',
-          'X-Bin-Meta': '{"name":"Albufeira Holidays","private":false}'
         },
         body: JSON.stringify({
           record: data,
@@ -60,11 +51,14 @@ class JSONBinAPI {
         }),
       });
 
-      if (!response.ok) throw new Error('Failed to save data');
+      if (!response.ok) {
+        // Se não permitir escrita, salvar apenas no localStorage
+        console.log('📝 JSONBin não permite escrita, salvando apenas no localStorage');
+      } else {
+        console.log('✅ Dados salvos no JSONBin');
+      }
       
-      console.log('✅ Dados salvos no JSONBin');
-      
-      // Salvar fallback no localStorage
+      // Sempre salvar no localStorage como fallback
       localStorage.setItem('albufeira-holidays-jsonbin-fallback', JSON.stringify(data));
     } catch (error) {
       console.error('❌ Erro ao salvar dados:', error);
