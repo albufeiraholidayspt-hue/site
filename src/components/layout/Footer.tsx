@@ -53,7 +53,7 @@ export function Footer() {
                 className="flex items-start gap-3 text-gray-600 hover:text-orange-500 transition-colors"
               >
                 <div className="w-8 h-8 rounded-lg bg-white border border-gray-300 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <MapPin className="h-4 w-4 text-orange-500" />
+                  <MapPin className="h-2 w-2 text-orange-500" />
                 </div>
                 <span className="text-sm leading-relaxed">{content.contact.address}</span>
               </a>
