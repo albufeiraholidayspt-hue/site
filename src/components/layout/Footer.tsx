@@ -128,9 +128,11 @@ export function Footer() {
             )}
           </div>
         </div>
-
-        {/* Bottom */}
-        <div className="bg-orange-500 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 mt-6 pt-4 pb-4 flex flex-col md:flex-row justify-between items-center gap-4">
+      </div>
+      
+      {/* Bottom - Full Width */}
+      <div className="bg-orange-500 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white text-sm">
             © {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
           </p>
