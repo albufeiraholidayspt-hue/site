@@ -7,6 +7,7 @@ import { Login } from './pages/admin/Login';
 import { Dashboard } from './pages/admin/Dashboard';
 import UploadDemo from './pages/UploadDemo';
 import { DataBackup } from './components/DataBackup';
+import { CookieBanner } from './components/CookieBanner';
 import MobileCacheBuster from './lib/mobileCacheBuster';
 import MobileDebug from './lib/mobileDebug';
 import AggressiveMobileSolution from './lib/aggressiveMobileSolution';
@@ -41,6 +42,7 @@ function App() {
   return (
     <>
       <DataBackup />
+      <CookieBanner />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
