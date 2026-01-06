@@ -91,6 +91,9 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
       try {
         // Tentar múltiplas abordagens para CORS
         const proxies = [
+          // Primeiro tentar proxy próprio do Vercel
+          `/api/proxy-ical?url=${encodeURIComponent(icalUrl)}`,
+          // Depois proxies públicos
           `https://api.allorigins.win/raw?url=${encodeURIComponent(icalUrl)}`,
           `https://corsproxy.io/?${encodeURIComponent(icalUrl)}`,
           `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(icalUrl)}`,
@@ -154,11 +157,18 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
 
         if (data) {
           const parsed = parseIcal(data);
-          console.log('Datas ocupadas encontradas:', parsed.length);
+          console.log('✅ iCal processado com sucesso:', parsed.length, 'datas ocupadas');
           setBookedDates(parsed);
         } else {
-          console.log('Não foi possível obter dados iCal. Usando calendário livre.');
-          // Silenciosamente falha - não mostra erro ao usuário
+          console.log('⚠️ Todos os proxies falharam. Usando modo livre.');
+          // Em produção, mostrar mensagem informativa mas permitir seleção
+          if (window.location.hostname !== 'localhost') {
+            setMessage({ 
+              type: 'info', 
+              text: 'Dados de disponibilidade temporariamente indisponíveis. Calendário em modo livre.' 
+            });
+            setTimeout(() => setMessage(null), 5000);
+          }
           setBookedDates([]);
         }
       } catch (error) {
