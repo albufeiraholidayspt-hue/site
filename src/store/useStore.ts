@@ -150,8 +150,17 @@ export const useStore = create<AppState>()(
       version: 15,
       storage: createJSONStorage(() => supabaseStorage),
       migrate: (persistedState: unknown, version: number) => {
-        // Sem migração - deixar Supabase carregar os dados diretamente
-        console.log(' Carregando dados do Supabase, versão:', version);
+        // PROTEÇÃO TOTAL: Nunca sobrepôr dados do usuário
+        console.log(' PROTEGENDO dados do usuário - versão:', version);
+        
+        // Se já existir conteúdo, PRESERVAR 100%
+        const state = persistedState as AppState;
+        if (state?.content?.apartments && state.content.apartments.length > 0) {
+          console.log(' Dados do usuário encontrados, PRESERVANDO tudo!');
+          return persistedState; // NÃO MUDAR NADA
+        }
+        
+        console.log(' Sem dados de usuário, mantendo estado atual');
         return persistedState;
       },
     }
