@@ -178,6 +178,8 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
 
   // Handle date selection
   const handleDateClick = (day: number) => {
+    console.log('Calendar: Data clicada', { day, month, year, clickable: !isPast(day) && !isDateBooked(new Date(year, month, day)) });
+    
     const clickedDate = new Date(year, month, day);
     
     // Limpar mensagem anterior
