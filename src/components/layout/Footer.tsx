@@ -6,7 +6,7 @@ export function Footer() {
   const { content } = useStore();
 
   return (
-    <footer className="bg-orange-50 border-t border-orange-100">
+    <footer className="bg-white border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
@@ -18,18 +18,15 @@ export function Footer() {
                 className="h-10 w-auto transition-transform hover:scale-105"
               />
             </Link>
-            <p className="text-orange-700 text-sm leading-relaxed">
-              Apartamentos de férias premium no coração de Albufeira.
-            </p>
           </div>
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold text-orange-900 mb-4">Contacto</h3>
+            <h3 className="font-semibold text-gray-900 mb-4">Contacto</h3>
             <div className="space-y-3">
               <a
                 href={`tel:${content.contact.phone.replace(/\s/g, '')}`}
-                className="flex items-center gap-3 text-orange-600 hover:text-orange-500 transition-colors"
+                className="flex items-center gap-3 text-gray-600 hover:text-orange-500 transition-colors"
               >
                 <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
                   <Phone className="h-4 w-4 text-orange-600" />
@@ -38,14 +35,14 @@ export function Footer() {
               </a>
               <a
                 href={`mailto:${content.contact.email}`}
-                className="flex items-center gap-3 text-orange-600 hover:text-orange-500 transition-colors"
+                className="flex items-center gap-3 text-gray-600 hover:text-orange-500 transition-colors"
               >
                 <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
                   <Mail className="h-4 w-4 text-orange-600" />
                 </div>
                 <span className="text-sm">{content.contact.email}</span>
               </a>
-              <div className="flex items-start gap-3 text-orange-600">
+              <div className="flex items-start gap-3 text-gray-600">
                 <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center flex-shrink-0">
                   <MapPin className="h-4 w-4 text-orange-600" />
                 </div>
@@ -56,7 +53,7 @@ export function Footer() {
 
           {/* Social Links */}
           <div>
-            <h3 className="font-semibold text-orange-900 mb-4">Redes Sociais</h3>
+            <h3 className="font-semibold text-gray-900 mb-4">Redes Sociais</h3>
             <div className="flex gap-3 mb-6">
               {content.socialLinks?.facebook && (
                 <a
@@ -137,20 +134,20 @@ export function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-orange-200 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-orange-600 text-sm">
+        <div className="bg-orange-500 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 mt-8 pt-6 pb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-white text-sm">
             © {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
           </p>
           <div className="flex items-center gap-4">
-            <a href="#" className="text-orange-500 hover:text-orange-600 text-sm transition-colors">
+            <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
               Política de Privacidade
             </a>
-            <a href="#" className="text-orange-500 hover:text-orange-600 text-sm transition-colors">
+            <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
               Termos de Uso
             </a>
             <Link
               to="/admin"
-              className="text-orange-500 hover:text-orange-600 text-sm transition-colors"
+              className="text-white hover:text-orange-100 text-sm transition-colors"
             >
               Área Reservada
             </Link>
