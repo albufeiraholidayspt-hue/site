@@ -26,8 +26,12 @@ export function Login() {
       <div className="max-w-md w-full">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Lock className="h-8 w-8 text-primary-600" />
+            <div className="flex justify-center mb-4">
+              <img 
+                src="/logo.png" 
+                alt="Albufeira Holidays" 
+                className="h-16 w-auto"
+              />
             </div>
             <h1 className="font-display text-2xl font-bold text-gray-900">
               Área Reservada

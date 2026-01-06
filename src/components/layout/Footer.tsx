@@ -15,7 +15,7 @@ export function Footer() {
               <img 
                 src="/logo.png" 
                 alt="Albufeira Holidays" 
-                className="h-12 w-auto brightness-0 invert"
+                className="h-12 w-auto brightness-0 invert transition-transform group-hover:scale-105"
               />
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed">
