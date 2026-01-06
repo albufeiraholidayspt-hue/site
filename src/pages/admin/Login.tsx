@@ -28,7 +28,7 @@ export function Login() {
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
               <img 
-                src="/logo.png" 
+                src="/logo-symbol.png" 
                 alt="Albufeira Holidays" 
                 className="h-16 w-auto"
               />
