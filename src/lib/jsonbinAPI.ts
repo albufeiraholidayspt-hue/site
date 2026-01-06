@@ -29,8 +29,10 @@ class JSONBinAPI {
       });
       if (!response.ok) throw new Error('Failed to load data');
       const data = await response.json();
-      console.log('✅ Dados carregados do JSONBin');
-      return data.record;
+      console.log('✅ Dados carregados do JSONBin:', data);
+      
+      // JSONBin retorna { record: { data: {...} } }
+      return data.record?.data || data;
     } catch (error) {
       console.error('❌ Erro ao carregar dados:', error);
       // Fallback para localStorage
@@ -53,7 +55,7 @@ class JSONBinAPI {
           'X-Bin-Meta': '{"name":"Albufeira Holidays","private":false}'
         },
         body: JSON.stringify({
-          data: data,
+          record: data,
           lastUpdated: new Date().toISOString()
         }),
       });
