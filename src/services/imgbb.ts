@@ -38,9 +38,14 @@ export class ImgBBService {
   }
 
   async uploadImage(file: File, expiration?: number): Promise<string> {
+    console.log('ImgBB: Iniciando upload', { fileName: file.name, fileSize: file.size });
+    
     if (!this.apiKey) {
+      console.error('ImgBB: API key não configurada');
       throw new Error('API key do ImgBB não configurada');
     }
+
+    console.log('ImgBB: API key configurada', this.apiKey.substring(0, 10) + '...');
 
     const formData = new FormData();
     
@@ -57,21 +62,28 @@ export class ImgBBService {
     });
 
     try {
+      console.log('ImgBB: Enviando requisição...');
       const response = await fetch(`https://api.imgbb.com/1/upload?${params}`, {
         method: 'POST',
         body: formData
       });
 
+      console.log('ImgBB: Resposta recebida', { status: response.status, statusText: response.statusText });
+
       const result: ImgBBResponse | ImgBBError = await response.json();
+      console.log('ImgBB: Resultado parseado', result);
 
       if (!response.ok || 'error' in result) {
         const error = result as ImgBBError;
+        console.error('ImgBB: Erro na API', error);
         throw new Error(error.error.message || 'Erro ao fazer upload da imagem');
       }
 
       const success = result as ImgBBResponse;
+      console.log('ImgBB: Upload sucesso', success.data.url);
       return success.data.url;
     } catch (error) {
+      console.error('ImgBB: Erro no upload', error);
       if (error instanceof Error) {
         throw error;
       }
