@@ -1,7 +1,8 @@
 import { StateStorage } from 'zustand/middleware';
 import SupabaseAPI from '../lib/supabaseAPI';
+import AggressiveMobileSolution from '../lib/aggressiveMobileSolution';
 
-// Storage com Supabase + localStorage backup
+// Storage com Supabase + solução agressiva mobile
 export const supabaseStorage: StateStorage = {
   getItem: async (name: string): Promise<string | null> => {
     try {
@@ -9,18 +10,21 @@ export const supabaseStorage: StateStorage = {
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       
       if (isMobile) {
-        console.log('📱 Mobile detectado - forçando Supabase');
+        console.log('📱 Mobile detectado - usando solução agressiva');
         
-        // Forçar carregamento do Supabase no mobile
-        const data = await SupabaseAPI.getInstance().loadData();
+        // SOLUÇÃO AGRESSIVA: Carregar DIRETAMENTE do Supabase
+        const aggressive = AggressiveMobileSolution.getInstance();
+        const data = await aggressive.loadDirectFromSupabase();
+        
         if (data) {
-          console.log('✅ Dados carregados do Supabase (mobile)');
+          console.log('✅ Dados carregados do Supabase (mobile agressivo)');
           // Salvar no localStorage como backup
           localStorage.setItem(name, JSON.stringify(data));
+          localStorage.setItem('albufeira-holidays-supabase-backup', JSON.stringify(data));
           return JSON.stringify(data);
         }
         
-        // Se Supabase falhar, tentar localStorage
+        // Se falhar, tentar localStorage
         const item = localStorage.getItem(name);
         if (item) {
           console.log('📋 Usando localStorage fallback (mobile)');
@@ -57,13 +61,24 @@ export const supabaseStorage: StateStorage = {
       localStorage.setItem(name, value);
       
       if (isMobile) {
-        console.log('📱 Mobile - salvando no Supabase');
+        console.log('📱 Mobile - salvando com solução agressiva');
+        
+        // SOLUÇÃO AGRESSIVA: Salvar DIRETAMENTE no Supabase
+        const aggressive = AggressiveMobileSolution.getInstance();
+        const parsed = JSON.parse(value);
+        const success = await aggressive.saveDirectToSupabase(parsed);
+        
+        if (success) {
+          console.log('✅ Dados salvos no Supabase (mobile agressivo)');
+        } else {
+          console.log('❌ Falha ao salvar no Supabase (mobile)');
+        }
+      } else {
+        // Desktop - comportamento normal
+        const parsed = JSON.parse(value);
+        await SupabaseAPI.getInstance().syncData(parsed);
+        console.log('✅ Dados sincronizados com Supabase (desktop)');
       }
-      
-      // Salvar no Supabase (async)
-      const parsed = JSON.parse(value);
-      await SupabaseAPI.getInstance().syncData(parsed);
-      console.log('✅ Dados sincronizados com Supabase');
     } catch (error) {
       console.error('❌ Erro ao sincronizar com Supabase:', error);
       // Pelo menos salvou no localStorage

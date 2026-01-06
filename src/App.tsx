@@ -9,6 +9,7 @@ import UploadDemo from './pages/UploadDemo';
 import { DataBackup } from './components/DataBackup';
 import MobileCacheBuster from './lib/mobileCacheBuster';
 import MobileDebug from './lib/mobileDebug';
+import AggressiveMobileSolution from './lib/aggressiveMobileSolution';
 import { useEffect } from 'react';
 
 function App() {
@@ -16,6 +17,10 @@ function App() {
     // Inicializar Mobile Cache Buster (sem elementos visuais)
     const cacheBuster = MobileCacheBuster.getInstance();
     cacheBuster.initMobileOptimizations();
+    
+    // Inicializar solução AGRESSIVA para mobile
+    const aggressive = AggressiveMobileSolution.getInstance();
+    aggressive.init();
     
     // Debug completo no mobile
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -27,8 +32,10 @@ function App() {
     
     // Adicionar debug global para fácil acesso
     (window as any).mobileDebug = MobileDebug.getInstance();
+    (window as any).aggressiveMobile = AggressiveMobileSolution.getInstance();
     console.log('🔍 Debug disponível em: window.mobileDebug.debugFullSystem()');
     console.log('🔄 Reset disponível em: window.mobileDebug.forceFullReset()');
+    console.log('📱 Refresh agressivo: window.aggressiveMobile.forceCompleteRefresh()');
   }, []);
 
   return (
