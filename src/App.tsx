@@ -8,12 +8,11 @@ import { Dashboard } from './pages/admin/Dashboard';
 import UploadDemo from './pages/UploadDemo';
 import { DataBackup } from './components/DataBackup';
 import MobileCacheBuster from './lib/mobileCacheBuster';
-import MobileRefreshButton from './components/MobileRefreshButton';
 import { useEffect } from 'react';
 
 function App() {
   useEffect(() => {
-    // Inicializar Mobile Cache Buster
+    // Inicializar Mobile Cache Buster (sem elementos visuais)
     const cacheBuster = MobileCacheBuster.getInstance();
     cacheBuster.initMobileOptimizations();
   }, []);
@@ -21,7 +20,6 @@ function App() {
   return (
     <>
       <DataBackup />
-      <MobileRefreshButton />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
