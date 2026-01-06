@@ -185,6 +185,20 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
     // Limpar mensagem anterior
     setMessage(null);
     
+    // Não permitir selecionar datas passadas
+    if (isPast(day)) {
+      setMessage({ type: 'error', text: 'Não é possível selecionar datas passadas.' });
+      setTimeout(() => setMessage(null), 3000);
+      return;
+    }
+    
+    // Não permitir selecionar datas ocupadas
+    if (isDateBooked(clickedDate)) {
+      setMessage({ type: 'error', text: 'Esta data está ocupada. Por favor, selecione outra data.' });
+      setTimeout(() => setMessage(null), 3000);
+      return;
+    }
+    
     if (!selectedStartDate) {
       // Selecionar data de check-in
       setSelectedStartDate(clickedDate);
@@ -195,12 +209,35 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
         onDateSelection('', '', false);
       }
     } else if (!selectedEndDate) {
+      // Verificar estadia mínima
+      const nightsDiff = Math.ceil((clickedDate.getTime() - selectedStartDate.getTime()) / (1000 * 60 * 60 * 24));
+      
+      if (nightsDiff < minNights) {
+        setMessage({ type: 'error', text: `Estadia mínima de ${minNights} noite${minNights > 1 ? 's' : ''}.` });
+        setTimeout(() => setMessage(null), 4000);
+        return;
+      }
+      
+      // Verificar datas ocupadas no período
+      let hasBookedDates = false;
+      for (let d = new Date(selectedStartDate); d < clickedDate; d.setDate(d.getDate() + 1)) {
+        if (isDateBooked(d)) {
+          hasBookedDates = true;
+          break;
+        }
+      }
+      
+      if (hasBookedDates) {
+        setMessage({ type: 'error', text: 'O período contém datas ocupadas.' });
+        setTimeout(() => setMessage(null), 4000);
+        return;
+      }
+      
       // Selecionar data de check-out
       setSelectedEndDate(clickedDate);
-      const nightsDiff = Math.ceil((clickedDate.getTime() - selectedStartDate.getTime()) / (1000 * 60 * 60 * 24));
       setMessage({ 
         type: 'success', 
-        text: `Período: ${nightsDiff} noite${nightsDiff > 1 ? 's' : ''} (${selectedStartDate.getDate()}/${selectedStartDate.getMonth() + 1} - ${clickedDate.getDate()}/${clickedDate.getMonth() + 1})` 
+        text: `Período: ${nightsDiff} noite${nightsDiff > 1 ? 's' : ''}` 
       });
       setTimeout(() => setMessage(null), 5000);
       
