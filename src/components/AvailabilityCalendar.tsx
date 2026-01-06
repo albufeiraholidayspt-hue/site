@@ -313,7 +313,7 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
     calendarDays.push(
       <div
         key={day}
-        onClick={() => clickable && handleDateClick(day)}
+        onClick={() => handleDateClick(day)}
         className={`
           h-8 flex items-center justify-center text-sm rounded-md transition-colors cursor-pointer
           ${past ? 'text-gray-300 cursor-not-allowed' : ''}
