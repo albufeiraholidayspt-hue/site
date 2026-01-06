@@ -242,15 +242,17 @@ export const useStore = create<AppState>()(
         const state = persistedState as AppState;
         
         if (version < 15 && state?.content) {
-          // Migrar dados preservando alterações do utilizador
+          // Migrar dados PRESERVANDO completamente as alterações do utilizador
+          console.log('🔄 Migrando dados da versão', version, 'para 15');
+          
           return {
             ...state,
             content: {
-              ...initialContent,
-              ...state.content,
+              // Preservar TODAS as alterações do utilizador
               hero: { 
                 ...initialContent.hero, 
                 ...state.content.hero,
+                // Garantir campos novos mas NÃO sobrepôr campos existentes
                 videoUrl: state.content.hero?.videoUrl ?? initialContent.hero.videoUrl ?? '',
                 videoStartTime: state.content.hero?.videoStartTime ?? initialContent.hero.videoStartTime ?? 0,
                 backgroundImages: state.content.hero?.backgroundImages ?? initialContent.hero.backgroundImages ?? [],
@@ -263,14 +265,24 @@ export const useStore = create<AppState>()(
                 videoStartTime: state.content.about?.videoStartTime ?? initialContent.about.videoStartTime,
               },
               contact: { ...initialContent.contact, ...state.content.contact },
-              apartments: mergeApartments(state.content.apartments || [], initialContent.apartments),
+              // PRESERVAR completamente os apartamentos do utilizador
+              apartments: state.content.apartments && state.content.apartments.length > 0 
+                ? state.content.apartments 
+                : initialContent.apartments,
               reviews: state.content.reviews ?? initialContent.reviews,
               socialLinks: { ...initialContent.socialLinks, ...(state.content.socialLinks || {}) },
               seo: { ...initialContent.seo, ...(state.content.seo || {}) },
+              promotions: state.content.promotions ?? initialContent.promotions,
+              bookingUrl: state.content.bookingUrl ?? initialContent.bookingUrl,
             },
           };
+        } else if (!state?.content) {
+          // Se não há conteúdo, usar initialContent
+          console.log('📋 Usando conteúdo inicial (sem dados anteriores)');
+          return { state: { content: initialContent, user: { username: '', isAuthenticated: false } } };
         }
         
+        console.log('✅ Conteúdo migrado/preservado com sucesso');
         return state;
       },
     }

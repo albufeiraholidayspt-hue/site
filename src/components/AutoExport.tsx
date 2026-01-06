@@ -5,7 +5,7 @@ interface AutoExportProps {
   enabled?: boolean;
 }
 
-export function AutoExport({ enabled = false }: AutoExportProps) {
+export function AutoExport({ enabled = true }: AutoExportProps) {
   const { content } = useStore();
 
   useEffect(() => {
