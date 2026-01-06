@@ -7,11 +7,21 @@ import { Login } from './pages/admin/Login';
 import { Dashboard } from './pages/admin/Dashboard';
 import UploadDemo from './pages/UploadDemo';
 import { DataBackup } from './components/DataBackup';
+import MobileCacheBuster from './lib/mobileCacheBuster';
+import MobileRefreshButton from './components/MobileRefreshButton';
+import { useEffect } from 'react';
 
 function App() {
+  useEffect(() => {
+    // Inicializar Mobile Cache Buster
+    const cacheBuster = MobileCacheBuster.getInstance();
+    cacheBuster.initMobileOptimizations();
+  }, []);
+
   return (
     <>
       <DataBackup />
+      <MobileRefreshButton />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
