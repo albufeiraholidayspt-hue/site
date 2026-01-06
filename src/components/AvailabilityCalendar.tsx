@@ -86,33 +86,87 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
       const timeoutId = setTimeout(() => {
         setLoading(false);
         console.log('iCal fetch timeout');
-      }, 10000); // 10 second timeout
+      }, 15000); // Aumentado para 15 segundos
 
       try {
-        // Try using a CORS proxy
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(icalUrl)}`;
-        const controller = new AbortController();
-        const timeoutId2 = setTimeout(() => controller.abort(), 8000); // 8 second fetch timeout
-        
-        const response = await fetch(proxyUrl, { 
-          signal: controller.signal,
-          headers: {
-            'Accept': 'text/calendar,text/plain,*/*'
-          }
-        });
-        
-        clearTimeout(timeoutId2);
-        
-        if (response.ok) {
-          const data = await response.text();
-          if (data && data.trim()) {
-            const parsed = parseIcal(data);
-            setBookedDates(parsed);
+        // Tentar múltiplas abordagens para CORS
+        const proxies = [
+          `https://api.allorigins.win/raw?url=${encodeURIComponent(icalUrl)}`,
+          `https://corsproxy.io/?${encodeURIComponent(icalUrl)}`,
+          `https://thingproxy.freeboard.io/fetch/${encodeURIComponent(icalUrl)}`,
+          `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(icalUrl)}`
+        ];
+
+        let data = null;
+        let lastError = null;
+
+        for (const proxyUrl of proxies) {
+          try {
+            console.log('Tentando proxy:', proxyUrl.split('?')[0]);
+            const controller = new AbortController();
+            const timeoutId2 = setTimeout(() => controller.abort(), 10000); // 10 segundos por proxy
+            
+            const response = await fetch(proxyUrl, { 
+              signal: controller.signal,
+              headers: {
+                'Accept': 'text/calendar,text/plain,application/octet-stream,*/*',
+                'User-Agent': 'Mozilla/5.0 (compatible; AlbufeiraHolidays/1.0)'
+              }
+            });
+            
+            clearTimeout(timeoutId2);
+            
+            if (response.ok) {
+              const textData = await response.text();
+              if (textData && textData.trim() && (textData.includes('BEGIN:VCALENDAR') || textData.includes('DTSTART'))) {
+                data = textData;
+                console.log('iCal data obtido com sucesso via:', proxyUrl.split('?')[0]);
+                break;
+              }
+            }
+          } catch (error) {
+            console.log('Proxy falhou:', proxyUrl.split('?')[0], error instanceof Error ? error.message : 'Unknown error');
+            lastError = error;
+            continue;
           }
         }
+
+        // Se nenhum proxy funcionou, tentar direto (pode funcionar em alguns casos)
+        if (!data) {
+          try {
+            console.log('Tentando acesso direto ao iCal...');
+            const response = await fetch(icalUrl, {
+              headers: {
+                'Accept': 'text/calendar,text/plain,*/*',
+                'User-Agent': 'Mozilla/5.0 (compatible; AlbufeiraHolidays/1.0)'
+              }
+            });
+            
+            if (response.ok) {
+              const textData = await response.text();
+              if (textData && textData.trim() && (textData.includes('BEGIN:VCALENDAR') || textData.includes('DTSTART'))) {
+                data = textData;
+                console.log('iCal data obtido com sucesso via acesso direto');
+              }
+            }
+          } catch (directError) {
+            console.log('Acesso direto falhou:', directError instanceof Error ? directError.message : 'Unknown error');
+            lastError = directError;
+          }
+        }
+
+        if (data) {
+          const parsed = parseIcal(data);
+          console.log('Datas ocupadas encontradas:', parsed.length);
+          setBookedDates(parsed);
+        } else {
+          console.log('Não foi possível obter dados iCal. Usando calendário livre.');
+          // Silenciosamente falha - não mostra erro ao usuário
+          setBookedDates([]);
+        }
       } catch (error) {
-        console.log('Could not fetch iCal data:', error);
-        // Silently fail - don't show error to user
+        console.log('Erro geral ao buscar iCal:', error);
+        setBookedDates([]);
       } finally {
         clearTimeout(timeoutId);
         setLoading(false);
@@ -178,7 +232,7 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
 
   // Handle date selection
   const handleDateClick = (day: number) => {
-    console.log('Calendar: Data clicada', { day, month, year });
+    console.log('Calendar: Data clicada', { day, month, year, selectedStartDate, selectedEndDate });
     
     const clickedDate = new Date(year, month, day);
     
@@ -199,8 +253,22 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
       return;
     }
     
+    // Se já tiver seleção completa, começar nova seleção
+    if (selectedStartDate && selectedEndDate) {
+      console.log('Calendar: Iniciando nova seleção');
+      setSelectedStartDate(clickedDate);
+      setSelectedEndDate(null);
+      setMessage({ type: 'info', text: `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Selecione check-out.` });
+      setTimeout(() => setMessage(null), 3000);
+      if (onDateSelection) {
+        onDateSelection('', '', false);
+      }
+      return;
+    }
+    
     if (!selectedStartDate) {
       // Selecionar data de check-in
+      console.log('Calendar: Selecionando check-in');
       setSelectedStartDate(clickedDate);
       setSelectedEndDate(null);
       setMessage({ type: 'info', text: `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Selecione check-out.` });
@@ -209,6 +277,20 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
         onDateSelection('', '', false);
       }
     } else if (!selectedEndDate) {
+      // Verificar se está a clicar na mesma data do check-in
+      if (clickedDate.getTime() === selectedStartDate.getTime()) {
+        // Limpar seleção
+        console.log('Calendar: Limpar seleção');
+        setSelectedStartDate(null);
+        setSelectedEndDate(null);
+        setMessage({ type: 'info', text: 'Seleção limpa. Escolha novas datas.' });
+        setTimeout(() => setMessage(null), 3000);
+        if (onDateSelection) {
+          onDateSelection('', '', false);
+        }
+        return;
+      }
+      
       // Verificar estadia mínima
       const nightsDiff = Math.ceil((clickedDate.getTime() - selectedStartDate.getTime()) / (1000 * 60 * 60 * 24));
       
@@ -234,6 +316,7 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
       }
       
       // Selecionar data de check-out
+      console.log('Calendar: Selecionando check-out');
       setSelectedEndDate(clickedDate);
       setMessage({ 
         type: 'success', 
@@ -245,15 +328,6 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
         const startDateStr = selectedStartDate.toISOString().split('T')[0];
         const endDateStr = clickedDate.toISOString().split('T')[0];
         onDateSelection(startDateStr, endDateStr, true);
-      }
-    } else {
-      // Resetar seleção
-      setSelectedStartDate(clickedDate);
-      setSelectedEndDate(null);
-      setMessage({ type: 'info', text: `Nova seleção: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}.` });
-      setTimeout(() => setMessage(null), 3000);
-      if (onDateSelection) {
-        onDateSelection('', '', false);
       }
     }
   };
@@ -300,9 +374,9 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
           ${past ? 'text-gray-300 cursor-not-allowed' : ''}
           ${booked && !past ? 'bg-red-100 text-red-600 cursor-not-allowed' : ''}
           ${!booked && !past && !selected && !inRange ? 'bg-green-50 text-green-700 hover:bg-green-100' : ''}
-          ${selected ? 'bg-primary-500 text-white font-bold' : ''}
+          ${selected ? 'bg-primary-500 text-white font-bold shadow-lg transform scale-110' : ''}
           ${inRange && !selected ? 'bg-primary-100 text-primary-700' : ''}
-          ${today && !selected ? 'ring-2 ring-primary-500 font-bold' : ''}
+          ${today && !selected ? 'ring-2 ring-primary-300 font-bold bg-primary-50' : ''}
         `}
         title={clickable ? 'Clique para selecionar datas' : booked ? 'Indisponível' : 'Data passada'}
       >
@@ -388,6 +462,10 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
             <div className="w-3 h-3 rounded bg-red-100 border border-red-300" />
             <span className="text-xs text-gray-600">Ocupado</span>
           </div>
+          <div className="flex items-center gap-1.5">
+            <div className="w-3 h-3 rounded bg-primary-50 border border-primary-300" />
+            <span className="text-xs text-gray-600">Hoje</span>
+          </div>
           {minNights > 1 && (
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded bg-yellow-100 border border-yellow-300" />
@@ -395,17 +473,34 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
             </div>
           )}
           {(selectedStartDate || selectedEndDate) && (
-            <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded bg-primary-500 border border-primary-600" />
-              <span className="text-xs text-gray-600">
-                {selectedStartDate && selectedEndDate 
-                  ? `${selectedStartDate.getDate()}/${selectedStartDate.getMonth() + 1} - ${selectedEndDate.getDate()}/${selectedEndDate.getMonth() + 1}`
-                  : selectedStartDate 
-                  ? `Check-in: ${selectedStartDate.getDate()}/${selectedStartDate.getMonth() + 1}`
-                  : ''
-                }
-              </span>
-            </div>
+            <>
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded bg-primary-500 border border-primary-600 shadow-sm" />
+                <span className="text-xs text-gray-600">
+                  {selectedStartDate && selectedEndDate 
+                    ? `${selectedStartDate.getDate()}/${selectedStartDate.getMonth() + 1} - ${selectedEndDate.getDate()}/${selectedEndDate.getMonth() + 1}`
+                    : selectedStartDate 
+                    ? `Check-in: ${selectedStartDate.getDate()}/${selectedStartDate.getMonth() + 1}`
+                    : ''
+                  }
+                </span>
+              </div>
+              <button
+                onClick={() => {
+                  setSelectedStartDate(null);
+                  setSelectedEndDate(null);
+                  setMessage({ type: 'info', text: 'Seleção limpa.' });
+                  setTimeout(() => setMessage(null), 2000);
+                  if (onDateSelection) {
+                    onDateSelection('', '', false);
+                  }
+                }}
+                className="text-xs text-gray-500 hover:text-red-600 transition-colors"
+                title="Limpar seleção"
+              >
+                ✕ Limpar
+              </button>
+            </>
           )}
         </div>
       </div>
