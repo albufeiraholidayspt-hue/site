@@ -164,18 +164,8 @@ export class AggressiveMobileSolution {
       // Adicionar ao window global para acesso manual
       (window as any).aggressiveMobile = this;
       
-      // Forçar refresh se necessário
-      const lastRefresh = localStorage.getItem('mobile-last-refresh');
-      const now = Date.now();
-      
-      // Se último refresh há mais de 5 minutos, forçar novo
-      if (!lastRefresh || (now - parseInt(lastRefresh)) > 300000) {
-        console.log('🔄 Forçando refresh automático mobile');
-        localStorage.setItem('mobile-last-refresh', now.toString());
-        setTimeout(() => {
-          this.forceCompleteRefresh();
-        }, 1000);
-      }
+      // NÃO forçar refresh automático (causava problemas)
+      console.log('📱 Solução agressiva pronta, sem refresh automático');
     }
   }
 }
