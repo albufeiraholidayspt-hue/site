@@ -98,7 +98,6 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
         ];
 
         let data = null;
-        let lastError = null;
 
         for (const proxyUrl of proxies) {
           try {
@@ -126,7 +125,6 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
             }
           } catch (error) {
             console.log('Proxy falhou:', proxyUrl.split('?')[0], error instanceof Error ? error.message : 'Unknown error');
-            lastError = error;
             continue;
           }
         }
@@ -151,7 +149,6 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
             }
           } catch (directError) {
             console.log('Acesso direto falhou:', directError instanceof Error ? directError.message : 'Unknown error');
-            lastError = directError;
           }
         }
 
