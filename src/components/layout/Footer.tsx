@@ -47,7 +47,9 @@ export function Footer() {
                 <span className="text-sm">{content.contact.email}</span>
               </a>
               <div className="flex items-start gap-3 text-gray-600">
-                <MapPin className="h-5 w-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                <div className="w-8 h-8 rounded-lg bg-white border border-gray-300 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <MapPin className="h-4 w-4 text-orange-500" />
+                </div>
                 <span className="text-sm leading-relaxed">{content.contact.address}</span>
               </div>
             </div>
