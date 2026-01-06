@@ -22,7 +22,11 @@ class JSONBinAPI {
 
   async loadData(): Promise<any> {
     try {
-      const response = await fetch(this.baseURL + '/latest');
+      const response = await fetch(this.baseURL + '/latest', {
+        headers: {
+          'X-Master-Key': '$2a$10$h9piqeXbWlDcWcVqUy74AO1FMW6jJDxJWe315GZPwrEK0i6YLZtK'
+        }
+      });
       if (!response.ok) throw new Error('Failed to load data');
       const data = await response.json();
       console.log('✅ Dados carregados do JSONBin');
@@ -45,6 +49,8 @@ class JSONBinAPI {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'X-Master-Key': '$2a$10$h9piqeXbWlDcWcVqUy74AO1FMW6jJDxJWe315GZPwrEK0i6YLZtK',
+          'X-Bin-Meta': '{"name":"Albufeira Holidays","private":false}'
         },
         body: JSON.stringify({
           data: data,
