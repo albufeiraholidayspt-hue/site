@@ -26,37 +26,9 @@ export function Footer() {
               <p>Capital Social 10.000 Euros</p>
               <p>Albufeira | Algarve</p>
             </div>
-          </div>
 
-          {/* Contact */}
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-4">Contacto</h3>
-            <div className="space-y-3">
-              <a
-                href={`tel:${content.contact.phone.replace(/\s/g, '')}`}
-                className="flex items-center gap-3 text-gray-600 hover:text-orange-500 transition-colors"
-              >
-                <Phone className="h-5 w-5 text-orange-500" />
-                <span className="text-sm">{content.contact.phone}</span>
-              </a>
-              <a
-                href={`mailto:${content.contact.email}`}
-                className="flex items-center gap-3 text-gray-600 hover:text-orange-500 transition-colors"
-              >
-                <Mail className="h-5 w-5 text-orange-500" />
-                <span className="text-sm">{content.contact.email}</span>
-              </a>
-              <div className="flex items-start gap-3 text-gray-600">
-                <MapPin className="h-5 w-5 text-orange-500 flex-shrink-0 mt-0.5" />
-                <span className="text-sm leading-relaxed">{content.contact.address}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Social Links */}
-          <div>
-            <h3 className="font-semibold text-gray-900 mb-4">Redes Sociais</h3>
-            <div className="flex gap-3 mb-6">
+            {/* Social Links */}
+            <div className="flex gap-3 mb-4">
               {content.socialLinks?.facebook && (
                 <a
                   href={content.socialLinks.facebook}
@@ -113,32 +85,59 @@ export function Footer() {
                 </a>
               )}
             </div>
-            
-            {/* Livro de Reclamações */}
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-4">Contacto</h3>
+            <div className="space-y-3">
+              <a
+                href={`tel:${content.contact.phone.replace(/\s/g, '')}`}
+                className="flex items-center gap-3 text-gray-600 hover:text-orange-500 transition-colors"
+              >
+                <Phone className="h-5 w-5 text-orange-500" />
+                <span className="text-sm">{content.contact.phone}</span>
+              </a>
+              <a
+                href={`mailto:${content.contact.email}`}
+                className="flex items-center gap-3 text-gray-600 hover:text-orange-500 transition-colors"
+              >
+                <Mail className="h-5 w-5 text-orange-500" />
+                <span className="text-sm">{content.contact.email}</span>
+              </a>
+              <div className="flex items-start gap-3 text-gray-600">
+                <MapPin className="h-5 w-5 text-orange-500 flex-shrink-0 mt-0.5" />
+                <span className="text-sm leading-relaxed">{content.contact.address}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Livro de Reclamações */}
+          <div className="flex flex-col items-center justify-center">
             {content.socialLinks?.livroReclamacoes && (
               <a
                 href={content.socialLinks.livroReclamacoes}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-colors group"
+                className="flex flex-col items-center gap-2 p-3 border border-gray-200 rounded-lg hover:border-orange-300 hover:bg-orange-50 transition-colors group"
                 title="Livro de Reclamações"
               >
+                <div className="text-center">
+                  <span className="text-xs text-gray-500 block">LIVRO DE</span>
+                  <span className="text-sm font-semibold text-gray-700">RECLAMAÇÕES</span>
+                </div>
                 <img 
                   src="/livro-reclamacoes.png" 
                   alt="Livro de Reclamações" 
                   className="h-6 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
                 />
-                <div className="text-left">
-                  <span className="text-xs text-gray-500 block">LIVRO DE</span>
-                  <span className="text-sm font-semibold text-gray-700">RECLAMAÇÕES</span>
-                </div>
               </a>
             )}
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="bg-orange-500 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 mt-8 pt-6 pb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="bg-orange-500 mt-8 pt-6 pb-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white text-sm">
             © {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
           </p>
