@@ -1,15 +1,15 @@
 import { StateStorage } from 'zustand/middleware';
-import MongoDBAPI from '../lib/mongodbAPI';
+import JSONBinAPI from '../lib/jsonbinAPI';
 
-// Storage customizado com MongoDB API
-export const mongodbAPIStorage: StateStorage = {
+// Storage super simples com JSONBin
+export const jsonbinStorage: StateStorage = {
   getItem: async (name: string): Promise<string | null> => {
     try {
-      // Primeiro tentar MongoDB API
-      const mongoData = await MongoDBAPI.getInstance().loadData();
-      if (mongoData && mongoData.state) {
-        console.log('✅ Dados carregados do MongoDB API');
-        return JSON.stringify(mongoData.state);
+      // Tentar JSONBin primeiro
+      const data = await JSONBinAPI.getInstance().loadData();
+      if (data && data.state) {
+        console.log('✅ Dados carregados do JSONBin');
+        return JSON.stringify(data.state);
       }
       
       // Fallback para localStorage
@@ -27,12 +27,12 @@ export const mongodbAPIStorage: StateStorage = {
       // Salvar no localStorage (imediato)
       localStorage.setItem(name, value);
       
-      // Salvar no MongoDB via API (async)
+      // Salvar no JSONBin (async)
       const parsed = JSON.parse(value);
-      await MongoDBAPI.getInstance().syncData(parsed);
-      console.log('✅ Dados sincronizados com MongoDB API');
+      await JSONBinAPI.getInstance().syncData(parsed);
+      console.log('✅ Dados sincronizados com JSONBin');
     } catch (error) {
-      console.error('❌ Erro ao sincronizar com MongoDB:', error);
+      console.error('❌ Erro ao sincronizar com JSONBin:', error);
       // Pelo menos salvou no localStorage
     }
   },
