@@ -139,7 +139,7 @@ export function Footer() {
       </div>
       
       {/* Container Laranja */}
-      <div className="bg-orange-500 mt-8 pt-6 pb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="bg-orange-500 mt-8 pt-6 pb-6 flex flex-col md:flex-row justify-center items-center gap-4">
         <p className="text-white text-sm">
           &copy; {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
         </p>
