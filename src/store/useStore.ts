@@ -1,68 +1,8 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage, StateStorage } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import { SiteContent, User, Apartment, Promotion, SeoSettings, SocialLinks, Review } from '../types';
 import { initialContent } from '../data/initialContent';
-
-// Custom storage com backup automático
-const customStorage: StateStorage = {
-  getItem: (name: string): string | null => {
-    try {
-      const item = localStorage.getItem(name);
-      
-      // Tentar recuperar do auto-backup se o principal falhar
-      if (!item && name === 'albufeira-holidays-storage') {
-        const backup = localStorage.getItem('albufeira-holidays-auto-backup');
-        if (backup) {
-          console.log('🔄 Recuperando do auto-backup...');
-          const backupData = JSON.parse(backup);
-          return JSON.stringify({ state: backupData.content });
-        }
-      }
-      
-      return item;
-    } catch (error) {
-      console.error('Error reading from localStorage:', error);
-      return null;
-    }
-  },
-  setItem: (name: string, value: string): void => {
-    try {
-      localStorage.setItem(name, value);
-      
-      // Criar auto-backup quando for o storage principal
-      if (name === 'albufeira-holidays-storage') {
-        try {
-          const parsed = JSON.parse(value);
-          const backupData = {
-            timestamp: new Date().toISOString(),
-            content: parsed.state?.content
-          };
-          localStorage.setItem('albufeira-holidays-auto-backup', JSON.stringify(backupData));
-          console.log('💾 Auto-backup criado:', new Date().toLocaleTimeString());
-        } catch (backupError) {
-          console.warn('Could not create auto-backup:', backupError);
-        }
-      }
-    } catch (error) {
-      console.error('Error writing to localStorage:', error);
-      // Try to clear old data and retry
-      try {
-        localStorage.removeItem(name);
-        localStorage.setItem(name, value);
-      } catch (retryError) {
-        console.error('localStorage is full. Data may not persist.');
-        alert('Aviso: O armazenamento local está cheio. Algumas alterações podem não ser guardadas. Considere usar URLs de imagens externas.');
-      }
-    }
-  },
-  removeItem: (name: string): void => {
-    try {
-      localStorage.removeItem(name);
-    } catch (error) {
-      console.error('Error removing from localStorage:', error);
-    }
-  },
-};
+import { firebaseStorage } from '../lib/firebaseStorage';
 
 interface AppState {
   content: SiteContent;
@@ -208,7 +148,7 @@ export const useStore = create<AppState>()(
     {
       name: 'albufeira-holidays-storage',
       version: 15,
-      storage: createJSONStorage(() => customStorage),
+      storage: createJSONStorage(() => firebaseStorage),
       migrate: (persistedState: unknown, version: number) => {
         const state = persistedState as AppState;
         
