@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Home, Phone, Building2, MapPin } from 'lucide-react';
+import { Menu, X, Home, Phone, Building2, MapPin, Car } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { cn } from '../../lib/utils';
+
+interface NavItem {
+  name: string;
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  external?: boolean;
+}
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,7 +25,7 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navigation = [
+  const navigation: NavItem[] = [
     { name: 'Início', href: '/', icon: Home },
     ...content.apartments.map((apt) => ({
       name: apt.name,
@@ -26,6 +33,7 @@ export function Header() {
       icon: Building2,
     })),
     { name: 'O Algarve', href: '/algarve', icon: MapPin },
+    { name: 'Rent a Car', href: 'https://auto-prudente.com', icon: Car, external: true },
     { name: 'Contacto', href: '/contacto', icon: Phone },
   ];
 
@@ -51,18 +59,30 @@ export function Header() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-1">
             {navigation.map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={cn(
-                  'px-4 py-2 rounded-full text-sm font-medium transition-all duration-300',
-                  isActive(item.href)
-                    ? 'bg-primary-100 text-primary-700'
-                    : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
-                )}
-              >
-                {item.name}
-              </Link>
+              item.external ? (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 text-gray-600 hover:text-primary-600 hover:bg-primary-50"
+                >
+                  {item.name}
+                </a>
+              ) : (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={cn(
+                    'px-4 py-2 rounded-full text-sm font-medium transition-all duration-300',
+                    isActive(item.href)
+                      ? 'bg-primary-100 text-primary-700'
+                      : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
+                  )}
+                >
+                  {item.name}
+                </Link>
+              )
             ))}
             <a
               href={content.bookingUrl}
@@ -88,20 +108,34 @@ export function Header() {
           <div className="lg:hidden py-4 border-t border-gray-100 bg-white">
             <div className="flex flex-col gap-1">
               {navigation.map((item) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  onClick={() => setIsMenuOpen(false)}
-                  className={cn(
-                    'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300',
-                    isActive(item.href)
-                      ? 'bg-primary-100 text-primary-700'
-                      : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
-                  )}
-                >
-                  <item.icon className="h-5 w-5" />
-                  {item.name}
-                </Link>
+                item.external ? (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-gray-600 hover:text-primary-600 hover:bg-primary-50"
+                  >
+                    <item.icon className="h-5 w-5" />
+                    {item.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className={cn(
+                      'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300',
+                      isActive(item.href)
+                        ? 'bg-primary-100 text-primary-700'
+                        : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
+                    )}
+                  >
+                    <item.icon className="h-5 w-5" />
+                    {item.name}
+                  </Link>
+                )
               ))}
               <a
                 href={content.bookingUrl}
