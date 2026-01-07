@@ -23,6 +23,31 @@ export function Algarve() {
   useEffect(() => {
     window.scrollTo(0, 0);
     
+    // SEO - Atualizar meta tags
+    const seoTitle = algarve?.seo?.title || 'O Algarve - Praias, Clima e Atividades | Albufeira Holidays';
+    const seoDescription = algarve?.seo?.description || 'Descubra o Algarve: praias premiadas com Bandeira Azul, clima mediterrânico com 300 dias de sol, campos de golfe de classe mundial e paisagens deslumbrantes.';
+    const seoKeywords = algarve?.seo?.keywords || 'algarve, praias, bandeira azul, golfe, clima, albufeira, férias, portugal';
+    
+    document.title = seoTitle;
+    
+    // Meta description
+    let metaDescription = document.querySelector('meta[name="description"]');
+    if (!metaDescription) {
+      metaDescription = document.createElement('meta');
+      metaDescription.setAttribute('name', 'description');
+      document.head.appendChild(metaDescription);
+    }
+    metaDescription.setAttribute('content', seoDescription);
+    
+    // Meta keywords
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.setAttribute('name', 'keywords');
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.setAttribute('content', seoKeywords);
+    
     // Se não existir conteúdo do Algarve, inicializar com dados padrão
     if (!algarve) {
       console.log('⚠️ Conteúdo do Algarve não encontrado, inicializando...');

@@ -1128,6 +1128,78 @@ export function Dashboard() {
                       </div>
                     </div>
 
+                    {/* SEO da Página do Algarve */}
+                    <div className="border-t pt-6">
+                      <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <Search className="h-5 w-5" />
+                        SEO da Página
+                      </h3>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Título SEO
+                          </label>
+                          <input
+                            type="text"
+                            value={content.algarve?.seo?.title || ''}
+                            onChange={(e) => updateAlgarve({ 
+                              seo: { 
+                                ...content.algarve?.seo,
+                                title: e.target.value,
+                                description: content.algarve?.seo?.description || '',
+                                keywords: content.algarve?.seo?.keywords || ''
+                              }
+                            })}
+                            placeholder="O Algarve - Praias, Clima e Atividades | Albufeira Holidays"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                          />
+                          <p className="text-xs text-gray-500 mt-1">Recomendado: 50-60 caracteres</p>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Descrição SEO
+                          </label>
+                          <textarea
+                            value={content.algarve?.seo?.description || ''}
+                            onChange={(e) => updateAlgarve({ 
+                              seo: { 
+                                ...content.algarve?.seo,
+                                title: content.algarve?.seo?.title || '',
+                                description: e.target.value,
+                                keywords: content.algarve?.seo?.keywords || ''
+                              }
+                            })}
+                            rows={3}
+                            placeholder="Descubra o Algarve: praias premiadas com Bandeira Azul, clima mediterrânico com 300 dias de sol, campos de golfe de classe mundial e paisagens deslumbrantes."
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                          />
+                          <p className="text-xs text-gray-500 mt-1">Recomendado: 150-160 caracteres</p>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Palavras-chave
+                          </label>
+                          <input
+                            type="text"
+                            value={content.algarve?.seo?.keywords || ''}
+                            onChange={(e) => updateAlgarve({ 
+                              seo: { 
+                                ...content.algarve?.seo,
+                                title: content.algarve?.seo?.title || '',
+                                description: content.algarve?.seo?.description || '',
+                                keywords: e.target.value
+                              }
+                            })}
+                            placeholder="algarve, praias, bandeira azul, golfe, clima, albufeira, férias, portugal"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                          />
+                          <p className="text-xs text-gray-500 mt-1">Separadas por vírgula</p>
+                        </div>
+                      </div>
+                    </div>
+
                     <div className="flex justify-end">
                       <button
                         onClick={showSaved}
