@@ -36,7 +36,7 @@ const ADMIN_CREDENTIALS = {
 
 export const useStore = create<AppState>()(
   persist(
-    (set, get) => ({
+    (set, _get) => ({
       content: initialContent,
       user: {
         username: '',

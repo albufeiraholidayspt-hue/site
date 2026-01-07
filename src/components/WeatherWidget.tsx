@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Cloud, CloudRain, Sun, Wind, Droplets, Gauge, MapPin, Loader2, RefreshCw, CloudSun, Snowflake, CloudFog } from 'lucide-react';
+import { Cloud, CloudRain, Sun, Wind, Droplets, MapPin, Loader2, RefreshCw, CloudSun, Snowflake, CloudFog } from 'lucide-react';
 
 interface WeatherData {
   current: {

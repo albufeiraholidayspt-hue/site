@@ -314,7 +314,7 @@ export function ApartmentDetail() {
 
       {/* Image Lightbox */}
       <ImageLightbox
-        images={apartment.images}
+        images={apartment.images.map(img => ({ imageUrl: img }))}
         initialIndex={lightboxIndex}
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}

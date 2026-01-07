@@ -15,9 +15,6 @@ import {
   Search,
   Star,
   MapPin,
-  Image,
-  Video,
-  Edit3,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { ImageUploadImgBB } from '../../components/ImageUploadImgBB';

@@ -1,4 +1,4 @@
-import { SiteContent, AlgarveGalleryImage } from '../types';
+import { SiteContent } from '../types';
 
 export const initialContent: SiteContent = {
   hero: {
