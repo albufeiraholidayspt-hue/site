@@ -76,7 +76,7 @@ export function Header() {
                   className={cn(
                     'px-4 py-2 rounded-full text-sm font-medium transition-all duration-300',
                     isActive(item.href)
-                      ? 'bg-primary-100 text-primary-700'
+                      ? 'bg-gray-100 text-gray-700'
                       : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
                   )}
                 >
@@ -128,7 +128,7 @@ export function Header() {
                     className={cn(
                       'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300',
                       isActive(item.href)
-                        ? 'bg-primary-100 text-primary-700'
+                        ? 'bg-gray-100 text-gray-700'
                         : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
                     )}
                   >
