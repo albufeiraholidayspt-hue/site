@@ -1,4 +1,4 @@
-import { SiteContent } from '../types';
+import { SiteContent, AlgarveGalleryImage } from '../types';
 
 export const initialContent: SiteContent = {
   hero: {
@@ -27,6 +27,224 @@ export const initialContent: SiteContent = {
     address: 'Estrada de Santa Eulália, Edf. Ondas do Mar Loja F, 8200-269 Albufeira | Algarve',
     nif: '505 957 086',
     companyName: 'COSMIC POWER BUSINESS, LDA',
+  },
+  algarve: {
+    hero: {
+      title: 'O Algarve',
+      subtitle: 'O extremo mais meridional de Portugal com mais dias de sol do que a Califórnia!',
+      backgroundImage: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+    },
+    video: {
+      title: 'Descubra a Beleza do Algarve',
+      description: 'Assista ao nosso vídeo e explore as paisagens deslumbrantes que tornam o Algarve um destino único',
+      youtubeUrl: 'https://www.youtube.com/watch?v=9dQqiVTNTj4',
+      enabledInHero: true,
+      heroOrder: 0,
+    },
+    introduction: {
+      title: 'Paraíso do Sul de Portugal',
+      description: 'O Algarve é o extremo mais meridional de Portugal e tem mais dias de sol do que a Califórnia! Não é surpresa que 7 milhões de pessoas visitem a cada ano as suas praias premiadas, as suas cidades históricas, os seus campos de golfe de nível competitivo e as suas deslumbrantes paisagens. As belas praias de areia dourada são algumas das melhores do mundo. 86 receberam o muito cobiçado prémio Bandeira Azul, pelo que não é surpresa que sejam uma das principais atrações do Algarve.',
+    },
+    beaches: {
+      title: 'Praias Premiadas',
+      description: 'As praias estão totalmente preparadas para atender a todas as suas necessidades, oferecendo vistas espetaculares do litoral, bares para relaxar e restaurantes à beira-mar, espreguiçadeiras, guarda-sóis e atividades de desportos aquáticos para diversão de verão e muito mais...',
+      blueFlagCount: 86,
+      features: [
+        {
+          icon: 'Waves',
+          title: 'Areia Dourada',
+          description: 'Praias com areia fina e dourada, perfeitas para relaxar',
+        },
+        {
+          icon: 'Award',
+          title: 'Bandeira Azul',
+          description: '86 praias galardoadas com o prémio Bandeira Azul',
+        },
+        {
+          icon: 'MapPin',
+          title: 'Infraestrutura Completa',
+          description: 'Bares, restaurantes, espreguiçadeiras e desportos aquáticos',
+        },
+      ],
+    },
+    climate: {
+      title: 'O Tempo no Algarve',
+      description: 'O Algarve desfruta do melhor clima da Europa. Com apenas um curto período de chuvas (entre novembro e março) e longas horas de sol (a média mais alta da Europa). Durante os meses de verão, as temperaturas são altas, com a água do mar a rondar os 22°C.',
+      temperatureRange: '15°C - 31°C',
+      seaTemperature: 'Até 22°C',
+      rainySeason: 'Nov - Mar',
+    },
+    activities: {
+      title: 'Atividades e Paisagens',
+      description: 'O Algarve também é conhecido pelo seu contraste único entre a costa dourada e a bela paisagem rural, os seus diversos locais históricos e milhares de espécies de flora e fauna. Se ainda quiser mais do que apenas umas férias na praia, este é o destino perfeito para:',
+      items: [
+        {
+          icon: 'Camera',
+          title: 'Fotografia',
+          description: 'Paisagens deslumbrantes para capturar',
+          color: 'purple',
+        },
+        {
+          icon: 'Mountain',
+          title: 'Caminhadas',
+          description: 'Trilhos na costa e no interior',
+          color: 'pink',
+        },
+        {
+          icon: 'Bike',
+          title: 'Ciclismo',
+          description: 'Rotas cénicas por toda a região',
+          color: 'green',
+        },
+        {
+          icon: 'Sailboat',
+          title: 'Vela',
+          description: 'Águas calmas para navegar',
+          color: 'indigo',
+        },
+      ],
+    },
+    golf: {
+      title: 'Vilamoura, O Melhor Destino de Golfe',
+      description: 'O Algarve é um dos principais destinos de golfe da Europa, com campos de nível mundial que atraem jogadores de todo o globo.',
+    },
+    travel: {
+      title: 'Como Viajar Até o Algarve',
+      description: 'O Algarve é facilmente acessível através de várias opções de transporte:',
+      methods: [
+        {
+          icon: '✈️',
+          title: 'Aéreo',
+          description: 'Aeroporto de Faro com voos diretos de toda a Europa',
+        },
+        {
+          icon: '🚗',
+          title: 'Carro',
+          description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)',
+        },
+        {
+          icon: '🚌',
+          title: 'Autocarro',
+          description: 'Ligações regulares das principais cidades portuguesas',
+        },
+      ],
+    },
+    gallery: {
+      title: 'Galeria do Algarve',
+      description: 'Imagens capturadas nos locais mais bonitos da região',
+      images: [
+        {
+          id: '1',
+          title: 'Praia da Marinha',
+          description: 'Uma das praias mais emblemáticas do Algarve',
+          imageUrl: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          category: 'beach',
+          featured: true,
+          enabledInHero: true,
+          heroOrder: 1,
+          imagePosition: 'center',
+        },
+        {
+          id: '2',
+          title: 'Gruta de Benagil',
+          description: 'Maravilha natural acessível por mar',
+          imageUrl: 'https://images.unsplash.com/photo-1593696140826-c58b021acf8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          category: 'beach',
+          enabledInHero: true,
+          heroOrder: 2,
+          imagePosition: 'center',
+        },
+        {
+          id: '3',
+          title: 'Praia da Falésia',
+          description: 'Falésias vermelhas espetaculares',
+          imageUrl: 'https://images.unsplash.com/photo-1555881400-74d7aca398ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          category: 'beach',
+          enabledInHero: true,
+          heroOrder: 3,
+          imagePosition: 'center',
+        },
+        {
+          id: '4',
+          title: 'Lagos',
+          description: 'Cidade histórica com praias deslumbrantes',
+          imageUrl: 'https://images.unsplash.com/photo-1580837119756-563d608dd119?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          category: 'city',
+          enabledInHero: true,
+          heroOrder: 4,
+          imagePosition: 'center',
+        },
+        {
+          id: '5',
+          title: 'Sagres',
+          description: 'O extremo sudoeste da Europa',
+          imageUrl: 'https://images.unsplash.com/photo-1559628233-100c795629d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          category: 'city',
+          enabledInHero: true,
+          heroOrder: 5,
+          imagePosition: 'center',
+        },
+        {
+          id: '6',
+          title: 'Faro',
+          description: 'Capital do Algarve com charme histórico',
+          imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          category: 'city',
+          enabledInHero: true,
+          heroOrder: 6,
+          imagePosition: 'center',
+        },
+        {
+          id: '7',
+          title: 'Albufeira',
+          description: 'Sol, mar, história e encanto algarvio',
+          imageUrl: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          category: 'city',
+          featured: false,
+          enabledInHero: true,
+          heroOrder: 7,
+          imagePosition: 'center',
+        },
+        {
+          id: '8',
+          title: 'Ponta da Piedade',
+          description: 'Formações rochosas espetaculares e águas cristalinas',
+          imageUrl: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
+          category: 'landscape',
+          featured: true,
+          enabledInHero: true,
+          heroOrder: 8,
+          imagePosition: 'center',
+        },
+      ],
+      stats: [
+        {
+          value: '86',
+          label: 'Praias com Bandeira Azul',
+          color: 'blue',
+        },
+        {
+          value: '300+',
+          label: 'Dias de Sol por Ano',
+          color: 'cyan',
+        },
+        {
+          value: '200km',
+          label: 'Costa',
+          color: 'teal',
+        },
+        {
+          value: '7M',
+          label: 'Visitantes Anuais',
+          color: 'purple',
+        },
+      ],
+    },
+    seo: {
+      title: 'O Algarve - Paraíso do Sul de Portugal | Albufeira Holidays',
+      description: 'Descubra o Algarve, o extremo mais meridional de Portugal com mais dias de sol do que a Califórnia. Praias premiadas, cidades históricas, campos de golfe e paisagens deslumbrantes.',
+      keywords: 'algarve, portugal, praias, turismo, férias, sol, mar, golfe, cultura, historia, albufeira, lagos, sagres, faro',
+    },
   },
   promotions: [
     {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Home, Phone, Building2 } from 'lucide-react';
+import { Menu, X, Home, Phone, Building2, MapPin } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { cn } from '../../lib/utils';
 
@@ -25,6 +25,7 @@ export function Header() {
       href: `/apartamento/${apt.slug}`,
       icon: Building2,
     })),
+    { name: 'O Algarve', href: '/algarve', icon: MapPin },
     { name: 'Contacto', href: '/contacto', icon: Phone },
   ];
 

@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, ImageIcon } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, ImageIcon, MapPin } from 'lucide-react';
+
+export interface LightboxImage {
+  imageUrl: string;
+  title?: string;
+  description?: string;
+  googleMapsUrl?: string;
+}
 
 interface ImageLightboxProps {
-  images: string[];
+  images: LightboxImage[];
   initialIndex?: number;
   isOpen: boolean;
   onClose: () => void;
@@ -81,13 +88,40 @@ export function ImageLightbox({ images, initialIndex = 0, isOpen, onClose }: Ima
         </button>
       )}
 
-      {/* Main image */}
-      <div className="max-w-[90vw] max-h-[85vh] flex items-center justify-center">
+      {/* Main image with info */}
+      <div className="relative max-w-[90vw] max-h-[80vh]">
         <img
-          src={images[currentIndex]}
-          alt={`Imagem ${currentIndex + 1}`}
-          className="max-w-full max-h-[85vh] object-contain rounded-lg"
+          src={images[currentIndex].imageUrl}
+          alt={images[currentIndex].title || `Imagem ${currentIndex + 1}`}
+          className="max-w-full max-h-[80vh] object-contain rounded-lg"
         />
+        
+        {/* Title, Description and Location - Inside image */}
+        {(images[currentIndex].title || images[currentIndex].description || images[currentIndex].googleMapsUrl) && (
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-6 rounded-b-lg">
+            <div className="flex items-end justify-between">
+              <div className="text-white">
+                {images[currentIndex].title && (
+                  <h3 className="text-xl font-bold mb-1">{images[currentIndex].title}</h3>
+                )}
+                {images[currentIndex].description && (
+                  <p className="text-white/90 text-sm">{images[currentIndex].description}</p>
+                )}
+              </div>
+              {images[currentIndex].googleMapsUrl && (
+                <button
+                  onClick={() => {
+                    window.open(images[currentIndex].googleMapsUrl, '_blank');
+                  }}
+                  className="flex-shrink-0 ml-4 p-3 bg-white/20 hover:bg-white/30 rounded-full transition-colors"
+                  title="Ver no Google Maps"
+                >
+                  <MapPin className="h-5 w-5 text-white" />
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Next button */}
@@ -107,6 +141,7 @@ export function ImageLightbox({ images, initialIndex = 0, isOpen, onClose }: Ima
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
+              title={image.title || `Imagem ${index + 1}`}
               className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
                 index === currentIndex
                   ? 'border-primary-500 opacity-100'
@@ -114,8 +149,8 @@ export function ImageLightbox({ images, initialIndex = 0, isOpen, onClose }: Ima
               }`}
             >
               <img
-                src={image}
-                alt={`Miniatura ${index + 1}`}
+                src={image.imageUrl}
+                alt={image.title || `Miniatura ${index + 1}`}
                 className="w-full h-full object-cover"
               />
             </button>

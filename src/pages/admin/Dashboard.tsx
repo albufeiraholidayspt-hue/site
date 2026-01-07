@@ -14,6 +14,10 @@ import {
   Settings,
   Search,
   Star,
+  MapPin,
+  Image,
+  Video,
+  Edit3,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { ImageUploadImgBB } from '../../components/ImageUploadImgBB';
@@ -121,7 +125,7 @@ const AVAILABLE_FEATURES = [
 
 export function Dashboard() {
   const navigate = useNavigate();
-  const { user, content, updateHero, updateAbout, updateContact, updateBookingUrl, updateApartment, addPromotion, updatePromotion, deletePromotion, addReview, updateReview, deleteReview, updateSeo, updateSocialLinks, logout } = useStore();
+  const { user, content, updateHero, updateAbout, updateContact, updateBookingUrl, updateApartment, addPromotion, updatePromotion, deletePromotion, addReview, updateReview, deleteReview, updateSeo, updateSocialLinks, updateAlgarve, addAlgarveImage, updateAlgarveImage, deleteAlgarveImage, logout } = useStore();
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [expandedApartment, setExpandedApartment] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -156,6 +160,7 @@ export function Dashboard() {
 
   const sections = [
     { id: 'hero', name: 'Página Inicial', icon: Home },
+    { id: 'algarve', name: 'Página Algarve', icon: MapPin },
     { id: 'promotions', name: 'Promoções', icon: Tag },
     { id: 'reviews', name: 'Avaliações', icon: Star },
     { id: 'apartments', name: 'Apartamentos', icon: Building2 },
@@ -486,6 +491,655 @@ export function Dashboard() {
                       <Save className="h-5 w-5" />
                       Guardar Alterações
                     </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Algarve Section */}
+              {activeSection === 'algarve' && (
+                <div>
+                  <h2 className="font-display text-2xl font-bold text-gray-900 mb-6">
+                    Página do Algarve
+                  </h2>
+
+                  <div className="space-y-6">
+                    {/* Hero */}
+                    <div className="border-b pb-6">
+                      <h3 className="font-semibold text-gray-900 mb-4">Hero Section</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Título
+                          </label>
+                          <input
+                            type="text"
+                            value={content.algarve?.hero?.title || ''}
+                            onChange={(e) => updateAlgarve({ 
+                              hero: { ...content.algarve?.hero, title: e.target.value, subtitle: content.algarve?.hero?.subtitle || '', backgroundImage: content.algarve?.hero?.backgroundImage || '' }
+                            })}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Subtítulo
+                          </label>
+                          <textarea
+                            value={content.algarve?.hero?.subtitle || ''}
+                            onChange={(e) => updateAlgarve({ 
+                              hero: { ...content.algarve?.hero, subtitle: e.target.value, title: content.algarve?.hero?.title || '', backgroundImage: content.algarve?.hero?.backgroundImage || '' }
+                            })}
+                            rows={2}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Video */}
+                    <div className="border-b pb-6">
+                      <h3 className="font-semibold text-gray-900 mb-4">Vídeo YouTube</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            URL do YouTube
+                          </label>
+                          <input
+                            type="url"
+                            value={content.algarve?.video?.youtubeUrl || ''}
+                            onChange={(e) => updateAlgarve({ 
+                              video: { ...content.algarve?.video, youtubeUrl: e.target.value, title: content.algarve?.video?.title || '', description: content.algarve?.video?.description || '' }
+                            })}
+                            placeholder="https://www.youtube.com/watch?v=..."
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                          />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 pt-2 border-t">
+                          <div>
+                            <label className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                checked={content.algarve?.video?.enabledInHero !== false}
+                                onChange={(e) => updateAlgarve({ 
+                                  video: { ...content.algarve?.video, enabledInHero: e.target.checked, title: content.algarve?.video?.title || '', description: content.algarve?.video?.description || '', youtubeUrl: content.algarve?.video?.youtubeUrl || '' }
+                                })}
+                                className="w-4 h-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500"
+                              />
+                              <span className="text-sm font-medium text-gray-700">Mostrar Vídeo no Hero</span>
+                            </label>
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Ordem no Hero
+                            </label>
+                            <input
+                              type="number"
+                              value={content.algarve?.video?.heroOrder ?? 0}
+                              onChange={(e) => updateAlgarve({ 
+                                video: { ...content.algarve?.video, heroOrder: parseInt(e.target.value) || 0, title: content.algarve?.video?.title || '', description: content.algarve?.video?.description || '', youtubeUrl: content.algarve?.video?.youtubeUrl || '' }
+                              })}
+                              min={0}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Activities Section */}
+                    <div className="border-b pb-6">
+                      <h3 className="font-semibold text-gray-900 mb-4">Atividades e Paisagens</h3>
+                      <p className="text-sm text-gray-600 mb-4">
+                        Adicione imagens a cada atividade para tornar a seção mais visual.
+                      </p>
+                      <div className="space-y-4">
+                        {content.algarve?.activities?.items?.map((item, index) => (
+                          <div key={index} className="border rounded-lg p-4 bg-gray-50">
+                            <div className="flex items-start gap-4">
+                              {item.imageUrl && (
+                                <img 
+                                  src={item.imageUrl} 
+                                  alt={item.title}
+                                  className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
+                                />
+                              )}
+                              <div className="flex-1 space-y-3">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-2xl">{item.icon}</span>
+                                  <h4 className="font-semibold text-gray-900">{item.title}</h4>
+                                </div>
+                                <p className="text-sm text-gray-600">{item.description}</p>
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Imagem da Atividade
+                                  </label>
+                                  <ImageUploadImgBB
+                                    value={item.imageUrl || ''}
+                                    onChange={(url) => {
+                                      const updatedItems = [...(content.algarve?.activities?.items || [])];
+                                      updatedItems[index] = { ...updatedItems[index], imageUrl: url };
+                                      updateAlgarve({
+                                        activities: {
+                                          ...content.algarve?.activities,
+                                          title: content.algarve?.activities?.title || '',
+                                          description: content.algarve?.activities?.description || '',
+                                          items: updatedItems
+                                        }
+                                      });
+                                    }}
+                                    showUrlInput={true}
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Link do Google Maps
+                                  </label>
+                                  <input
+                                    type="url"
+                                    value={item.googleMapsUrl || ''}
+                                    onChange={(e) => {
+                                      const updatedItems = [...(content.algarve?.activities?.items || [])];
+                                      updatedItems[index] = { ...updatedItems[index], googleMapsUrl: e.target.value };
+                                      updateAlgarve({
+                                        activities: {
+                                          ...content.algarve?.activities,
+                                          title: content.algarve?.activities?.title || '',
+                                          description: content.algarve?.activities?.description || '',
+                                          items: updatedItems
+                                        }
+                                      });
+                                    }}
+                                    placeholder="https://maps.google.com/..."
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Travel Methods Section */}
+                    <div className="border-b pb-6">
+                      <h3 className="font-semibold text-gray-900 mb-4">Como Viajar - Métodos de Transporte</h3>
+                      <p className="text-sm text-gray-600 mb-4">
+                        Adicione imagens a cada método de transporte.
+                      </p>
+                      <div className="space-y-4">
+                        {content.algarve?.travel?.methods?.map((method, index) => (
+                          <div key={index} className="border rounded-lg p-4 bg-gray-50">
+                            <div className="flex items-start gap-4">
+                              {method.imageUrl && (
+                                <img 
+                                  src={method.imageUrl} 
+                                  alt={method.title}
+                                  className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
+                                />
+                              )}
+                              <div className="flex-1 space-y-3">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-2xl">{method.icon}</span>
+                                  <h4 className="font-semibold text-gray-900">{method.title}</h4>
+                                </div>
+                                <p className="text-sm text-gray-600">{method.description}</p>
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Imagem do Transporte
+                                  </label>
+                                  <ImageUploadImgBB
+                                    value={method.imageUrl || ''}
+                                    onChange={(url) => {
+                                      const updatedMethods = [...(content.algarve?.travel?.methods || [])];
+                                      updatedMethods[index] = { ...updatedMethods[index], imageUrl: url };
+                                      updateAlgarve({
+                                        travel: {
+                                          ...content.algarve?.travel,
+                                          title: content.algarve?.travel?.title || '',
+                                          description: content.algarve?.travel?.description || '',
+                                          methods: updatedMethods
+                                        }
+                                      });
+                                    }}
+                                    showUrlInput={true}
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Link do Google Maps
+                                  </label>
+                                  <input
+                                    type="url"
+                                    value={method.googleMapsUrl || ''}
+                                    onChange={(e) => {
+                                      const updatedMethods = [...(content.algarve?.travel?.methods || [])];
+                                      updatedMethods[index] = { ...updatedMethods[index], googleMapsUrl: e.target.value };
+                                      updateAlgarve({
+                                        travel: {
+                                          ...content.algarve?.travel,
+                                          title: content.algarve?.travel?.title || '',
+                                          description: content.algarve?.travel?.description || '',
+                                          methods: updatedMethods
+                                        }
+                                      });
+                                    }}
+                                    placeholder="https://maps.google.com/..."
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Beaches Section */}
+                    <div className="border-b pb-6">
+                      <h3 className="font-semibold text-gray-900 mb-4">Praias Premiadas</h3>
+                      <p className="text-sm text-gray-600 mb-4">
+                        Adicione praias com fotos e prémios (Bandeira Azul, etc).
+                      </p>
+                      <div className="space-y-4">
+                        {content.algarve?.beaches?.items?.map((beach, index) => (
+                          <div key={index} className="border rounded-lg p-4 bg-gray-50">
+                            <div className="flex items-start gap-4">
+                              {beach.imageUrl && (
+                                <img 
+                                  src={beach.imageUrl} 
+                                  alt={beach.name}
+                                  className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
+                                />
+                              )}
+                              <div className="flex-1 space-y-3">
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+                                    <input
+                                      type="text"
+                                      value={beach.name}
+                                      onChange={(e) => {
+                                        const updatedItems = [...(content.algarve?.beaches?.items || [])];
+                                        updatedItems[index] = { ...updatedItems[index], name: e.target.value };
+                                        updateAlgarve({
+                                          beaches: {
+                                            ...content.algarve?.beaches,
+                                            title: content.algarve?.beaches?.title || '',
+                                            description: content.algarve?.beaches?.description || '',
+                                            blueFlagCount: content.algarve?.beaches?.blueFlagCount || 0,
+                                            features: content.algarve?.beaches?.features || [],
+                                            items: updatedItems
+                                          }
+                                        });
+                                      }}
+                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Prémios (separados por vírgula)</label>
+                                    <input
+                                      type="text"
+                                      value={beach.awards?.join(', ') || ''}
+                                      onChange={(e) => {
+                                        const updatedItems = [...(content.algarve?.beaches?.items || [])];
+                                        updatedItems[index] = { ...updatedItems[index], awards: e.target.value.split(',').map(a => a.trim()).filter(a => a) };
+                                        updateAlgarve({
+                                          beaches: {
+                                            ...content.algarve?.beaches,
+                                            title: content.algarve?.beaches?.title || '',
+                                            description: content.algarve?.beaches?.description || '',
+                                            blueFlagCount: content.algarve?.beaches?.blueFlagCount || 0,
+                                            features: content.algarve?.beaches?.features || [],
+                                            items: updatedItems
+                                          }
+                                        });
+                                      }}
+                                      placeholder="Bandeira Azul, Top 10 Europa"
+                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                    />
+                                  </div>
+                                </div>
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-1">Descrição</label>
+                                  <input
+                                    type="text"
+                                    value={beach.description}
+                                    onChange={(e) => {
+                                      const updatedItems = [...(content.algarve?.beaches?.items || [])];
+                                      updatedItems[index] = { ...updatedItems[index], description: e.target.value };
+                                      updateAlgarve({
+                                        beaches: {
+                                          ...content.algarve?.beaches,
+                                          title: content.algarve?.beaches?.title || '',
+                                          description: content.algarve?.beaches?.description || '',
+                                          blueFlagCount: content.algarve?.beaches?.blueFlagCount || 0,
+                                          features: content.algarve?.beaches?.features || [],
+                                          items: updatedItems
+                                        }
+                                      });
+                                    }}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-1">Imagem</label>
+                                  <ImageUploadImgBB
+                                    value={beach.imageUrl || ''}
+                                    onChange={(url) => {
+                                      const updatedItems = [...(content.algarve?.beaches?.items || [])];
+                                      updatedItems[index] = { ...updatedItems[index], imageUrl: url };
+                                      updateAlgarve({
+                                        beaches: {
+                                          ...content.algarve?.beaches,
+                                          title: content.algarve?.beaches?.title || '',
+                                          description: content.algarve?.beaches?.description || '',
+                                          blueFlagCount: content.algarve?.beaches?.blueFlagCount || 0,
+                                          features: content.algarve?.beaches?.features || [],
+                                          items: updatedItems
+                                        }
+                                      });
+                                    }}
+                                    showUrlInput={true}
+                                  />
+                                </div>
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-1">Link do Google Maps</label>
+                                  <input
+                                    type="url"
+                                    value={beach.googleMapsUrl || ''}
+                                    onChange={(e) => {
+                                      const updatedItems = [...(content.algarve?.beaches?.items || [])];
+                                      updatedItems[index] = { ...updatedItems[index], googleMapsUrl: e.target.value };
+                                      updateAlgarve({
+                                        beaches: {
+                                          ...content.algarve?.beaches,
+                                          title: content.algarve?.beaches?.title || '',
+                                          description: content.algarve?.beaches?.description || '',
+                                          blueFlagCount: content.algarve?.beaches?.blueFlagCount || 0,
+                                          features: content.algarve?.beaches?.features || [],
+                                          items: updatedItems
+                                        }
+                                      });
+                                    }}
+                                    placeholder="https://maps.google.com/..."
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                  />
+                                </div>
+                              </div>
+                              <button
+                                onClick={() => {
+                                  const updatedItems = content.algarve?.beaches?.items?.filter((_, i) => i !== index) || [];
+                                  updateAlgarve({
+                                    beaches: {
+                                      ...content.algarve?.beaches,
+                                      title: content.algarve?.beaches?.title || '',
+                                      description: content.algarve?.beaches?.description || '',
+                                      blueFlagCount: content.algarve?.beaches?.blueFlagCount || 0,
+                                      features: content.algarve?.beaches?.features || [],
+                                      items: updatedItems
+                                    }
+                                  });
+                                }}
+                                className="text-red-500 hover:text-red-700"
+                                title="Remover praia"
+                              >
+                                <Trash2 className="h-5 w-5" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                        <button
+                          onClick={() => {
+                            const newBeach = {
+                              name: 'Nova Praia',
+                              description: 'Descrição da praia',
+                              imageUrl: '',
+                              googleMapsUrl: '',
+                              awards: []
+                            };
+                            updateAlgarve({
+                              beaches: {
+                                ...content.algarve?.beaches,
+                                title: content.algarve?.beaches?.title || 'Praias',
+                                description: content.algarve?.beaches?.description || '',
+                                blueFlagCount: content.algarve?.beaches?.blueFlagCount || 0,
+                                features: content.algarve?.beaches?.features || [],
+                                items: [...(content.algarve?.beaches?.items || []), newBeach]
+                              }
+                            });
+                          }}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-primary-500 hover:text-primary-600 transition-colors"
+                        >
+                          <Plus className="h-5 w-5" />
+                          Adicionar Nova Praia
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Golf Section */}
+                    <div className="border-b pb-6">
+                      <h3 className="font-semibold text-gray-900 mb-4">Seção de Golfe</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Título
+                          </label>
+                          <input
+                            type="text"
+                            value={content.algarve?.golf?.title || ''}
+                            onChange={(e) => updateAlgarve({ 
+                              golf: { ...content.algarve?.golf, title: e.target.value, description: content.algarve?.golf?.description || '' }
+                            })}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Descrição
+                          </label>
+                          <textarea
+                            value={content.algarve?.golf?.description || ''}
+                            onChange={(e) => updateAlgarve({ 
+                              golf: { ...content.algarve?.golf, description: e.target.value, title: content.algarve?.golf?.title || '' }
+                            })}
+                            rows={3}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Imagem (opcional)
+                          </label>
+                          <ImageUploadImgBB
+                            value={content.algarve?.golf?.imageUrl || ''}
+                            onChange={(url) => updateAlgarve({ 
+                              golf: { ...content.algarve?.golf, imageUrl: url, title: content.algarve?.golf?.title || '', description: content.algarve?.golf?.description || '' }
+                            })}
+                            showUrlInput={true}
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Posição da Imagem
+                          </label>
+                          <select
+                            value={content.algarve?.golf?.imagePosition || 'right'}
+                            onChange={(e) => updateAlgarve({ 
+                              golf: { ...content.algarve?.golf, imagePosition: e.target.value, title: content.algarve?.golf?.title || '', description: content.algarve?.golf?.description || '' }
+                            })}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                            title="Posição da imagem"
+                          >
+                            <option value="left">Esquerda</option>
+                            <option value="right">Direita</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Link do Google Maps
+                          </label>
+                          <input
+                            type="url"
+                            value={content.algarve?.golf?.googleMapsUrl || ''}
+                            onChange={(e) => updateAlgarve({ 
+                              golf: { ...content.algarve?.golf, googleMapsUrl: e.target.value, title: content.algarve?.golf?.title || '', description: content.algarve?.golf?.description || '' }
+                            })}
+                            placeholder="https://maps.google.com/..."
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Gallery Images */}
+                    <div className="border-b pb-6">
+                      <h3 className="font-semibold text-gray-900 mb-4">Galeria de Imagens & Hero Slideshow</h3>
+                      <p className="text-sm text-gray-600 mb-4">
+                        Configure quais imagens aparecem no slideshow do hero e ajuste a posição de cada imagem.
+                      </p>
+                      <div className="space-y-4">
+                        {content.algarve?.gallery?.images?.map((image) => (
+                          <div key={image.id} className="border rounded-lg p-4 bg-gray-50">
+                            <div className="flex items-start gap-4">
+                              <img 
+                                src={image.imageUrl} 
+                                alt={image.title}
+                                className="w-24 h-24 object-cover rounded-lg"
+                              />
+                              <div className="flex-1 space-y-3">
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                      Título
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={image.title}
+                                      onChange={(e) => updateAlgarveImage(image.id, { title: e.target.value })}
+                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                      Descrição
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={image.description}
+                                      onChange={(e) => updateAlgarveImage(image.id, { description: e.target.value })}
+                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                    />
+                                  </div>
+                                </div>
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    URL da Imagem
+                                  </label>
+                                  <ImageUploadImgBB
+                                    value={image.imageUrl}
+                                    onChange={(url) => updateAlgarveImage(image.id, { imageUrl: url })}
+                                    showUrlInput={true}
+                                  />
+                                </div>
+                                <div className="grid grid-cols-3 gap-3 pt-2 border-t">
+                                  <div>
+                                    <label className="flex items-center gap-2">
+                                      <input
+                                        type="checkbox"
+                                        checked={image.enabledInHero !== false}
+                                        onChange={(e) => updateAlgarveImage(image.id, { enabledInHero: e.target.checked })}
+                                        className="w-4 h-4 text-primary-500 border-gray-300 rounded focus:ring-primary-500"
+                                      />
+                                      <span className="text-sm font-medium text-gray-700">Mostrar no Hero</span>
+                                    </label>
+                                  </div>
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                      Ordem no Hero
+                                    </label>
+                                    <input
+                                      type="number"
+                                      value={image.heroOrder ?? 999}
+                                      onChange={(e) => updateAlgarveImage(image.id, { heroOrder: parseInt(e.target.value) || 0 })}
+                                      min={0}
+                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                      Posição da Imagem
+                                    </label>
+                                    <select
+                                      value={image.imagePosition || 'center'}
+                                      onChange={(e) => updateAlgarveImage(image.id, { imagePosition: e.target.value })}
+                                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                      title="Posição da imagem"
+                                    >
+                                      <option value="center">Centro</option>
+                                      <option value="top">Topo</option>
+                                      <option value="bottom">Baixo</option>
+                                      <option value="left">Esquerda</option>
+                                      <option value="right">Direita</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                {/* Link do Google Maps */}
+                                <div className="pt-2 border-t">
+                                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Link do Google Maps
+                                  </label>
+                                  <input
+                                    type="url"
+                                    value={image.googleMapsUrl || ''}
+                                    onChange={(e) => updateAlgarveImage(image.id, { googleMapsUrl: e.target.value })}
+                                    placeholder="https://maps.google.com/..."
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                  />
+                                </div>
+                              </div>
+                              <button
+                                onClick={() => {
+                                  if (confirm('Tem certeza que deseja remover esta imagem?')) {
+                                    deleteAlgarveImage(image.id);
+                                  }
+                                }}
+                                className="text-red-500 hover:text-red-700"
+                                title="Remover imagem"
+                              >
+                                <Trash2 className="h-5 w-5" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                        
+                        <button
+                          onClick={() => {
+                            const newImage = {
+                              id: Date.now().toString(),
+                              title: 'Nova Imagem',
+                              description: 'Descrição da imagem',
+                              imageUrl: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800',
+                              category: 'beach' as const,
+                            };
+                            addAlgarveImage(newImage);
+                          }}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-primary-500 hover:text-primary-600 transition-colors"
+                        >
+                          <Plus className="h-5 w-5" />
+                          Adicionar Nova Imagem
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end">
+                      <button
+                        onClick={showSaved}
+                        className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                      >
+                        <Save className="h-5 w-5" />
+                        Guardar Alterações
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { SiteContent, User, Apartment, Promotion, SeoSettings, SocialLinks, Review } from '../types';
+import { SiteContent, User, Apartment, Promotion, SeoSettings, SocialLinks, Review, AlgarveContent, AlgarveGalleryImage } from '../types';
 import { initialContent } from '../data/initialContent';
 import { supabaseStorage } from '../lib/supabaseStorage';
 
@@ -20,6 +20,10 @@ interface AppState {
   deleteReview: (id: string) => void;
   updateSeo: (seo: Partial<SeoSettings>) => void;
   updateSocialLinks: (links: Partial<SocialLinks>) => void;
+  updateAlgarve: (algarve: Partial<AlgarveContent>) => void;
+  addAlgarveImage: (image: AlgarveGalleryImage) => void;
+  updateAlgarveImage: (id: string, data: Partial<AlgarveGalleryImage>) => void;
+  deleteAlgarveImage: (id: string) => void;
   login: (username: string, password: string) => boolean;
   logout: () => void;
   resetContent: () => void;
@@ -32,7 +36,7 @@ const ADMIN_CREDENTIALS = {
 
 export const useStore = create<AppState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       content: initialContent,
       user: {
         username: '',
@@ -135,6 +139,60 @@ export const useStore = create<AppState>()(
             socialLinks: { ...initialContent.socialLinks!, ...(state.content.socialLinks || {}), ...links } as typeof initialContent.socialLinks,
           },
         })),
+      updateAlgarve: (algarve) =>
+        set((state) => ({
+          content: {
+            ...state.content,
+            algarve: { ...(state.content.algarve || {}), ...algarve },
+          },
+        })),
+      addAlgarveImage: (image) =>
+        set((state) => ({
+          content: {
+            ...state.content,
+            algarve: {
+              ...state.content.algarve,
+              gallery: {
+                title: state.content.algarve?.gallery?.title || 'Galeria do Algarve',
+                description: state.content.algarve?.gallery?.description || 'Imagens capturadas nos locais mais bonitos da região',
+                stats: state.content.algarve?.gallery?.stats || [],
+                images: [...(state.content.algarve?.gallery?.images || []), image],
+              },
+            },
+          },
+        })),
+      updateAlgarveImage: (id, data) =>
+        set((state) => ({
+          content: {
+            ...state.content,
+            algarve: {
+              ...state.content.algarve,
+              gallery: {
+                title: state.content.algarve?.gallery?.title || 'Galeria do Algarve',
+                description: state.content.algarve?.gallery?.description || 'Imagens capturadas nos locais mais bonitos da região',
+                stats: state.content.algarve?.gallery?.stats || [],
+                images: (state.content.algarve?.gallery?.images || []).map((img) =>
+                  img.id === id ? { ...img, ...data } : img
+                ),
+              },
+            },
+          },
+        })),
+      deleteAlgarveImage: (id) =>
+        set((state) => ({
+          content: {
+            ...state.content,
+            algarve: {
+              ...state.content.algarve,
+              gallery: {
+                title: state.content.algarve?.gallery?.title || 'Galeria do Algarve',
+                description: state.content.algarve?.gallery?.description || 'Imagens capturadas nos locais mais bonitos da região',
+                stats: state.content.algarve?.gallery?.stats || [],
+                images: (state.content.algarve?.gallery?.images || []).filter((img) => img.id !== id),
+              },
+            },
+          },
+        })),
       login: (username, password) => {
         if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
           set({ user: { username, isAuthenticated: true } });
@@ -147,20 +205,25 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'albufeira-holidays-storage',
-      version: 15,
+      version: 16,
       storage: createJSONStorage(() => supabaseStorage),
       migrate: (persistedState: unknown, version: number) => {
-        // PROTEÇÃO TOTAL: Nunca sobrepôr dados do usuário
-        console.log(' PROTEGENDO dados do usuário - versão:', version);
+        console.log('🔄 Migrando para versão:', version);
         
-        // Se já existir conteúdo, PRESERVAR 100%
         const state = persistedState as AppState;
-        if (state?.content?.apartments && state.content.apartments.length > 0) {
-          console.log(' Dados do usuário encontrados, PRESERVANDO tudo!');
-          return persistedState; // NÃO MUDAR NADA
+        
+        // Se não existir conteúdo do Algarve, adicionar
+        if (state?.content && !state.content.algarve) {
+          console.log('✨ Adicionando conteúdo do Algarve');
+          return {
+            ...state,
+            content: {
+              ...state.content,
+              algarve: initialContent.algarve,
+            },
+          };
         }
         
-        console.log(' Sem dados de usuário, mantendo estado atual');
         return persistedState;
       },
     }
