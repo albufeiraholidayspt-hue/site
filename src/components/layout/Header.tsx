@@ -33,7 +33,7 @@ export function Header() {
       icon: Building2,
     })),
     { name: 'O Algarve', href: '/algarve', icon: MapPin },
-    { name: 'Rent a Car', href: 'https://auto-prudente.com', icon: Car, external: true },
+    { name: 'Rent a Car', href: '/rent-a-car', icon: Car },
     { name: 'Contacto', href: '/contacto', icon: Phone },
   ];
 

@@ -4,6 +4,7 @@ import { Home } from './pages/Home';
 import { ApartmentDetail } from './pages/ApartmentDetail';
 import { Contact } from './pages/Contact';
 import { Algarve } from './pages/Algarve';
+import { RentACar } from './pages/RentACar';
 import { Login } from './pages/admin/Login';
 import { Dashboard } from './pages/admin/Dashboard';
 import UploadDemo from './pages/UploadDemo';
@@ -50,6 +51,7 @@ function App() {
           <Route path="apartamento/:slug" element={<ApartmentDetail />} />
           <Route path="contacto" element={<Contact />} />
           <Route path="algarve" element={<Algarve />} />
+          <Route path="rent-a-car" element={<RentACar />} />
           <Route path="upload-demo" element={<UploadDemo />} />
         </Route>
         <Route path="/admin" element={<Login />} />
