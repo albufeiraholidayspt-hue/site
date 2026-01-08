@@ -4,6 +4,7 @@ import { SiteContent, User, Apartment, Promotion, SeoSettings, PartialSeoSetting
 import { initialContent } from '../data/initialContent';
 import { supabaseStorage } from '../lib/supabaseStorage';
 import { translationService } from '../services/translationService';
+import { autoTranslateFields, fieldChanged } from '../hooks/useAutoTranslate';
 
 interface AppState {
   content: SiteContent;
@@ -13,6 +14,7 @@ interface AppState {
   updateContact: (contact: Partial<SiteContent['contact']>) => void;
   updateBookingUrl: (url: string) => void;
   updateApartment: (id: string, data: Partial<Apartment>) => void;
+  updateApartmentWithTranslation: (id: string, data: Partial<Apartment>) => Promise<void>;
   addPromotion: (promotion: Promotion) => void;
   updatePromotion: (id: string, data: Partial<Promotion>) => void;
   deletePromotion: (id: string) => void;
@@ -81,6 +83,50 @@ export const useStore = create<AppState>()(
             ),
           },
         })),
+      updateApartmentWithTranslation: async (id, data) => {
+        const state = _get();
+        const currentApartment = state.content.apartments.find(apt => apt.id === id);
+        
+        if (!currentApartment) return;
+
+        // Identificar campos de texto que foram alterados
+        const fieldsToTranslate: Record<string, string> = {};
+        
+        if (data.name && fieldChanged(currentApartment.name, data.name)) {
+          fieldsToTranslate.name = data.name;
+        }
+        if (data.tagline && fieldChanged(currentApartment.tagline, data.tagline)) {
+          fieldsToTranslate.tagline = data.tagline;
+        }
+        if (data.description && fieldChanged(currentApartment.description, data.description)) {
+          fieldsToTranslate.description = data.description;
+        }
+        if (data.additionalInfo && fieldChanged(currentApartment.additionalInfo, data.additionalInfo)) {
+          fieldsToTranslate.additionalInfo = data.additionalInfo;
+        }
+
+        // Traduzir campos alterados
+        let translations = {};
+        if (Object.keys(fieldsToTranslate).length > 0) {
+          try {
+            console.log('🌐 A traduzir campos automaticamente:', Object.keys(fieldsToTranslate));
+            translations = await autoTranslateFields(fieldsToTranslate);
+            console.log('✅ Traduções concluídas:', translations);
+          } catch (error) {
+            console.error('❌ Erro na tradução automática:', error);
+          }
+        }
+
+        // Atualizar apartamento com dados originais e traduções
+        set((state) => ({
+          content: {
+            ...state.content,
+            apartments: state.content.apartments.map((apt) =>
+              apt.id === id ? { ...apt, ...data, ...translations } : apt
+            ),
+          },
+        }));
+      },
       addPromotion: (promotion) =>
         set((state) => ({
           content: {

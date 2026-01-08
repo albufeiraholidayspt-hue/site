@@ -1,10 +1,22 @@
 export interface Apartment {
   id: string;
   name: string;
+  name_en?: string;
+  name_fr?: string;
+  name_de?: string;
   slug: string;
   tagline: string;
+  tagline_en?: string;
+  tagline_fr?: string;
+  tagline_de?: string;
   description: string;
+  description_en?: string;
+  description_fr?: string;
+  description_de?: string;
   additionalInfo?: string;
+  additionalInfo_en?: string;
+  additionalInfo_fr?: string;
+  additionalInfo_de?: string;
   capacity: number;
   minNights: number;
   features: string[];

@@ -15,6 +15,9 @@ const countryLanguageMap: Record<string, string> = {
   'AU': 'en', // Australia
   'IE': 'en', // Ireland
   'NZ': 'en', // New Zealand
+  'ES': 'en', // Spain - default to English
+  'MX': 'en', // Mexico - default to English
+  'AR': 'en', // Argentina - default to English
   'FR': 'fr', // France
   'BE': 'fr', // Belgium (French-speaking)
   'CH': 'fr', // Switzerland (French-speaking)

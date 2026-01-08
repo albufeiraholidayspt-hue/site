@@ -102,6 +102,11 @@ export function ApartmentDetail() {
                           'vistapanoramicasobreomar': 'Panoramic Sea View',
                           'vistapanormicasobreomar': 'Panoramic Sea View',
                           'elegânciaeconfortopremium': 'Elegance and Premium Comfort',
+                          'eleganciaeconfortopremium': 'Elegance and Premium Comfort',
+                          'elegnciaeconfortopremium': 'Elegance and Premium Comfort',
+                          'espacoamploemdoispisos': 'Spacious Space on Two Floors',
+                          'espaoamploemdoispisos': 'Spacious Space on Two Floors',
+                          'confortomodernofuncional': 'Modern and Functional Comfort',
                           'confortomodernoefuncional': 'Modern and Functional Comfort'
                         };
                         return translations[taglineKey] || translations['vistapanorâmicasobreomar'] || apartment.tagline;
@@ -111,16 +116,26 @@ export function ApartmentDetail() {
                           'vistapanoramicasobreomar': 'Vue Panoramique sur la Mer',
                           'vistapanormicasobreomar': 'Vue Panoramique sur la Mer',
                           'elegânciaeconfortopremium': 'Élégance et Confort Premium',
+                          'eleganciaeconfortopremium': 'Élégance et Confort Premium',
+                          'elegnciaeconfortopremium': 'Élégance et Confort Premium',
+                          'espacoamploemdoispisos': 'Espace Spacieux sur Deux Étages',
+                          'espaoamploemdoispisos': 'Espace Spacieux sur Deux Étages',
+                          'confortomodernofuncional': 'Confort Moderne et Fonctionnel',
                           'confortomodernoefuncional': 'Confort Moderne et Fonctionnel'
                         };
                         return translations[taglineKey] || translations['vistapanorâmicasobreomar'] || apartment.tagline;
                       } else if (currentLang === 'de') {
                         const translations: Record<string, string> = {
-                          'vistapanorâmicasobreomar': 'Panoramische Meeresansicht',
-                          'vistapanoramicasobreomar': 'Panoramische Meeresansicht',
-                          'vistapanormicasobreomar': 'Panoramische Meeresansicht',
+                          'vistapanorâmicasobreomar': 'Panoramablick auf das Meer',
+                          'vistapanoramicasobreomar': 'Panoramablick auf das Meer',
+                          'vistapanormicasobreomar': 'Panoramablick auf das Meer',
                           'elegânciaeconfortopremium': 'Eleganz und Premium Komfort',
-                          'confortomodernoefuncional': 'Modern und Funktionaler Komfort'
+                          'eleganciaeconfortopremium': 'Eleganz und Premium Komfort',
+                          'elegnciaeconfortopremium': 'Eleganz und Premium Komfort',
+                          'espacoamploemdoispisos': 'Geräumiger Raum auf Zwei Etagen',
+                          'espaoamploemdoispisos': 'Geräumiger Raum auf Zwei Etagen',
+                          'confortomodernofuncional': 'Moderner und Funktionaler Komfort',
+                          'confortomodernoefuncional': 'Moderner und Funktionaler Komfort'
                         };
                         return translations[taglineKey] || translations['vistapanorâmicasobreomar'] || apartment.tagline;
                       }
@@ -152,10 +167,27 @@ export function ApartmentDetail() {
                     const currentLang = currentLanguage || 'pt';
                     const description = apartment.description;
                     
-                    // Tradução automática para descrições longas
+                    // Usar traduções guardadas no apartamento se disponíveis
+                    if (currentLang === 'en' && apartment.description_en) {
+                      return apartment.description_en;
+                    }
+                    if (currentLang === 'fr' && apartment.description_fr) {
+                      return apartment.description_fr;
+                    }
+                    if (currentLang === 'de' && apartment.description_de) {
+                      return apartment.description_de;
+                    }
+                    
+                    // Fallback para traduções hardcoded
                     if (currentLang === 'en') {
                       // Tradução para inglês
-                      if (description.includes('Apartamento T1 no 6º andar com vista mar espetacular')) {
+                      if (description.includes('T1+1 with 90m') || description.includes('Espaço, conforto e elegância')) {
+                        return 'T1+1 with 90m²\n\nSpace, comfort and elegance just minutes from the beach, in the heart of Albufeira.\n\nThis magnificent apartment offers the perfect setting for couple or family holidays. With a large terrace accessible from the dining room, you can enjoy outdoor meals with an impressive view and moments of pure relaxation.\n\nThe social area consists of an open space living and dining room, decorated with class, equipped with LCD TV, air conditioning and a comfortable chaise longue.\n\nThe suite has a queen size bed, wardrobe, private bathroom with shower base, air conditioning and direct access to the terrace.\n\nThe secondary bedroom has a double bed and storage space, being ideal for the little ones.\n\nThe kitchen is fully equipped with all utensils and small appliances that ensure a practical and comfortable stay.\n\nA SPACIOUS RETREAT FOR UNFORGETTABLE HOLIDAYS... FEEL AT HOME, WITH THE COMFORT OF ALWAYS!';
+                      } else if (description.includes('Em pleno coração de Albufeira')) {
+                        return 'In the heart of Albufeira, just steps from the beach and all the local entertainment, this apartment was designed for those seeking tranquility without giving up comfort and elegance. Located in a modern building with 3 elevators, the space offers a cozy atmosphere, with a private balcony, abundant natural light and careful decoration, where every detail invites relaxation. Fully furnished and equipped, it is ideal for couple holidays, family or even extended stays. At the end of the day, enjoy the sea breeze and a glass of wine while the sky is painted with the colors of the sunset. ALLOW YOURSELF... RELAX AND FEEL AT HOME!';
+                      } else if (description.includes('localização privilegiada') || description.includes('praia dos pescadores')) {
+                        return 'With a privileged location, in front of the fishermen\'s beach in the center of Albufeira, a 6-story development that offers unparalleled privacy and an impressive beach and city view. It also stands out for its 2 panoramic elevators, panoramic pool on the 3rd floor and surrounding space. Private parking and interior elevator.\n\nOur apartments are fully furnished and equipped, with elegant and charming decoration, designed for your comfort...\n\nYou can also be enchanted in the late afternoon with an impressive sunset.\n\nALLOW YOURSELF... RELAX AND FEEL AT HOME!';
+                      } else if (description.includes('Apartamento T1 no 6º andar com vista mar espetacular')) {
                         return 'T1 apartment on the 6th floor with spectacular sea view. A cozy and stunning space to enjoy your holidays in peace. Private parking, automated gate and panoramic interior elevator.';
                       } else if (description.includes('O apartamento Prestige oferece um ambiente sofisticado com acabamentos de alta qualidade')) {
                         return 'The Prestige apartment offers a sophisticated environment with high-quality finishes. Ideal for families or groups looking for a luxury experience in the Algarve.';
@@ -167,7 +199,13 @@ export function ApartmentDetail() {
                       return description; // Fallback
                     } else if (currentLang === 'fr') {
                       // Tradução para francês
-                      if (description.includes('Apartamento T1 no 6º andar com vista mar espetacular')) {
+                      if (description.includes('T1+1 with 90m') || description.includes('Espaço, conforto e elegância')) {
+                        return 'T1+1 avec 90m²\n\nEspace, confort et élégance à quelques minutes de la plage, au cœur d\'Albufeira.\n\nCe magnifique appartement offre le cadre parfait pour des vacances en couple ou en famille. Avec une grande terrasse accessible depuis la salle à manger, vous pourrez profiter de repas en plein air avec une vue impressionnante et de moments de pure détente.\n\nL\'espace social se compose d\'un salon et salle à manger en open space, décoré avec classe, équipé d\'une TV LCD, climatisation et d\'une confortable chaise longue.\n\nLa suite dispose d\'un lit queen size, d\'une armoire, d\'une salle de bain privée avec douche, climatisation et accès direct à la terrasse.\n\nLa chambre secondaire dispose d\'un lit double et d\'un espace de rangement, idéal pour les plus jeunes.\n\nLa cuisine est entièrement équipée avec tous les ustensiles et petits électroménagers qui garantissent un séjour pratique et confortable.\n\nUN REFUGE SPACIEUX POUR DES VACANCES INOUBLIABLES... SENTEZ-VOUS CHEZ VOUS, AVEC LE CONFORT DE TOUJOURS!';
+                      } else if (description.includes('Em pleno coração de Albufeira')) {
+                        return 'Au cœur d\'Albufeira, à quelques pas de la plage et de toute l\'animation locale, cet appartement a été conçu pour ceux qui recherchent la tranquillité sans renoncer au confort et à l\'élégance. Situé dans un bâtiment moderne avec 3 ascenseurs, l\'espace offre une atmosphère chaleureuse, avec un balcon privé, une lumière naturelle abondante et une décoration soignée, où chaque détail invite à la détente. Entièrement meublé et équipé, il est idéal pour des vacances en couple, en famille ou même pour des séjours prolongés. En fin de journée, profitez de la brise marine et d\'un verre de vin tandis que le ciel se pare des couleurs du coucher de soleil. PERMETTEZ-VOUS... DÉTENDEZ-VOUS ET SENTEZ-VOUS CHEZ VOUS!';
+                      } else if (description.includes('localização privilegiada') || description.includes('praia dos pescadores')) {
+                        return 'Avec un emplacement privilégié, face à la plage des pêcheurs au centre d\'Albufeira, un immeuble de 6 étages qui offre une intimité incomparable et une vue imprenable sur la plage et la ville. Il se distingue également par ses 2 ascenseurs panoramiques, sa piscine panoramique au 3ème étage et son espace environnant. Parking privé et ascenseur intérieur.\n\nNos appartements sont entièrement meublés et équipés, avec une décoration élégante et charmante, pensée pour votre confort...\n\nVous pouvez également vous laisser enchanter en fin d\'après-midi par un coucher de soleil impressionnant.\n\nPERMETTEZ-VOUS... DÉTENDEZ-VOUS ET SENTEZ-VOUS CHEZ VOUS!';
+                      } else if (description.includes('Apartamento T1 no 6º andar com vista mar espetacular')) {
                         return 'Appartement T1 au 6ème étage avec vue mer spectaculaire. Un espace confortable et magnifique pour profiter de vos vacances en toute tranquillité. Parking privé, portail automatisé et ascenseur panoramique intérieur.';
                       } else if (description.includes('O apartamento Prestige oferece um ambiente sofisticado com acabamentos de alta qualidade')) {
                         return 'L\'appartement Prestige offre un environnement sophistiqué avec des finitions de haute qualité. Idéal pour les familles ou les groupes cherchant une expérience de luxe dans l\'Algarve.';
@@ -179,7 +217,13 @@ export function ApartmentDetail() {
                       return description; // Fallback
                     } else if (currentLang === 'de') {
                       // Tradução para alemão
-                      if (description.includes('Apartamento T1 no 6º andar com vista mar espetacular')) {
+                      if (description.includes('T1+1 with 90m') || description.includes('Espaço, conforto e elegância')) {
+                        return 'T1+1 mit 90m²\n\nRaum, Komfort und Eleganz nur wenige Minuten vom Strand entfernt, im Herzen von Albufeira.\n\nDiese wunderschöne Wohnung bietet die perfekte Umgebung für Paar- oder Familienurlaub. Mit einer großen Terrasse, die vom Esszimmer aus zugänglich ist, können Sie Mahlzeiten im Freien mit einer beeindruckenden Aussicht und Momente purer Entspannung genießen.\n\nDer Wohnbereich besteht aus einem offenen Wohn- und Esszimmer, mit Klasse dekoriert, ausgestattet mit LCD-TV, Klimaanlage und einer bequemen Chaiselongue.\n\nDie Suite verfügt über ein Queen-Size-Bett, Kleiderschrank, privates Badezimmer mit Dusche, Klimaanlage und direkten Zugang zur Terrasse.\n\nDas zweite Schlafzimmer verfügt über ein Doppelbett und Stauraum, ideal für die Kleinen.\n\nDie Küche ist komplett ausgestattet mit allen Utensilien und kleinen Elektrogeräten, die einen praktischen und komfortablen Aufenthalt garantieren.\n\nEIN GERÄUMIGER RÜCKZUGSORT FÜR UNVERGESSLICHE FERIEN... FÜHLEN SIE SICH WIE ZU HAUSE, MIT DEM KOMFORT VON IMMER!';
+                      } else if (description.includes('Em pleno coração de Albufeira')) {
+                        return 'Im Herzen von Albufeira, nur wenige Schritte vom Strand und dem lokalen Nachtleben entfernt, wurde diese Wohnung für diejenigen konzipiert, die Ruhe suchen, ohne auf Komfort und Eleganz zu verzichten. In einem modernen Gebäude mit 3 Aufzügen gelegen, bietet der Raum eine gemütliche Atmosphäre mit privatem Balkon, reichlich natürlichem Licht und sorgfältiger Dekoration, wo jedes Detail zur Entspannung einlädt. Komplett möbliert und ausgestattet, ist es ideal für Paarurlaub, Familie oder sogar längere Aufenthalte. Am Ende des Tages genießen Sie die Meeresbrise und ein Glas Wein, während der Himmel sich mit den Farben des Sonnenuntergangs färbt. GÖNNEN SIE SICH... ENTSPANNEN SIE SICH UND FÜHLEN SIE SICH WIE ZU HAUSE!';
+                      } else if (description.includes('localização privilegiada') || description.includes('praia dos pescadores')) {
+                        return 'Mit privilegierter Lage, gegenüber dem Fischerstrand im Zentrum von Albufeira, bietet dieses 6-stöckige Gebäude unvergleichliche Privatsphäre und einen beeindruckenden Blick auf Strand und Stadt. Es zeichnet sich auch durch seine 2 Panorama-Aufzüge, den Panorama-Pool im 3. Stock und den umliegenden Bereich aus. Privater Parkplatz und Innenaufzug.\n\nUnsere Apartments sind komplett möbliert und ausgestattet, mit eleganter und charmanter Dekoration, die für Ihren Komfort konzipiert wurde...\n\nSie können sich auch am späten Nachmittag von einem beeindruckenden Sonnenuntergang verzaubern lassen.\n\nGÖNNEN SIE SICH... ENTSPANNEN SIE SICH UND FÜHLEN SIE SICH WIE ZU HAUSE!';
+                      } else if (description.includes('Apartamento T1 no 6º andar com vista mar espetacular')) {
                         return 'T1 Wohnung im 6. Stock mit spektakulärem Meerblick. Ein gemütlicher und beeindruckender Raum, um Ihre Ferien in Ruhe zu genießen. Privater Parkplatz, automatisches Tor und Panorama-Innenaufzug.';
                       } else if (description.includes('O apartamento Prestige oferece um ambiente sofisticado com acabamentos de alta qualidade')) {
                         return 'Die Prestige Wohnung bietet eine sophisticated Umgebung mit hochwertigen Ausstattungen. Ideal für Familien oder Gruppen, die eine Luxuserfahrung in der Algarve suchen.';
@@ -231,131 +275,368 @@ export function ApartmentDetail() {
                       // Tradução automática para features - EXPANDIDA
                       if (currentLang === 'en') {
                         const translations: Record<string, string> = {
+                          // Views
+                          'vistamar': 'Sea View',
+                          'vistamarparcial': 'Partial Sea View',
+                          'vistacidade': 'City View',
+                          'vistapiscina': 'Pool View',
+                          'vistajardim': 'Garden View',
+                          'vistamontanha': 'Mountain View',
+                          // Outdoor
+                          'varanda': 'Balcony',
+                          'terraco': 'Terrace',
+                          'terrao': 'Terrace',
+                          'jardimprivado': 'Private Garden',
+                          'patio': 'Patio',
+                          // Structure
+                          '2pisos': '2 Floors',
+                          'duplex': 'Duplex',
+                          'penthouse': 'Penthouse',
+                          // Bedrooms
+                          '1quarto': '1 Bedroom',
+                          '2quartos': '2 Bedrooms',
+                          '3quartos': '3 Bedrooms',
+                          'suite': 'Suite',
+                          'camadecasal': 'Double Bed',
+                          'camasindividuais': 'Twin Beds',
+                          'sofacama': 'Sofa Bed',
+                          'sofa-cama': 'Sofa Bed',
+                          'bercodisponivel': 'Crib Available',
+                          'bercodisponível': 'Crib Available',
+                          'berodisponvel': 'Crib Available',
+                          // Bathroom
+                          'casadebanhoprivada': 'Private Bathroom',
+                          'banheira': 'Bathtub',
+                          'chuveiro': 'Shower',
                           'secadordecabelo': 'Hair Dryer',
-                          'piscina': 'Pool',
-                          'cobertores': 'Blankets',
-                          'cofre': 'Safe',
-                          'tbuadeengomar': 'Ironing Board',
-                          'tábuadeengomar': 'Ironing Board',
-                          'toalhas': 'Towels',
-                          'roupadecama': 'Bed Linen',
-                          'elevador': 'Elevator',
-                          'parking': 'Parking',
-                          'garagempreosobconsulta': 'Garage (price on request)',
-                          'garagem(preçosobconsulta)': 'Garage (price on request)',
+                          // Climate
+                          'arcondicionado': 'Air Conditioning',
+                          'aquecimentocentral': 'Central Heating',
+                          'lareira': 'Fireplace',
+                          'ventoinha': 'Fan',
+                          // Connectivity
+                          'wi-fi': 'Wi-Fi',
+                          'wifi': 'Wi-Fi',
+                          'wi-fififibra': 'Fiber Wi-Fi',
+                          'wififibra': 'Fiber Wi-Fi',
+                          'tv': 'TV',
+                          'smarttv': 'Smart TV',
+                          'netflix': 'Netflix',
+                          'tvporcabo': 'Cable TV',
+                          // Kitchen
+                          'cozinhaequipada': 'Equipped Kitchen',
                           'microondas': 'Microwave',
                           'micro-ondas': 'Microwave',
-                          'frigorfico': 'Fridge',
-                          'frigorifico': 'Fridge',
-                          'mquinadelavarloia': 'Dishwasher',
-                          'maquinadelavarloiça': 'Dishwasher',
-                          'utensliosdecozinha': 'Kitchen Utensils',
-                          'utensiliosdecozinha': 'Kitchen Utensils',
-                          'utensíliosdecozinha': 'Kitchen Utensils',
-                          'mquinadelavarroupa': 'Washing Machine',
-                          'maquinadelavarroupa': 'Washing Machine',
-                          'ferrodeengomar': 'Iron',
-                          'berodisponvel': 'Baby Cot Available',
-                          'bercodisponivel': 'Baby Cot Available',
-                          'bercodisponível': 'Baby Cot Available',
-                          'camadecasal': 'Double Bed',
+                          'forno': 'Oven',
+                          'placavitroceramica': 'Ceramic Hob',
+                          'frigorifico': 'Refrigerator',
+                          'frigorfico': 'Refrigerator',
+                          'congelador': 'Freezer',
+                          'freezer': 'Freezer',
+                          'maquinadecafe': 'Coffee Machine',
+                          'máquinadecafé': 'Coffee Machine',
                           'torradeira': 'Toaster',
                           'chaleira': 'Kettle',
-                          'vistamar': 'Sea View',
-                          'vistacidade': 'City View',
-                          'varanda': 'Balcony',
-                          'arcondicionado': 'Air Conditioning',
-                          'wi-fi': 'WiFi',
-                          'tv': 'TV',
-                          'cozinhaequipada': 'Equipped Kitchen',
+                          'maquinadelavarloica': 'Dishwasher',
+                          'maquinadelavarloiça': 'Dishwasher',
+                          'mquinadelavarloia': 'Dishwasher',
+                          'utensiliosdecozinha': 'Kitchen Utensils',
+                          'utensíliosdecozinha': 'Kitchen Utensils',
+                          'utensliosdecozinha': 'Kitchen Utensils',
+                          // Laundry
+                          'maquinadelavarroupa': 'Washing Machine',
+                          'mquinadelavarroupa': 'Washing Machine',
+                          'maquinadesecar': 'Dryer',
+                          'ferrodeengomar': 'Iron',
+                          'tabuadeengomar': 'Ironing Board',
+                          'tábuadeengomar': 'Ironing Board',
+                          'tbuadeengomar': 'Ironing Board',
+                          // Comfort
+                          'toalhas': 'Towels',
+                          'roupadecama': 'Bed Linen',
+                          'almoladasextra': 'Extra Pillows',
+                          'cobertores': 'Blankets',
+                          // Safety
+                          'cofre': 'Safe',
+                          'alarme': 'Alarm',
+                          'fechaduradigital': 'Digital Lock',
+                          'detetordefumo': 'Smoke Detector',
+                          'extintor': 'Fire Extinguisher',
+                          'kitdeprimeirossocorros': 'First Aid Kit',
+                          // Building
+                          'elevador': 'Elevator',
                           'estacionamento': 'Parking',
-                          '2quartos': '2 Bedrooms'
+                          'parking': 'Parking',
+                          'estacionamentoprivado': 'Private Parking',
+                          'garagem(preosobconsulta)': 'Garage (price on request)',
+                          'garagem(preçosobconsulta)': 'Garage (price on request)',
+                          'garagempreosobconsulta': 'Garage (price on request)',
+                          'porteiro': 'Doorman',
+                          'entradaprivada': 'Private Entrance',
+                          // Leisure
+                          'piscina': 'Pool',
+                          'piscinaprivada': 'Private Pool',
+                          'piscinapartilhada': 'Shared Pool',
+                          'jacuzzi': 'Jacuzzi',
+                          'ginasio': 'Gym',
+                          'ginásio': 'Gym',
+                          'sauna': 'Sauna',
+                          'churrasqueira': 'Barbecue',
+                          'mobiliadeexterior': 'Outdoor Furniture',
+                          // Policies
+                          'animaispermitidos': 'Pets Allowed',
+                          'naofumadores': 'No Smoking',
+                          'nãofumadores': 'No Smoking',
+                          'acessivelacadeiraderodas': 'Wheelchair Accessible',
+                          'acessívelacadeiraderodas': 'Wheelchair Accessible',
+                          'check-inautonomo': 'Self Check-in',
+                          'checkinautonomo': 'Self Check-in',
+                          'limpezaincluida': 'Cleaning Included',
+                          'limpezaincluída': 'Cleaning Included',
+                          'artigosdehigiene': 'Toiletries',
+                          'toiletries': 'Toiletries'
                         };
                         return translations[featureKey] || feature;
                       } else if (currentLang === 'fr') {
                         const translations: Record<string, string> = {
-                          'secadordecabelo': 'Sèche-cheveux',
-                          'piscina': 'Piscine',
-                          'cobertores': 'Couvertures',
-                          'cofre': 'Coffre',
-                          'tbuadeengomar': 'Table à Repasser',
-                          'tábuadeengomar': 'Table à Repasser',
-                          'toalhas': 'Serviettes',
-                          'roupadecama': 'Linge de Lit',
-                          'elevador': 'Ascenseur',
-                          'parking': 'Parking',
-                          'garagempreosobconsulta': 'Garage (prix sur demande)',
-                          'garagem(preçosobconsulta)': 'Garage (prix sur demande)',
-                          'microondas': 'Micro-ondes',
-                          'micro-ondas': 'Micro-ondes',
-                          'frigorfico': 'Réfrigérateur',
-                          'frigorifico': 'Réfrigérateur',
-                          'mquinadelavarloia': 'Lave-vaisselle',
-                          'maquinadelavarloiça': 'Lave-vaisselle',
-                          'utensliosdecozinha': 'Ustensiles de Cuisine',
-                          'utensiliosdecozinha': 'Ustensiles de Cuisine',
-                          'utensíliosdecozinha': 'Ustensiles de Cuisine',
-                          'mquinadelavarroupa': 'Machine à Laver',
-                          'maquinadelavarroupa': 'Machine à Laver',
-                          'ferrodeengomar': 'Fer à Repasser',
-                          'berodisponvel': 'Lit Bébé Disponible',
+                          // Views
+                          'vistamar': 'Vue Mer',
+                          'vistamarparcial': 'Vue Mer Partielle',
+                          'vistacidade': 'Vue Ville',
+                          'vistapiscina': 'Vue Piscine',
+                          'vistajardim': 'Vue Jardin',
+                          'vistamontanha': 'Vue Montagne',
+                          // Outdoor
+                          'varanda': 'Balcon',
+                          'terraco': 'Terrasse',
+                          'terrao': 'Terrasse',
+                          'jardimprivado': 'Jardin Privé',
+                          'patio': 'Patio',
+                          // Structure
+                          '2pisos': '2 Étages',
+                          'duplex': 'Duplex',
+                          'penthouse': 'Penthouse',
+                          // Bedrooms
+                          '1quarto': '1 Chambre',
+                          '2quartos': '2 Chambres',
+                          '3quartos': '3 Chambres',
+                          'suite': 'Suite',
+                          'camadecasal': 'Lit Double',
+                          'camasindividuais': 'Lits Jumeaux',
+                          'sofacama': 'Canapé-Lit',
+                          'sofa-cama': 'Canapé-Lit',
                           'bercodisponivel': 'Lit Bébé Disponible',
                           'bercodisponível': 'Lit Bébé Disponible',
-                          'camadecasal': 'Lit Double',
-                          'torradeira': 'Grille-pain',
-                          'chaleira': 'Bouilloire',
-                          'vistamar': 'Vue Mer',
-                          'vistacidade': 'Vue Ville',
-                          'varanda': 'Balcon',
+                          'berodisponvel': 'Lit Bébé Disponible',
+                          // Bathroom
+                          'casadebanhoprivada': 'Salle de Bain Privée',
+                          'banheira': 'Baignoire',
+                          'chuveiro': 'Douche',
+                          'secadordecabelo': 'Sèche-Cheveux',
+                          // Climate
                           'arcondicionado': 'Climatisation',
-                          'wi-fi': 'WiFi',
+                          'aquecimentocentral': 'Chauffage Central',
+                          'lareira': 'Cheminée',
+                          'ventoinha': 'Ventilateur',
+                          // Connectivity
+                          'wi-fi': 'Wi-Fi',
+                          'wifi': 'Wi-Fi',
+                          'wififibra': 'Wi-Fi Fibre',
                           'tv': 'TV',
+                          'smarttv': 'Smart TV',
+                          'netflix': 'Netflix',
+                          'tvporcabo': 'TV par Câble',
+                          // Kitchen
                           'cozinhaequipada': 'Cuisine Équipée',
+                          'microondas': 'Micro-ondes',
+                          'micro-ondas': 'Micro-ondes',
+                          'forno': 'Four',
+                          'placavitroceramica': 'Plaque Vitrocéramique',
+                          'frigorifico': 'Réfrigérateur',
+                          'frigorfico': 'Réfrigérateur',
+                          'congelador': 'Congélateur',
+                          'freezer': 'Congélateur',
+                          'maquinadecafe': 'Machine à Café',
+                          'torradeira': 'Grille-Pain',
+                          'chaleira': 'Bouilloire',
+                          'maquinadelavarloica': 'Lave-Vaisselle',
+                          'maquinadelavarloiça': 'Lave-Vaisselle',
+                          'mquinadelavarloia': 'Lave-Vaisselle',
+                          'utensiliosdecozinha': 'Ustensiles de Cuisine',
+                          'utensíliosdecozinha': 'Ustensiles de Cuisine',
+                          'utensliosdecozinha': 'Ustensiles de Cuisine',
+                          // Laundry
+                          'maquinadelavarroupa': 'Machine à Laver',
+                          'mquinadelavarroupa': 'Machine à Laver',
+                          'maquinadesecar': 'Sèche-Linge',
+                          'ferrodeengomar': 'Fer à Repasser',
+                          'tabuadeengomar': 'Planche à Repasser',
+                          'tábuadeengomar': 'Planche à Repasser',
+                          'tbuadeengomar': 'Planche à Repasser',
+                          // Comfort
+                          'toalhas': 'Serviettes',
+                          'roupadecama': 'Linge de Lit',
+                          'almoladasextra': 'Oreillers Supplémentaires',
+                          'cobertores': 'Couvertures',
+                          // Safety
+                          'cofre': 'Coffre-Fort',
+                          'alarme': 'Alarme',
+                          'fechaduradigital': 'Serrure Numérique',
+                          'detetordefumo': 'Détecteur de Fumée',
+                          'extintor': 'Extincteur',
+                          'kitdeprimeirossocorros': 'Trousse de Premiers Secours',
+                          // Building
+                          'elevador': 'Ascenseur',
                           'estacionamento': 'Parking',
-                          '2quartos': '2 Chambres'
+                          'parking': 'Parking',
+                          'estacionamentoprivado': 'Parking Privé',
+                          'garagem(preosobconsulta)': 'Garage (prix sur demande)',
+                          'garagem(preçosobconsulta)': 'Garage (prix sur demande)',
+                          'garagempreosobconsulta': 'Garage (prix sur demande)',
+                          'porteiro': 'Portier',
+                          'entradaprivada': 'Entrée Privée',
+                          // Leisure
+                          'piscina': 'Piscine',
+                          'piscinaprivada': 'Piscine Privée',
+                          'piscinapartilhada': 'Piscine Partagée',
+                          'jacuzzi': 'Jacuzzi',
+                          'ginasio': 'Salle de Sport',
+                          'ginásio': 'Salle de Sport',
+                          'sauna': 'Sauna',
+                          'churrasqueira': 'Barbecue',
+                          'mobiliadeexterior': 'Mobilier d\'Extérieur',
+                          // Policies
+                          'animaispermitidos': 'Animaux Acceptés',
+                          'naofumadores': 'Non-Fumeurs',
+                          'nãofumadores': 'Non-Fumeurs',
+                          'acessivelacadeiraderodas': 'Accessible en Fauteuil Roulant',
+                          'check-inautonomo': 'Enregistrement Autonome',
+                          'checkinautonomo': 'Enregistrement Autonome',
+                          'limpezaincluida': 'Ménage Inclus',
+                          'limpezaincluída': 'Ménage Inclus',
+                          'artigosdehigiene': 'Articles de Toilette',
+                          'toiletries': 'Articles de Toilette'
                         };
                         return translations[featureKey] || feature;
                       } else if (currentLang === 'de') {
                         const translations: Record<string, string> = {
-                          'secadordecabelo': 'Haartrockner',
-                          'piscina': 'Pool',
-                          'cobertores': 'Decken',
-                          'cofre': 'Tresor',
-                          'tbuadeengomar': 'Bügelbrett',
-                          'tábuadeengomar': 'Bügelbrett',
-                          'toalhas': 'Handtücher',
-                          'roupadecama': 'Bettwäsche',
-                          'elevador': 'Aufzug',
-                          'parking': 'Parkplatz',
-                          'garagempreosobconsulta': 'Garage (Preis auf Anfrage)',
-                          'garagem(preçosobconsulta)': 'Garage (Preis auf Anfrage)',
-                          'microondas': 'Mikrowelle',
-                          'micro-ondas': 'Mikrowelle',
-                          'frigorfico': 'Kühlschrank',
-                          'frigorifico': 'Kühlschrank',
-                          'mquinadelavarloia': 'Geschirrspüler',
-                          'maquinadelavarloiça': 'Geschirrspüler',
-                          'utensliosdecozinha': 'Küchenutensilien',
-                          'utensiliosdecozinha': 'Küchenutensilien',
-                          'utensíliosdecozinha': 'Küchenutensilien',
-                          'mquinadelavarroupa': 'Waschmaschine',
-                          'maquinadelavarroupa': 'Waschmaschine',
-                          'ferrodeengomar': 'Bügeleisen',
-                          'berodisponvel': 'Kinderbett Verfügbar',
+                          // Views
+                          'vistamar': 'Meerblick',
+                          'vistamarparcial': 'Teilweiser Meerblick',
+                          'vistacidade': 'Stadtblick',
+                          'vistapiscina': 'Poolblick',
+                          'vistajardim': 'Gartenblick',
+                          'vistamontanha': 'Bergblick',
+                          // Outdoor
+                          'varanda': 'Balkon',
+                          'terraco': 'Terrasse',
+                          'terrao': 'Terrasse',
+                          'jardimprivado': 'Privater Garten',
+                          'patio': 'Innenhof',
+                          // Structure
+                          '2pisos': '2 Stockwerke',
+                          'duplex': 'Duplex',
+                          'penthouse': 'Penthouse',
+                          // Bedrooms
+                          '1quarto': '1 Schlafzimmer',
+                          '2quartos': '2 Schlafzimmer',
+                          '3quartos': '3 Schlafzimmer',
+                          'suite': 'Suite',
+                          'camadecasal': 'Doppelbett',
+                          'camasindividuais': 'Einzelbetten',
+                          'sofacama': 'Schlafsofa',
+                          'sofa-cama': 'Schlafsofa',
                           'bercodisponivel': 'Kinderbett Verfügbar',
                           'bercodisponível': 'Kinderbett Verfügbar',
-                          'camadecasal': 'Doppelbett',
+                          'berodisponvel': 'Kinderbett Verfügbar',
+                          // Bathroom
+                          'casadebanhoprivada': 'Privates Badezimmer',
+                          'banheira': 'Badewanne',
+                          'chuveiro': 'Dusche',
+                          'secadordecabelo': 'Haartrockner',
+                          // Climate
+                          'arcondicionado': 'Klimaanlage',
+                          'aquecimentocentral': 'Zentralheizung',
+                          'lareira': 'Kamin',
+                          'ventoinha': 'Ventilator',
+                          // Connectivity
+                          'wi-fi': 'Wi-Fi',
+                          'wifi': 'Wi-Fi',
+                          'wififibra': 'Glasfaser Wi-Fi',
+                          'tv': 'TV',
+                          'smarttv': 'Smart TV',
+                          'netflix': 'Netflix',
+                          'tvporcabo': 'Kabel-TV',
+                          // Kitchen
+                          'cozinhaequipada': 'Ausgestattete Küche',
+                          'microondas': 'Mikrowelle',
+                          'micro-ondas': 'Mikrowelle',
+                          'forno': 'Backofen',
+                          'placavitroceramica': 'Glaskeramik-Kochfeld',
+                          'frigorifico': 'Kühlschrank',
+                          'frigorfico': 'Kühlschrank',
+                          'congelador': 'Gefrierschrank',
+                          'freezer': 'Gefrierschrank',
+                          'maquinadecafe': 'Kaffeemaschine',
                           'torradeira': 'Toaster',
                           'chaleira': 'Wasserkocher',
-                          'vistamar': 'Meerblick',
-                          'vistacidade': 'Stadtblick',
-                          'varanda': 'Balkon',
-                          'arcondicionado': 'Klimaanlage',
-                          'wi-fi': 'WiFi',
-                          'tv': 'TV',
-                          'cozinhaequipada': 'Ausgestattete Küche',
+                          'maquinadelavarloica': 'Geschirrspüler',
+                          'maquinadelavarloiça': 'Geschirrspüler',
+                          'mquinadelavarloia': 'Geschirrspüler',
+                          'utensiliosdecozinha': 'Küchenutensilien',
+                          'utensíliosdecozinha': 'Küchenutensilien',
+                          'utensliosdecozinha': 'Küchenutensilien',
+                          // Laundry
+                          'maquinadelavarroupa': 'Waschmaschine',
+                          'mquinadelavarroupa': 'Waschmaschine',
+                          'maquinadesecar': 'Trockner',
+                          'ferrodeengomar': 'Bügeleisen',
+                          'tabuadeengomar': 'Bügelbrett',
+                          'tábuadeengomar': 'Bügelbrett',
+                          'tbuadeengomar': 'Bügelbrett',
+                          // Comfort
+                          'toalhas': 'Handtücher',
+                          'roupadecama': 'Bettwäsche',
+                          'almoladasextra': 'Extra Kissen',
+                          'cobertores': 'Decken',
+                          // Safety
+                          'cofre': 'Tresor',
+                          'alarme': 'Alarm',
+                          'fechaduradigital': 'Digitales Schloss',
+                          'detetordefumo': 'Rauchmelder',
+                          'extintor': 'Feuerlöscher',
+                          'kitdeprimeirossocorros': 'Erste-Hilfe-Kasten',
+                          // Building
+                          'elevador': 'Aufzug',
                           'estacionamento': 'Parkplatz',
-                          '2quartos': '2 Schlafzimmer'
+                          'parking': 'Parkplatz',
+                          'estacionamentoprivado': 'Privater Parkplatz',
+                          'garagem(preosobconsulta)': 'Garage (Preis auf Anfrage)',
+                          'garagem(preçosobconsulta)': 'Garage (Preis auf Anfrage)',
+                          'garagempreosobconsulta': 'Garage (Preis auf Anfrage)',
+                          'porteiro': 'Portier',
+                          'entradaprivada': 'Privater Eingang',
+                          // Leisure
+                          'piscina': 'Pool',
+                          'piscinaprivada': 'Privater Pool',
+                          'piscinapartilhada': 'Gemeinschaftspool',
+                          'jacuzzi': 'Jacuzzi',
+                          'ginasio': 'Fitnessstudio',
+                          'ginásio': 'Fitnessstudio',
+                          'sauna': 'Sauna',
+                          'churrasqueira': 'Grill',
+                          'mobiliadeexterior': 'Gartenmöbel',
+                          // Policies
+                          'animaispermitidos': 'Haustiere Erlaubt',
+                          'naofumadores': 'Nichtraucher',
+                          'nãofumadores': 'Nichtraucher',
+                          'acessivelacadeiraderodas': 'Rollstuhlgerecht',
+                          'check-inautonomo': 'Selbst-Check-in',
+                          'checkinautonomo': 'Selbst-Check-in',
+                          'limpezaincluida': 'Reinigung Inklusive',
+                          'limpezaincluída': 'Reinigung Inklusive',
+                          'artigosdehigiene': 'Toilettenartikel',
+                          'toiletries': 'Toilettenartikel'
                         };
                         return translations[featureKey] || feature;
                       }
@@ -449,7 +730,23 @@ export function ApartmentDetail() {
                         // Tradução automática para informações adicionais
                         if (currentLang === 'en') {
                           // Tradução para inglês
-                          if (additionalInfo.includes('T1+1 com 100m2')) {
+                          if (additionalInfo.includes('T1+1 with 90m') || additionalInfo.includes('Espaço, conforto e elegância')) {
+                            return 'T1+1 with 90m²\n\nSpace, comfort and elegance just minutes from the beach, in the heart of Albufeira.\n\nThis magnificent apartment offers the perfect setting for couple or family holidays. With a large terrace accessible from the dining room, you can enjoy outdoor meals with an impressive view and moments of pure relaxation.\n\nThe social area consists of an open space living and dining room, decorated with class, equipped with LCD TV, air conditioning and a comfortable chaise longue.\n\nThe suite has a queen size bed, wardrobe, private bathroom with shower base, air conditioning and direct access to the terrace.\n\nThe secondary bedroom has a double bed and storage space, being ideal for the little ones.\n\nThe kitchen is fully equipped with all utensils and small appliances that ensure a practical and comfortable stay.\n\nA SPACIOUS RETREAT FOR UNFORGETTABLE HOLIDAYS... FEEL AT HOME, WITH THE COMFORT OF ALWAYS!';
+                          } else if (additionalInfo.includes('localização privilegiada') || additionalInfo.includes('praia dos pescadores')) {
+                            return 'With a privileged location, in front of the fishermen\'s beach in the center of Albufeira, a 6-story development that offers unparalleled privacy and an impressive beach and city view. It also stands out for its 2 panoramic elevators, panoramic pool on the 3rd floor and surrounding space. Private parking and interior elevator.\n\nOur apartments are fully furnished and equipped, with elegant and charming decoration, designed for your comfort...\n\nYou can also be enchanted in the late afternoon with an impressive sunset.\n\nALLOW YOURSELF... RELAX AND FEEL AT HOME!';
+                          } else if (additionalInfo.includes('T2 com 130m2') || additionalInfo.includes('Terraço - através da sala de jantar')) {
+                            return `T2 with 130m2
+
+Terrace - through the dining room you can access the terrace, ideal for enjoying a meal while taking in an impressive view.
+
+Living room - common living and dining room, furnished with the same class as the entire property, TV, LCD and A/C. 2-seater sofa bed.
+
+Bedroom - with queen size double bed, 1 wardrobe, A/C and direct access to the terrace.
+
+Suite - on the upper floor, consisting of 2 single beds, wardrobe, A/C, full bathroom with bathtub, and a private terrace.
+
+Kitchen - completely furnished and equipped with all utensils and small appliances necessary for your convenience.`;
+                          } else if (additionalInfo.includes('T1+1 com 100m2')) {
                             return `T1+1 with 100m2
 
 Terrace ideal for enjoying a meal for two or with family, enjoying a view over the beach and the city. Or simply to relax with an impressive sea view.
@@ -464,7 +761,23 @@ Kitchen - completely furnished and equipped with all utensils and small applianc
                           }
                         } else if (currentLang === 'fr') {
                           // Tradução para francês
-                          if (additionalInfo.includes('T1+1 com 100m2')) {
+                          if (additionalInfo.includes('T1+1 with 90m') || additionalInfo.includes('Espaço, conforto e elegância')) {
+                            return 'T1+1 avec 90m²\n\nEspace, confort et élégance à quelques minutes de la plage, au cœur d\'Albufeira.\n\nCe magnifique appartement offre le cadre parfait pour des vacances en couple ou en famille. Avec une grande terrasse accessible depuis la salle à manger, vous pourrez profiter de repas en plein air avec une vue impressionnante et de moments de pure détente.\n\nL\'espace social se compose d\'un salon et salle à manger en open space, décoré avec classe, équipé d\'une TV LCD, climatisation et d\'une confortable chaise longue.\n\nLa suite dispose d\'un lit queen size, d\'une armoire, d\'une salle de bain privée avec douche, climatisation et accès direct à la terrasse.\n\nLa chambre secondaire dispose d\'un lit double et d\'un espace de rangement, idéal pour les plus jeunes.\n\nLa cuisine est entièrement équipée avec tous les ustensiles et petits électroménagers qui garantissent un séjour pratique et confortable.\n\nUN REFUGE SPACIEUX POUR DES VACANCES INOUBLIABLES... SENTEZ-VOUS CHEZ VOUS, AVEC LE CONFORT DE TOUJOURS!';
+                          } else if (additionalInfo.includes('localização privilegiada') || additionalInfo.includes('praia dos pescadores')) {
+                            return 'Avec un emplacement privilégié, face à la plage des pêcheurs au centre d\'Albufeira, un immeuble de 6 étages qui offre une intimité incomparable et une vue imprenable sur la plage et la ville. Il se distingue également par ses 2 ascenseurs panoramiques, sa piscine panoramique au 3ème étage et son espace environnant. Parking privé et ascenseur intérieur.\n\nNos appartements sont entièrement meublés et équipés, avec une décoration élégante et charmante, pensée pour votre confort...\n\nVous pouvez également vous laisser enchanter en fin d\'après-midi par un coucher de soleil impressionnant.\n\nPERMETTEZ-VOUS... DÉTENDEZ-VOUS ET SENTEZ-VOUS CHEZ VOUS!';
+                          } else if (additionalInfo.includes('T2 com 130m2') || additionalInfo.includes('Terraço - através da sala de jantar')) {
+                            return `T2 avec 130m2
+
+Terrasse - par la salle à manger vous pouvez accéder à la terrasse, idéale pour apprécier un repas tout en profitant d'une vue impressionnante.
+
+Salon - salon et salle à manger communs, meublés avec la même classe que l'ensemble du bien, TV, LCD et climatisation. Canapé-lit 2 places.
+
+Chambre - avec lit double queen size, 1 armoire, climatisation et accès direct à la terrasse.
+
+Suite - à l'étage supérieur, composée de 2 lits simples, armoire, climatisation, salle de bain complète avec baignoire, et une terrasse privée.
+
+Cuisine - entièrement meublée et équipée avec tous les ustensiles et petits électroménagers nécessaires pour votre confort.`;
+                          } else if (additionalInfo.includes('T1+1 com 100m2')) {
                             return `T1+1 avec 100m2
 
 Terrasse idéale pour apprécier un repas à deux ou en famille, profitant d\'une vue sur la plage et la ville. Ou simplement pour vous détendre avec une vue imprenue sur la mer.
@@ -479,7 +792,23 @@ Cuisine - entièrement meublée et équipée avec tous les ustensiles et petits 
                           }
                         } else if (currentLang === 'de') {
                           // Tradução para alemão
-                          if (additionalInfo.includes('T1+1 com 100m2')) {
+                          if (additionalInfo.includes('T1+1 with 90m') || additionalInfo.includes('Espaço, conforto e elegância')) {
+                            return 'T1+1 mit 90m²\n\nRaum, Komfort und Eleganz nur wenige Minuten vom Strand entfernt, im Herzen von Albufeira.\n\nDiese wunderschöne Wohnung bietet die perfekte Umgebung für Paar- oder Familienurlaub. Mit einer großen Terrasse, die vom Esszimmer aus zugänglich ist, können Sie Mahlzeiten im Freien mit einer beeindruckenden Aussicht und Momente purer Entspannung genießen.\n\nDer Wohnbereich besteht aus einem offenen Wohn- und Esszimmer, mit Klasse dekoriert, ausgestattet mit LCD-TV, Klimaanlage und einer bequemen Chaiselongue.\n\nDie Suite verfügt über ein Queen-Size-Bett, Kleiderschrank, privates Badezimmer mit Dusche, Klimaanlage und direkten Zugang zur Terrasse.\n\nDas zweite Schlafzimmer verfügt über ein Doppelbett und Stauraum, ideal für die Kleinen.\n\nDie Küche ist komplett ausgestattet mit allen Utensilien und kleinen Elektrogeräten, die einen praktischen und komfortablen Aufenthalt garantieren.\n\nEIN GERÄUMIGER RÜCKZUGSORT FÜR UNVERGESSLICHE FERIEN... FÜHLEN SIE SICH WIE ZU HAUSE, MIT DEM KOMFORT VON IMMER!';
+                          } else if (additionalInfo.includes('localização privilegiada') || additionalInfo.includes('praia dos pescadores')) {
+                            return 'Mit privilegierter Lage, gegenüber dem Fischerstrand im Zentrum von Albufeira, bietet dieses 6-stöckige Gebäude unvergleichliche Privatsphäre und einen beeindruckenden Blick auf Strand und Stadt. Es zeichnet sich auch durch seine 2 Panorama-Aufzüge, den Panorama-Pool im 3. Stock und den umliegenden Bereich aus. Privater Parkplatz und Innenaufzug.\n\nUnsere Apartments sind komplett möbliert und ausgestattet, mit eleganter und charmanter Dekoration, die für Ihren Komfort konzipiert wurde...\n\nSie können sich auch am späten Nachmittag von einem beeindruckenden Sonnenuntergang verzaubern lassen.\n\nGÖNNEN SIE SICH... ENTSPANNEN SIE SICH UND FÜHLEN SIE SICH WIE ZU HAUSE!';
+                          } else if (additionalInfo.includes('T2 com 130m2') || additionalInfo.includes('Terraço - através da sala de jantar')) {
+                            return `T2 mit 130m2
+
+Terrasse - durch das Esszimmer gelangen Sie zur Terrasse, ideal um eine Mahlzeit zu genießen und dabei eine beeindruckende Aussicht zu haben.
+
+Wohnzimmer - gemeinsames Wohn- und Esszimmer, möbliert mit der gleichen Klasse wie die gesamte Immobilie, TV, LCD und Klimaanlage. 2-Sitzer Schlafsofa.
+
+Schlafzimmer - mit Queen-Size-Doppelbett, 1 Kleiderschrank, Klimaanlage und direktem Zugang zur Terrasse.
+
+Suite - im Obergeschoss, bestehend aus 2 Einzelbetten, Kleiderschrank, Klimaanlage, Vollbad mit Badewanne und einer privaten Terrasse.
+
+Küche - vollständig möbliert und ausgestattet mit allen Utensilien und Kleingeräten, die für Ihren Komfort notwendig sind.`;
+                          } else if (additionalInfo.includes('T1+1 com 100m2')) {
                             return `T1+1 mit 100m2
 
 Terrasse ideal für ein Essen zu zweit oder mit der Familie, mit Blick auf den Strand und die Stadt. Oder einfach zum Entspannen mit beeindruckendem Meerblick.

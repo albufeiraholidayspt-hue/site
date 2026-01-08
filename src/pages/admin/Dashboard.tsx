@@ -124,11 +124,31 @@ const AVAILABLE_FEATURES = [
 
 export function Dashboard() {
   const navigate = useNavigate();
-  const { user, content, updateHero, updateAbout, updateContact, updateBookingUrl, updateApartment, addPromotion, updatePromotion, deletePromotion, addReview, updateReview, deleteReview, updateSeo, updateSocialLinks, updateAlgarve, addAlgarveImage, updateAlgarveImage, deleteAlgarveImage, logout } = useStore();
+  const { user, content, updateHero, updateAbout, updateContact, updateBookingUrl, updateApartment, updateApartmentWithTranslation, addPromotion, updatePromotion, deletePromotion, addReview, updateReview, deleteReview, updateSeo, updateSocialLinks, updateAlgarve, addAlgarveImage, updateAlgarveImage, deleteAlgarveImage, logout } = useStore();
   const { currentLanguage } = useTranslation();
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [expandedApartment, setExpandedApartment] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [isTranslating, setIsTranslating] = useState<string | null>(null); // ID do apartamento em tradução
+
+  // Função para salvar com tradução automática
+  const handleApartmentTextChange = async (apartmentId: string, field: string, value: string) => {
+    // Primeiro atualiza o valor imediatamente
+    updateApartment(apartmentId, { [field]: value });
+  };
+
+  // Função chamada quando o utilizador sai do campo (blur) - traduz automaticamente
+  const handleApartmentTextBlur = async (apartmentId: string, data: Partial<typeof content.apartments[0]>) => {
+    setIsTranslating(apartmentId);
+    try {
+      await updateApartmentWithTranslation(apartmentId, data);
+      showSaved();
+    } catch (error) {
+      console.error('Erro na tradução:', error);
+    } finally {
+      setIsTranslating(null);
+    }
+  };
   const [newPromotion, setNewPromotion] = useState({
     title: '',
     description: '',
@@ -1685,11 +1705,13 @@ export function Dashboard() {
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                   Nome
+                                  {isTranslating === apartment.id && <span className="ml-2 text-primary-500 text-xs">🌐 A traduzir...</span>}
                                 </label>
                                 <input
                                   type="text"
                                   value={apartment.name}
-                                  onChange={(e) => updateApartment(apartment.id, { name: e.target.value })}
+                                  onChange={(e) => handleApartmentTextChange(apartment.id, 'name', e.target.value)}
+                                  onBlur={() => handleApartmentTextBlur(apartment.id, { name: apartment.name })}
                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
                                 />
                               </div>
@@ -1700,7 +1722,8 @@ export function Dashboard() {
                                 <input
                                   type="text"
                                   value={apartment.tagline}
-                                  onChange={(e) => updateApartment(apartment.id, { tagline: e.target.value })}
+                                  onChange={(e) => handleApartmentTextChange(apartment.id, 'tagline', e.target.value)}
+                                  onBlur={() => handleApartmentTextBlur(apartment.id, { tagline: apartment.tagline })}
                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
                                 />
                               </div>
@@ -1712,7 +1735,8 @@ export function Dashboard() {
                               </label>
                               <textarea
                                 value={apartment.description}
-                                onChange={(e) => updateApartment(apartment.id, { description: e.target.value })}
+                                onChange={(e) => handleApartmentTextChange(apartment.id, 'description', e.target.value)}
+                                onBlur={() => handleApartmentTextBlur(apartment.id, { description: apartment.description })}
                                 rows={4}
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
                               />
@@ -1724,13 +1748,14 @@ export function Dashboard() {
                               </label>
                               <textarea
                                 value={apartment.additionalInfo || ''}
-                                onChange={(e) => updateApartment(apartment.id, { additionalInfo: e.target.value })}
+                                onChange={(e) => handleApartmentTextChange(apartment.id, 'additionalInfo', e.target.value)}
+                                onBlur={() => handleApartmentTextBlur(apartment.id, { additionalInfo: apartment.additionalInfo })}
                                 rows={4}
                                 placeholder="Regras da casa, instruções de check-in, informações sobre a zona, etc."
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
                               />
                               <p className="text-xs text-gray-500 mt-1">
-                                Este texto aparece numa secção separada na página do apartamento.
+                                Este texto aparece numa secção separada na página do apartamento. Será traduzido automaticamente para EN, FR e DE.
                               </p>
                             </div>
 

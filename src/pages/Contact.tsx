@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Phone, Mail, MapPin, ArrowRight, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import emailjs from '@emailjs/browser';
+import { useTranslation } from '../i18n/simple';
 
 // EmailJS configuration
 const EMAILJS_SERVICE_ID = 'albufeiraholidays.pt';
@@ -10,6 +11,7 @@ const EMAILJS_PUBLIC_KEY = '_NbJOpDuu9ruCLQL6';
 
 export function Contact() {
   const { content } = useStore();
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -61,10 +63,10 @@ export function Contact() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
-              Contacte-nos
+              {t('contact.title')}
             </h1>
             <p className="text-orange-100 max-w-xl mx-auto">
-              Estamos disponíveis para responder a todas as suas questões sobre os nossos apartamentos.
+              {t('contact.subtitle')}
             </p>
           </div>
         </div>
@@ -79,7 +81,7 @@ export function Contact() {
             <div className="lg:col-span-1 flex flex-col gap-6">
               {/* Info Cards */}
               <div className="bg-white rounded-xl p-6 shadow-sm">
-                <h2 className="font-semibold text-gray-900 mb-6">Informações de Contacto</h2>
+                <h2 className="font-semibold text-gray-900 mb-6">{t('contact.contactInfo')}</h2>
                 
                 <div className="space-y-5">
                   <a
@@ -90,7 +92,7 @@ export function Contact() {
                       <Phone className="h-5 w-5 text-gray-500" />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-400 uppercase tracking-wide">Telefone</p>
+                      <p className="text-xs text-gray-400 uppercase tracking-wide">{t('contact.phone')}</p>
                       <p className="font-medium text-gray-900">{content.contact.phone}</p>
                     </div>
                   </a>
@@ -103,7 +105,7 @@ export function Contact() {
                       <Mail className="h-5 w-5 text-gray-500" />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-400 uppercase tracking-wide">Email</p>
+                      <p className="text-xs text-gray-400 uppercase tracking-wide">{t('contact.email')}</p>
                       <p className="font-medium text-gray-900 break-all">{content.contact.email}</p>
                     </div>
                   </a>
@@ -113,7 +115,7 @@ export function Contact() {
                       <MapPin className="h-5 w-5 text-gray-500" />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-400 uppercase tracking-wide">Morada</p>
+                      <p className="text-xs text-gray-400 uppercase tracking-wide">{t('contact.address')}</p>
                       <p className="font-medium text-gray-900">{content.contact.address}</p>
                     </div>
                   </div>
@@ -136,9 +138,9 @@ export function Contact() {
 
               {/* Quick Booking */}
               <div className="bg-primary-600 rounded-xl p-6 text-white">
-                <h3 className="font-semibold mb-2">Faça a sua Reserva</h3>
+                <h3 className="font-semibold mb-2">{t('contact.makeReservation')}</h3>
                 <p className="text-primary-100 text-sm mb-4">
-                  Verifique disponibilidade e reserve online.
+                  {t('contact.checkAvailability')}
                 </p>
                 <a
                   href={content.bookingUrl}
@@ -146,7 +148,7 @@ export function Contact() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 bg-white text-primary-600 px-4 py-2 rounded-lg font-medium text-sm hover:bg-primary-50 transition-colors"
                 >
-                  Reservar Agora
+                  {t('apartments.bookNow')}
                   <ArrowRight className="h-4 w-4" />
                 </a>
               </div>
@@ -155,21 +157,21 @@ export function Contact() {
             {/* Contact Form */}
             <div className="lg:col-span-2 flex flex-col">
               <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm flex-1 flex flex-col">
-                <h2 className="font-semibold text-gray-900 mb-2">Envie-nos uma Mensagem</h2>
-                <p className="text-gray-500 text-sm mb-6">Preencha o formulário e entraremos em contacto consigo brevemente.</p>
+                <h2 className="font-semibold text-gray-900 mb-2">{t('contact.sendUsMessage')}</h2>
+                <p className="text-gray-500 text-sm mb-6">{t('contact.fillForm')}</p>
 
                 {submitStatus === 'success' ? (
                   <div className="text-center py-12">
                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <CheckCircle className="h-8 w-8 text-green-600" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Mensagem Enviada!</h3>
-                    <p className="text-gray-600 text-sm mb-4">Recebemos a sua mensagem e entraremos em contacto brevemente.</p>
+                    <h3 className="font-semibold text-gray-900 mb-2">{t('contact.messageSent')}</h3>
+                    <p className="text-gray-600 text-sm mb-4">{t('contact.messageReceived')}</p>
                     <button
                       onClick={() => setSubmitStatus('idle')}
                       className="text-primary-600 text-sm font-medium hover:underline"
                     >
-                      Enviar outra mensagem
+                      {t('contact.sendAnother')}
                     </button>
                   </div>
                 ) : submitStatus === 'error' ? (
@@ -177,13 +179,13 @@ export function Contact() {
                     <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <AlertCircle className="h-8 w-8 text-red-600" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Erro ao Enviar</h3>
-                    <p className="text-gray-600 text-sm mb-4">Ocorreu um erro ao enviar a mensagem. Por favor tente novamente.</p>
+                    <h3 className="font-semibold text-gray-900 mb-2">{t('contact.sendError')}</h3>
+                    <p className="text-gray-600 text-sm mb-4">{t('contact.errorOccurred')}</p>
                     <button
                       onClick={() => setSubmitStatus('idle')}
                       className="text-primary-600 text-sm font-medium hover:underline"
                     >
-                      Tentar novamente
+                      {t('contact.tryAgain')}
                     </button>
                   </div>
                 ) : (
@@ -191,7 +193,7 @@ export function Contact() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                          Nome *
+                          {t('contact.name')} *
                         </label>
                         <input
                           type="text"
@@ -200,12 +202,12 @@ export function Contact() {
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                           className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
-                          placeholder="O seu nome"
+                          placeholder={t('contact.yourName')}
                         />
                       </div>
                       <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                          Email *
+                          {t('contact.email')} *
                         </label>
                         <input
                           type="email"
@@ -222,7 +224,7 @@ export function Contact() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
                         <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                          Telefone
+                          {t('contact.phone')}
                         </label>
                         <input
                           type="tel"
@@ -235,7 +237,7 @@ export function Contact() {
                       </div>
                       <div>
                         <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
-                          Assunto
+                          {t('contact.subject')}
                         </label>
                         <input
                           type="text"
@@ -243,14 +245,14 @@ export function Contact() {
                           value={formData.subject}
                           onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                           className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
-                          placeholder="Assunto da mensagem"
+                          placeholder={t('contact.messageSubject')}
                         />
                       </div>
                     </div>
 
                     <div className="flex-1 flex flex-col">
                       <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                        Mensagem *
+                        {t('contact.message')} *
                       </label>
                       <textarea
                         id="message"
@@ -258,7 +260,7 @@ export function Contact() {
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors resize-none flex-1 min-h-[120px]"
-                        placeholder="Escreva a sua mensagem aqui..."
+                        placeholder={t('contact.writeMessage')}
                       />
                     </div>
 
@@ -270,12 +272,12 @@ export function Contact() {
                       {isSubmitting ? (
                         <>
                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          A enviar...
+                          {t('contact.sending')}
                         </>
                       ) : (
                         <>
                           <Send className="h-5 w-5" />
-                          Enviar Mensagem
+                          {t('contact.send')}
                         </>
                       )}
                     </button>
