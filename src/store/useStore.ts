@@ -231,6 +231,28 @@ export const useStore = create<AppState>()(
           };
         }
         
+        // Atualizar minNights para 3 em todos os apartamentos
+        if (state?.content?.apartments) {
+          const updatedApartments = state.content.apartments.map(apt => ({
+            ...apt,
+            minNights: 3
+          }));
+          
+          // Verificar se algum apartamento tem minNights diferente de 3
+          const hasOldMinNights = state.content.apartments.some(apt => apt.minNights !== 3);
+          
+          if (hasOldMinNights) {
+            console.log('🔄 Atualizando estadia mínima para 3 noites em todos os apartamentos');
+            return {
+              ...state,
+              content: {
+                ...state.content,
+                apartments: updatedApartments,
+              },
+            };
+          }
+        }
+        
         return persistedState;
       },
     }
