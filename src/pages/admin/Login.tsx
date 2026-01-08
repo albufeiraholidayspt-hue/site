@@ -90,10 +90,6 @@ export function Login() {
               Entrar
             </button>
           </form>
-
-          <p className="mt-6 text-center text-sm text-gray-500">
-            Credenciais: admin / albufeira2024
-          </p>
         </div>
       </div>
     </div>
