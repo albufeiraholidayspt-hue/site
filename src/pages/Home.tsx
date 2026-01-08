@@ -461,98 +461,22 @@ export function Home() {
                     <Quote className="absolute -top-1 -left-1 h-6 w-6 text-primary-200" />
                     <p className="text-gray-700 text-sm leading-relaxed pl-5">
                       {(() => {
-                        // Forçar tradução automática baseada no currentLanguage
+                        // Usar tradução baseada no idioma atual
                         const currentLang = currentLanguage || 'pt';
-                        const portugueseText = review.text;
                         
-                        console.log('DEBUG: currentLang =', currentLang, 'portugueseText =', portugueseText);
-                        
-                        if (currentLang === 'en') {
-                          // Tradução automática para inglês - APENAS OS 3 TEXTOS CORRETOS
-                          if (portugueseText === 'Reserve já as suas férias') {
-                            console.log('DEBUG: Translating to Book your holidays now');
-                            return 'Book your holidays now';
-                          }
-                          if (portugueseText === 'Pronto para as suas férias de sonho?') {
-                            console.log('DEBUG: Translating to Ready for your dream holidays?');
-                            return 'Ready for your dream holidays?';
-                          }
-                          if (portugueseText === 'Reserve já o seu apartamento em Albufeira e desfrute do melhor do Algarve.') {
-                            console.log('DEBUG: Translating to Book your apartment...');
-                            return 'Book your apartment in Albufeira now and enjoy the best of the Algarve.';
-                          }
-                          // Forçar tradução dos textos antigos do Supabase
-                          if (portugueseText === 'Apartamento fantástico com vista mar incrível! Muito limpo e bem equipado.') {
-                            console.log('DEBUG: Translating old text 1');
-                            return 'Fantastic apartment with incredible sea view! Very clean and well equipped.';
-                          }
-                          if (portugueseText === 'Localização perfeita, vistas incríveis. Com certeza voltarei!') {
-                            console.log('DEBUG: Translating old text 2');
-                            return 'Perfect location, amazing views. Will definitely come back!';
-                          }
-                          if (portugueseText === 'Apartamento muito agradável, limpo e moderno. Vista magnífica para o mar.') {
-                            console.log('DEBUG: Translating old text 3');
-                            return 'Fantastic apartment, clean and modern. Magnificent view over the sea.';
-                          }
-                          if (portugueseText === 'O alojamento é maravilhoso! Muito limpa e a localização é perfeita.') {
-                            console.log('DEBUG: Translating old text 4');
-                            return 'The accommodation is wonderful! Very clean and the location is perfect.';
-                          }
-                          if (portugueseText === 'O alojamento é maravilhoso! Muito limpo e a localização é perfeita.') {
-                            console.log('DEBUG: Translating old text 4 (alternative)');
-                            return 'The accommodation is wonderful! Very clean and the location is perfect.';
-                          }
-                          if (portugueseText === 'Apartamento excelente, muito bem localizado. Com certeza voltaremos!') {
-                            console.log('DEBUG: Translating old text 5');
-                            return 'Excellent apartment, very well located. We will definitely come back!';
-                          }
-                          if (portugueseText === 'Ótima experiência! Apartamento impecável e anfitriões muito simpáticos.') {
-                            console.log('DEBUG: Translating old text 6');
-                            return 'Great experience! Impeccable apartment and very friendly hosts.';
-                          }
-                          // Se não for nenhum dos 3, usar os campos text_en se existirem
-                          if (review.text_en) {
-                            console.log('DEBUG: Using review.text_en =', review.text_en);
-                            return review.text_en;
-                          }
-                          console.log('DEBUG: No match, returning original');
-                          return portugueseText;
-                        } else if (currentLang === 'fr') {
-                          // Tradução automática para francês - APENAS OS 3 TEXTOS CORRETOS
-                          if (portugueseText === 'Reserve já as suas férias') return 'Réservez déjà vos vacances';
-                          if (portugueseText === 'Pronto para as suas férias de sonho?') return 'Prêt pour vos vacances de rêve?';
-                          if (portugueseText === 'Reserve já o seu apartamento em Albufeira e desfrute do melhor do Algarve.') return 'Réservez votre appartement à Albufeira dès maintenant et profitez du meilleur de l\'Algarve.';
-                          // Forçar tradução dos textos antigos do Supabase
-                          if (portugueseText === 'Apartamento fantástico com vista mar incrível! Muito limpo e bem equipado.') return 'Appartement fantastique avec vue mer incroyable! Très propre et bien équipé.';
-                          if (portugueseText === 'Localização perfeita, vistas incríveis. Com certeza voltarei!') return 'Emplacement parfait, vues incroyables. Je reviendrai certainement!';
-                          if (portugueseText === 'Apartamento muito agradável, limpo e moderno. Vista magnífica para o mar.') return 'Appartement fantastique, propre et moderne. Vue magnifique sur la mer.';
-                          if (portugueseText === 'O alojamento é maravilhoso! Muito limpa e a localização é perfeita.') return 'L\'hébergement est fantastique! Très propre et l\'emplacement est parfait.';
-                          if (portugueseText === 'O alojamento é maravilhoso! Muito limpo e a localização é perfeita.') return 'L\'hébergement est fantastique! Très propre et l\'emplacement est parfait.';
-                          if (portugueseText === 'Apartamento excelente, muito bem localizado. Com certeza voltaremos!') return 'Appartement excellent, très bien situé. Nous reviendrons certainement!';
-                          if (portugueseText === 'Ótima experiência! Apartamento impecável e anfitriões muito simpáticos.') return 'Excellente expérience! Appartement impeccable et hôtes très sympathiques.';
-                          // Se não for nenhum dos 3, usar os campos text_fr se existirem
-                          if (review.text_fr) return review.text_fr;
-                          return portugueseText;
-                        } else if (currentLang === 'de') {
-                          // Tradução automática para alemão - APENAS OS 3 TEXTOS CORRETOS
-                          if (portugueseText === 'Reserve já as suas férias') return 'Buchen Sie jetzt Ihren Urlaub';
-                          if (portugueseText === 'Pronto para as suas férias de sonho?') return 'Bereit für Ihren Traumurlaub?';
-                          if (portugueseText === 'Reserve já o seu apartamento em Albufeira e desfrute do melhor do Algarve.') return 'Buchen Sie jetzt Ihre Wohnung in Albufeira und genießen Sie das Beste der Algarve.';
-                          // Forçar tradução dos textos antigos do Supabase
-                          if (portugueseText === 'Apartamento fantástico com vista mar incrível! Muito limpo e bem equipado.') return 'Fantastische Wohnung mit unglaublicher Meerblick! Sehr sauber und gut ausgestattet.';
-                          if (portugueseText === 'Localização perfeita, vistas incríveis. Com certeza voltarei!') return 'Perfekter Standort, unglaubliche Ausblicke. Werde definitiv wiederkommen!';
-                          if (portugueseText === 'Apartamento muito agradável, limpo e moderno. Vista magnífica para o mar.') return 'Fantastische Wohnung, sauber und modern. Herrlicher Blick über das Meer.';
-                          if (portugueseText === 'O alojamento é maravilhoso! Muito limpa e a localização é perfeita.') return 'Die Unterkunft ist wunderbar! Sehr sauber und die Lage ist perfekt.';
-                          if (portugueseText === 'O alojamento é maravilhoso! Muito limpo e a localização é perfeita.') return 'Die Unterkunft ist wunderbar! Sehr sauber und die Lage ist perfekt.';
-                          if (portugueseText === 'Apartamento excelente, muito bem localizado. Com certeza voltaremos!') return 'Ausgezeichnete Wohnung, sehr gut gelegen. Wir werden definitiv wiederkommen!';
-                          if (portugueseText === 'Ótima experiência! Apartamento impecável e anfitriões muito simpáticos.') return 'Großartige Erfahrung! Makelloses Apartment und sehr freundliche Gastgeber.';
-                          // Se não for nenhum dos 3, usar os campos text_de se existirem
-                          if (review.text_de) return review.text_de;
-                          return portugueseText;
+                        // Usar campos de tradução se disponíveis
+                        if (currentLang === 'en' && review.text_en) {
+                          return review.text_en;
+                        }
+                        if (currentLang === 'fr' && review.text_fr) {
+                          return review.text_fr;
+                        }
+                        if (currentLang === 'de' && review.text_de) {
+                          return review.text_de;
                         }
                         
-                        // Fallback para português
-                        return portugueseText;
+                        // Fallback para português (texto original)
+                        return review.text;
                       })()}
                     </p>
                   </div>
