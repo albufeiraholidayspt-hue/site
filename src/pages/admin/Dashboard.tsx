@@ -664,7 +664,12 @@ export function Dashboard() {
                         Adicione imagens a cada método de transporte.
                       </p>
                       <div className="space-y-4">
-                        {content.algarve?.travel?.methods?.map((method, index) => (
+                        {(content.algarve?.travel?.methods || [
+                          { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
+                          { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
+                          { icon: '🚌', title: 'Autocarro', description: 'Ligações regulares das principais cidades portuguesas' },
+                          { icon: '🚆', title: 'Comboio', description: 'Ligação CP de Lisboa ao Algarve com paradas em principais estações' }
+                        ]).map((method, index) => (
                           <div key={index} className="border rounded-lg p-4 bg-gray-50">
                             <div className="flex items-start gap-4">
                               {method.imageUrl && (
