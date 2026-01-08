@@ -694,13 +694,13 @@ export function Dashboard() {
                                       type="text"
                                       value={method.title || ''}
                                       onChange={(e) => {
-                                        const currentMethods = content.algarve?.travel?.methods || [
+                                        const currentMethods = content.algarve?.travel?.methods || [];
+                                        const updatedMethods = currentMethods.length > 0 ? [...currentMethods] : [
                                           { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
                                           { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
                                           { icon: '🚌', title: 'Autocarro', description: 'Ligações regulares das principais cidades portuguesas' },
                                           { icon: '🚆', title: 'Comboio', description: 'Ligação CP de Lisboa ao Algarve com paradas em principais estações' }
                                         ];
-                                        const updatedMethods = [...currentMethods];
                                         updatedMethods[index] = { ...updatedMethods[index], title: e.target.value } as any;
                                         updateAlgarve({
                                           travel: {
@@ -720,13 +720,13 @@ export function Dashboard() {
                                       type="text"
                                       value={method.icon || ''}
                                       onChange={(e) => {
-                                        const currentMethods = content.algarve?.travel?.methods || [
+                                        const currentMethods = content.algarve?.travel?.methods || [];
+                                        const updatedMethods = currentMethods.length > 0 ? [...currentMethods] : [
                                           { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
                                           { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
                                           { icon: '🚌', title: 'Autocarro', description: 'Ligações regulares das principais cidades portuguesas' },
                                           { icon: '🚆', title: 'Comboio', description: 'Ligação CP de Lisboa ao Algarve com paradas em principais estações' }
                                         ];
-                                        const updatedMethods = [...currentMethods];
                                         updatedMethods[index] = { ...updatedMethods[index], icon: e.target.value } as any;
                                         updateAlgarve({
                                           travel: {
@@ -746,23 +746,23 @@ export function Dashboard() {
                                   <textarea
                                     value={method.description || ''}
                                     onChange={(e) => {
-                                      const currentMethods = content.algarve?.travel?.methods || [
-                                        { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
-                                        { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
-                                        { icon: '🚌', title: 'Autocarro', description: 'Ligações regulares das principais cidades portuguesas' },
-                                        { icon: '🚆', title: 'Comboio', description: 'Ligação CP de Lisboa ao Algarve com paradas em principais estações' }
-                                      ];
-                                      const updatedMethods = [...currentMethods];
-                                      updatedMethods[index] = { ...updatedMethods[index], description: e.target.value } as any;
-                                      updateAlgarve({
-                                        travel: {
-                                          ...content.algarve?.travel,
-                                          title: content.algarve?.travel?.title || '',
-                                          description: content.algarve?.travel?.description || '',
-                                          methods: updatedMethods
-                                        }
-                                      });
-                                    }}
+                                        const currentMethods = content.algarve?.travel?.methods || [];
+                                        const updatedMethods = currentMethods.length > 0 ? [...currentMethods] : [
+                                          { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
+                                          { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
+                                          { icon: '🚌', title: 'Autocarro', description: 'Ligações regulares das principais cidades portuguesas' },
+                                          { icon: '🚆', title: 'Comboio', description: 'Ligação CP de Lisboa ao Algarve com paradas em principais estações' }
+                                        ];
+                                        updatedMethods[index] = { ...updatedMethods[index], description: e.target.value } as any;
+                                        updateAlgarve({
+                                          travel: {
+                                            ...content.algarve?.travel,
+                                            title: content.algarve?.travel?.title || '',
+                                            description: content.algarve?.travel?.description || '',
+                                            methods: updatedMethods
+                                          }
+                                        });
+                                      }}
                                     rows={2}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
                                   />
