@@ -11,9 +11,6 @@ import { Dashboard } from './pages/admin/Dashboard';
 import UploadDemo from './pages/UploadDemo';
 import { DataBackup } from './components/DataBackup';
 import { CookieBanner } from './components/CookieBanner';
-import { LanguageRouter } from './components/LanguageRouter';
-import { GeoDetector } from './components/GeoDetector';
-import { SEOHead } from './components/SEOHead';
 import MobileCacheBuster from './lib/mobileCacheBuster';
 import MobileDebug from './lib/mobileDebug';
 import AggressiveMobileSolution from './lib/aggressiveMobileSolution';
@@ -47,13 +44,10 @@ function App() {
 
   return (
     <>
-      <SEOHead />
-      <LanguageRouter />
-      <GeoDetector />
       <DataBackup />
       <CookieBanner />
       <Routes>
-        <Route path="/:lang?" element={<Layout />}>
+        <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="apartamento/:slug" element={<ApartmentDetail />} />
           <Route path="contacto" element={<Contact />} />
