@@ -155,19 +155,40 @@ export function ApartmentDetail() {
                     // Tradução automática para descrições longas
                     if (currentLang === 'en') {
                       // Tradução para inglês
-                      if (description.includes('Com localização privilegiada, em frente à praia dos pescadores no centro de albufeira')) {
-                        return 'With a privileged location, in front of Fishermen\'s Beach in the center of Albufeira, a 6-story building, with unparalleled privacy, and an impressive view of the beach and city. It also stands out for its 2 panoramic elevators, panoramic pool on the 3rd floor and surrounding space. Private parking and interior elevator.\n\nOur apartments are fully furnished and equipped, with elegant and charming decoration, thinking about your comfort...\n\nYou can also delight yourself in the late afternoon, with an impressive sunset.\n\nALLOW YOURSELF... RELAX AND FEEL AT HOME!';
+                      if (description.includes('Apartamento T1 no 6º andar com vista mar espetacular')) {
+                        return 'T1 apartment on the 6th floor with spectacular sea view. A cozy and stunning space to enjoy your holidays in peace. Private parking, automated gate and panoramic interior elevator.';
+                      } else if (description.includes('O apartamento Prestige oferece um ambiente sofisticado com acabamentos de alta qualidade')) {
+                        return 'The Prestige apartment offers a sophisticated environment with high-quality finishes. Ideal for families or groups looking for a luxury experience in the Algarve.';
+                      } else if (description.includes('Apartamento duplex com design moderno distribuído em dois pisos')) {
+                        return 'Duplex apartment with modern design distributed over two floors. Perfect for those who value space and privacy, with living areas separate from the bedrooms.';
+                      } else if (description.includes('O apartamento Deluxe combina funcionalidade com estilo contemporâneo')) {
+                        return 'The Deluxe apartment combines functionality with contemporary style. An excellent choice for couples or small families looking for quality at an affordable price.';
                       }
+                      return description; // Fallback
                     } else if (currentLang === 'fr') {
                       // Tradução para francês
-                      if (description.includes('Com localização privilegiada, em frente à praia dos pescadores no centro de albufeira')) {
-                        return 'Avec une localisation privilégiée, en face de la plage des pêcheurs au centre d\'Albufeira, un immeuble de 6 étages, avec une intimité sans pareille et une vue imprenable sur la plage et la ville. Il se distingue également par ses 2 ascenseurs panoramiques, piscine panoramique au 3ème étage et espace environnant. Parking privé et ascenseur intérieur.\n\nNos appartements sont entièrement meublés et équipés, avec une décoration élégante et charmante, pensant à votre confort...\n\nVous pouvez également vous émerveiller en fin d\'après-midi, avec un coucher de soleil impressionnant.\n\nPERMETTEZ-VOUS... RELAXEZ-VOUS ET SENTIR-VOUS CHEZ VOUS!';
+                      if (description.includes('Apartamento T1 no 6º andar com vista mar espetacular')) {
+                        return 'Appartement T1 au 6ème étage avec vue mer spectaculaire. Un espace confortable et magnifique pour profiter de vos vacances en toute tranquillité. Parking privé, portail automatisé et ascenseur panoramique intérieur.';
+                      } else if (description.includes('O apartamento Prestige oferece um ambiente sofisticado com acabamentos de alta qualidade')) {
+                        return 'L\'appartement Prestige offre un environnement sophistiqué avec des finitions de haute qualité. Idéal pour les familles ou les groupes cherchant une expérience de luxe dans l\'Algarve.';
+                      } else if (description.includes('Apartamento duplex com design moderno distribuído em dois pisos')) {
+                        return 'Appartement duplex avec design moderne réparti sur deux étages. Parfait pour ceux qui valorisent l\'espace et la intimité, avec des zones de vie séparées des chambres.';
+                      } else if (description.includes('O apartamento Deluxe combina funcionalidade com estilo contemporâneo')) {
+                        return 'L\'appartement Deluxe combine fonctionnalité avec style contemporain. Un excellent choix pour les couples ou petites familles cherchant la qualité à un prix abordable.';
                       }
+                      return description; // Fallback
                     } else if (currentLang === 'de') {
                       // Tradução para alemão
-                      if (description.includes('Com localização privilegiada, em frente à praia dos pescadores no centro de albufeira')) {
-                        return 'Mit privilegierter Lage, direkt vor dem Strand der Fischer im Zentrum von Albufeira, ein 6-stöckiges Gebäude mit unvergleichlicher Privatsphäre und einem beeindruckenden Blick auf Strand und Stadt. Es zeichnet sich auch durch seine 2 Panorama-Aufzüge, Panorama-Pool im 3. Stock und umgebenden Raum aus. Privater Parkplatz und innerer Aufzug.\n\nUnsere Wohnungen sind vollständig möbliert und ausgestattet, mit eleganter und charmanter Dekoration, die an Ihren Komfort denkt...\n\nSie können sich auch am späten Nachmittag mit einem beeindruckenden Sonnenuntergang verzaubern lassen.\n\nERLAUBEN SIE SICH... ENTSPANNEN SIE UND FÜHLEN SIE SICH ZU HAUSE!';
+                      if (description.includes('Apartamento T1 no 6º andar com vista mar espetacular')) {
+                        return 'T1 Wohnung im 6. Stock mit spektakulärem Meerblick. Ein gemütlicher und beeindruckender Raum, um Ihre Ferien in Ruhe zu genießen. Privater Parkplatz, automatisches Tor und Panorama-Innenaufzug.';
+                      } else if (description.includes('O apartamento Prestige oferece um ambiente sofisticado com acabamentos de alta qualidade')) {
+                        return 'Die Prestige Wohnung bietet eine sophisticated Umgebung mit hochwertigen Ausstattungen. Ideal für Familien oder Gruppen, die eine Luxuserfahrung in der Algarve suchen.';
+                      } else if (description.includes('Apartamento duplex com design moderno distribuído em dois pisos')) {
+                        return 'Duplex Wohnung mit modernem Design verteilt auf zwei Etagen. Perfekt für diejenigen, die Raum und Privatsphäre schätzen, mit Wohnbereichen getrennt von den Schlafzimmern.';
+                      } else if (description.includes('O apartamento Deluxe combina funcionalidade com estilo contemporâneo')) {
+                        return 'Die Deluxe Wohnung kombiniert Funktionalität mit zeitgemäßem Stil. Eine ausgezeichnete Wahl für Paare oder kleine Familien, die Qualität zu einem erschwinglichen Preis suchen.';
                       }
+                      return description; // Fallback
                     }
                     
                     // Fallback para português
@@ -210,6 +231,8 @@ export function ApartmentDetail() {
                       // Tradução automática para features - EXPANDIDA
                       if (currentLang === 'en') {
                         const translations: Record<string, string> = {
+                          'secadordecabelo': 'Hair Dryer',
+                          'piscina': 'Pool',
                           'cobertores': 'Blankets',
                           'cofre': 'Safe',
                           'tbuadeengomar': 'Ironing Board',
@@ -245,11 +268,14 @@ export function ApartmentDetail() {
                           'wi-fi': 'WiFi',
                           'tv': 'TV',
                           'cozinhaequipada': 'Equipped Kitchen',
-                          'estacionamento': 'Parking'
+                          'estacionamento': 'Parking',
+                          '2quartos': '2 Bedrooms'
                         };
                         return translations[featureKey] || feature;
                       } else if (currentLang === 'fr') {
                         const translations: Record<string, string> = {
+                          'secadordecabelo': 'Sèche-cheveux',
+                          'piscina': 'Piscine',
                           'cobertores': 'Couvertures',
                           'cofre': 'Coffre',
                           'tbuadeengomar': 'Table à Repasser',
@@ -285,11 +311,14 @@ export function ApartmentDetail() {
                           'wi-fi': 'WiFi',
                           'tv': 'TV',
                           'cozinhaequipada': 'Cuisine Équipée',
-                          'estacionamento': 'Parking'
+                          'estacionamento': 'Parking',
+                          '2quartos': '2 Chambres'
                         };
                         return translations[featureKey] || feature;
                       } else if (currentLang === 'de') {
                         const translations: Record<string, string> = {
+                          'secadordecabelo': 'Haartrockner',
+                          'piscina': 'Pool',
                           'cobertores': 'Decken',
                           'cofre': 'Tresor',
                           'tbuadeengomar': 'Bügelbrett',
@@ -325,7 +354,8 @@ export function ApartmentDetail() {
                           'wi-fi': 'WiFi',
                           'tv': 'TV',
                           'cozinhaequipada': 'Ausgestattete Küche',
-                          'estacionamento': 'Parkplatz'
+                          'estacionamento': 'Parkplatz',
+                          '2quartos': '2 Schlafzimmer'
                         };
                         return translations[featureKey] || feature;
                       }
