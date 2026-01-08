@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Home, Phone, Building2, MapPin, Car } from 'lucide-react';
 import { useStore } from '../../store/useStore';
+import { useTranslation } from '../../i18n/simple';
 import { cn } from '../../lib/utils';
-import { LanguageSelector } from '../LanguageSelector';
+import { SimpleLanguageSelector } from '../SimpleLanguageSelector';
 
 interface NavItem {
   name: string;
@@ -13,10 +14,11 @@ interface NavItem {
 }
 
 export function Header() {
+  const { content } = useStore();
+  const { currentLanguage } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
-  const { content } = useStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,15 +29,39 @@ export function Header() {
   }, []);
 
   const navigation: NavItem[] = [
-    { name: 'Início', href: '/', icon: Home },
+    { name: (() => {
+      const currentLang = currentLanguage || 'pt';
+      if (currentLang === 'en') return 'Home';
+      if (currentLang === 'fr') return 'Accueil';
+      if (currentLang === 'de') return 'Startseite';
+      return 'Início';
+    })(), href: '/', icon: Home },
     ...content.apartments.map((apt) => ({
-      name: apt.name,
+      name: apt.name, // Não traduzir nomes dos apartamentos
       href: `/apartamento/${apt.slug}`,
       icon: Building2,
     })),
-    { name: 'O Algarve', href: '/algarve', icon: MapPin },
-    { name: 'Rent a Car', href: '/rent-a-car', icon: Car },
-    { name: 'Contacto', href: '/contacto', icon: Phone },
+    { name: (() => {
+      const currentLang = currentLanguage || 'pt';
+      if (currentLang === 'en') return 'Algarve';
+      if (currentLang === 'fr') return 'Algarve';
+      if (currentLang === 'de') return 'Algarve';
+      return 'Algarve';
+    })(), href: '/algarve', icon: MapPin },
+    { name: (() => {
+      const currentLang = currentLanguage || 'pt';
+      if (currentLang === 'en') return 'Rent a Car';
+      if (currentLang === 'fr') return 'Rent a Car';
+      if (currentLang === 'de') return 'Rent a Car';
+      return 'Rent a Car';
+    })(), href: '/rent-a-car', icon: Car },
+    { name: (() => {
+      const currentLang = currentLanguage || 'pt';
+      if (currentLang === 'en') return 'Contact';
+      if (currentLang === 'fr') return 'Contact';
+      if (currentLang === 'de') return 'Kontakt';
+      return 'Contacto';
+    })(), href: '/contacto', icon: Phone },
   ];
 
   const isActive = (href: string) => location.pathname === href;
@@ -85,14 +111,20 @@ export function Header() {
                 </Link>
               )
             ))}
-            <LanguageSelector />
+            <SimpleLanguageSelector />
             <a
               href={content.bookingUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="ml-4 btn-primary text-sm py-2 px-6"
             >
-              Reservar
+              {(() => {
+                const currentLang = currentLanguage || 'pt';
+                if (currentLang === 'en') return 'Book';
+                if (currentLang === 'fr') return 'Réserver';
+                if (currentLang === 'de') return 'Buchen';
+                return 'Reservar';
+              })()}
             </a>
           </div>
 
@@ -145,10 +177,16 @@ export function Header() {
                 rel="noopener noreferrer"
                 className="mt-2 btn-primary text-center"
               >
-                Reservar
+                {(() => {
+                  const currentLang = currentLanguage || 'pt';
+                  if (currentLang === 'en') return 'Book';
+                  if (currentLang === 'fr') return 'Réserver';
+                  if (currentLang === 'de') return 'Buchen';
+                  return 'Reservar';
+                })()}
               </a>
               <div className="mt-4 pt-4 border-t border-gray-200">
-                <LanguageSelector />
+                <SimpleLanguageSelector />
               </div>
             </div>
           </div>

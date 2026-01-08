@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube, MessageCircle } from 'lucide-react';
 import { useStore } from '../../store/useStore';
+import { useTranslation } from '../../i18n/simple';
 
 export function Footer() {
   const { content } = useStore();
+  const { currentLanguage } = useTranslation();
 
   return (
     <>
@@ -31,7 +33,15 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-semibold text-gray-900 mb-4">Contacto</h3>
+            <h3 className="font-semibold text-gray-900 mb-4">
+              {(() => {
+                const currentLang = currentLanguage || 'pt';
+                if (currentLang === 'en') return 'Contact';
+                if (currentLang === 'fr') return 'Contact';
+                if (currentLang === 'de') return 'Kontakt';
+                return 'Contacto';
+              })()}
+            </h3>
             <div className="space-y-3">
               <a
                 href={`tel:${content.contact.phone.replace(/\s/g, '')}`}
@@ -56,7 +66,15 @@ export function Footer() {
 
           {/* Social Links */}
           <div>
-            <h3 className="font-semibold text-gray-900 mb-4">Redes Sociais</h3>
+            <h3 className="font-semibold text-gray-900 mb-4">
+              {(() => {
+                const currentLang = currentLanguage || 'pt';
+                if (currentLang === 'en') return 'Social Networks';
+                if (currentLang === 'fr') return 'Réseaux Sociaux';
+                if (currentLang === 'de') return 'Soziale Netzwerke';
+                return 'Redes Sociais';
+              })()}
+            </h3>
             <div className="flex justify-center gap-3 mb-6">
               {content.socialLinks?.facebook && (
                 <a
@@ -131,8 +149,24 @@ export function Footer() {
                     className="h-6 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
                   />
                   <div className="text-left">
-                    <span className="text-xs text-gray-500 block">LIVRO DE</span>
-                    <span className="text-sm font-semibold text-gray-700">RECLAMAÇÕES</span>
+                    <span className="text-xs text-gray-500 block">
+                      {(() => {
+                        const currentLang = currentLanguage || 'pt';
+                        if (currentLang === 'en') return 'COMPLAINTS';
+                        if (currentLang === 'fr') return 'RÉCLAMATIONS';
+                        if (currentLang === 'de') return 'BESCHWERDEN';
+                        return 'LIVRO DE';
+                      })()}
+                    </span>
+                    <span className="text-sm font-semibold text-gray-700">
+                      {(() => {
+                        const currentLang = currentLanguage || 'pt';
+                        if (currentLang === 'en') return 'BOOK';
+                        if (currentLang === 'fr') return 'RECLAMAÇÕES';
+                        if (currentLang === 'de') return 'BESCHWERDEBUCH';
+                        return 'RECLAMAÇÕES';
+                      })()}
+                    </span>
                   </div>
                 </a>
               </div>
@@ -145,20 +179,39 @@ export function Footer() {
     {/* Container Laranja - Fora do footer */}
     <div className="bg-orange-500 pt-6 pb-6 flex flex-col md:flex-row justify-center items-center gap-4">
       <p className="text-white text-sm">
-        © {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
+        © {new Date().getFullYear()} {content.contact.companyName}. 
+        {(() => {
+          const currentLang = currentLanguage || 'pt';
+          if (currentLang === 'en') return 'All rights reserved.';
+          if (currentLang === 'fr') return 'Tous droits réservés.';
+          if (currentLang === 'de') return 'Alle Rechte vorbehalten.';
+          return 'Todos os direitos reservados.';
+        })()}
       </p>
       <div className="flex items-center gap-4">
         <Link
           to="/politica-privacidade"
           className="text-white hover:text-orange-100 text-sm transition-colors"
         >
-          Política de Privacidade
+          {(() => {
+            const currentLang = currentLanguage || 'pt';
+            if (currentLang === 'en') return 'Privacy Policy';
+            if (currentLang === 'fr') return 'Politique de Confidentialité';
+            if (currentLang === 'de') return 'Datenschutzrichtlinie';
+            return 'Política de Privacidade';
+          })()}
         </Link>
         <Link
           to="/admin"
           className="text-white hover:text-orange-100 text-sm transition-colors"
         >
-          Área Reservada
+          {(() => {
+            const currentLang = currentLanguage || 'pt';
+            if (currentLang === 'en') return 'Reserved Area';
+            if (currentLang === 'fr') return 'Zone Réservée';
+            if (currentLang === 'de') return 'Geschützter Bereich';
+            return 'Área Reservada';
+          })()}
         </Link>
       </div>
     </div>

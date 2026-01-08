@@ -38,6 +38,9 @@ export interface Review {
   country?: string;
   rating: number;
   text: string;
+  text_en?: string;
+  text_fr?: string;
+  text_de?: string;
   apartment?: string;
   date?: string;
   active: boolean;

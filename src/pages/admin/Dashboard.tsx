@@ -1582,6 +1582,36 @@ export function Dashboard() {
                                   />
                                 ))}
                               </div>
+                              <div className="mb-2">
+                                <label className="block text-xs font-medium text-gray-500 mb-1">Texto em Inglês</label>
+                                <textarea
+                                  value={review.text_en || ''}
+                                  onChange={(e) => updateReview(review.id, { text_en: e.target.value })}
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-sm resize-none"
+                                  rows={2}
+                                  placeholder="Tradução em inglês..."
+                                />
+                              </div>
+                              <div className="mb-2">
+                                <label className="block text-xs font-medium text-gray-500 mb-1">Texto em Francês</label>
+                                <textarea
+                                  value={review.text_fr || ''}
+                                  onChange={(e) => updateReview(review.id, { text_fr: e.target.value })}
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-sm resize-none"
+                                  rows={2}
+                                  placeholder="Tradução em francês..."
+                                />
+                              </div>
+                              <div className="mb-2">
+                                <label className="block text-xs font-medium text-gray-500 mb-1">Texto em Alemão</label>
+                                <textarea
+                                  value={review.text_de || ''}
+                                  onChange={(e) => updateReview(review.id, { text_de: e.target.value })}
+                                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none text-sm resize-none"
+                                  rows={2}
+                                  placeholder="Tradução em alemão..."
+                                />
+                              </div>
                               <p className="text-gray-600 text-sm">{review.text}</p>
                             </div>
                             <div className="flex items-center gap-2">

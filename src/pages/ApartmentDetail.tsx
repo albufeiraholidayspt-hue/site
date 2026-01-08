@@ -5,6 +5,7 @@ import { useStore } from '../store/useStore';
 import { FeatureIcon } from '../utils/featureIcons';
 import { AvailabilityCalendar } from '../components/AvailabilityCalendar';
 import { ImageLightbox } from '../components/ImageLightbox';
+import { useTranslation } from '../i18n/simple';
 
 // Extract YouTube video ID from URL
 const getYouTubeVideoId = (url: string): string => {
@@ -17,6 +18,7 @@ const getYouTubeVideoId = (url: string): string => {
 export function ApartmentDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { content } = useStore();
+  const { t } = useTranslation();
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [selectedDates, setSelectedDates] = useState<{ start: string; end: string } | null>(null);
@@ -77,7 +79,7 @@ export function ApartmentDetail() {
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 drop-shadow-lg">
             {apartment.name}
           </h1>
-          <p className="text-xl text-white/90 drop-shadow">{apartment.tagline}</p>
+          <p className="text-xl text-white/90 drop-shadow">{t(`apartment.${apartment.tagline.toLowerCase().replace(/\s+/g, '')}`) || apartment.tagline}</p>
         </div>
       </section>
 
@@ -98,8 +100,8 @@ export function ApartmentDetail() {
               </div>
 
               <div>
-                <h3 className="font-display text-xl font-bold text-gray-900 mb-6">
-                  Comodidades
+                <h3 className="font-display text-2xl font-bold text-gray-900 mb-6">
+                  {t('apartment.amenityTitle')}
                 </h3>
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
                   {apartment.features.map((feature) => (
@@ -108,7 +110,7 @@ export function ApartmentDetail() {
                       className="flex items-center gap-2 p-2 rounded-lg bg-gray-50 border border-gray-100"
                     >
                       <FeatureIcon feature={feature} className="h-4 w-4 text-primary-500 flex-shrink-0" />
-                      <span className="text-gray-700 text-xs truncate">{feature}</span>
+                      <span className="text-gray-700 text-xs truncate">{t(`features.${feature.toLowerCase().replace(/\s+/g, '')}`) || feature}</span>
                     </div>
                   ))}
                 </div>
@@ -210,7 +212,7 @@ export function ApartmentDetail() {
                 <div className="mb-6">
                   <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
                     <Calendar className="h-4 w-4 text-primary-500" />
-                    <span>Disponibilidade</span>
+                    <span>{t('calendar.availability')}</span>
                   </div>
                   {apartment.icalUrl ? (
                     <AvailabilityCalendar 
@@ -224,7 +226,7 @@ export function ApartmentDetail() {
                   ) : (
                     <div className="bg-white rounded-xl border border-gray-200 p-4 text-center text-gray-500 text-sm">
                       <Calendar className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                      <p>Consulte a disponibilidade ao reservar</p>
+                      <p>{t('calendar.checkAvailability')}</p>
                     </div>
                   )}
                 </div>
@@ -236,7 +238,7 @@ export function ApartmentDetail() {
                     rel="noopener noreferrer"
                     className="btn-primary w-full text-center inline-flex items-center justify-center gap-2"
                   >
-                    Reservar Agora
+                    {t('apartments.bookNow')}
                     <ArrowRight className="h-5 w-5" />
                   </a>
                 ) : (
@@ -244,7 +246,7 @@ export function ApartmentDetail() {
                     disabled
                     className="btn-primary w-full text-center inline-flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
                   >
-                    Reservar Agora
+                    {t('apartments.bookNow')}
                     <ArrowRight className="h-5 w-5" />
                   </button>
                 )}

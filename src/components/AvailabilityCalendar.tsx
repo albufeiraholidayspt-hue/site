@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from '../i18n/simple';
 
 interface AvailabilityCalendarProps {
   icalUrl?: string;
@@ -13,6 +14,7 @@ interface BookedDate {
 }
 
 export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }: AvailabilityCalendarProps) {
+  const { t, currentLanguage } = useTranslation();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [bookedDates, setBookedDates] = useState<BookedDate[]>([]);
   const [loading, setLoading] = useState(false);
@@ -214,12 +216,8 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
   const daysInMonth = getDaysInMonth(year, month);
   const firstDay = getFirstDayOfMonth(year, month);
 
-  const monthNames = [
-    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-  ];
-
-  const dayNames = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'];
+  const monthNames = t('calendar.months').split(',');
+  const dayNames = t('calendar.days').split(',');
 
   const prevMonth = () => {
     setCurrentDate(new Date(year, month - 1, 1));
@@ -258,7 +256,13 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
     
     // Não permitir selecionar datas ocupadas
     if (isDateBooked(clickedDate)) {
-      setMessage({ type: 'error', text: 'Esta data está ocupada. Por favor, selecione outra data.' });
+      setMessage({ type: 'error', text: (() => {
+        const currentLang = currentLanguage || 'pt';
+        if (currentLang === 'en') return 'This date is occupied. Please select another date.';
+        if (currentLang === 'fr') return 'Cette date est occupée. Veuillez sélectionner une autre date.';
+        if (currentLang === 'de') return 'Dieses Datum ist belegt. Bitte wählen Sie ein anderes Datum.';
+        return 'Esta data está ocupada. Por favor, selecione outra data.';
+      })() });
       setTimeout(() => setMessage(null), 3000);
       return;
     }
@@ -268,7 +272,13 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
       console.log('Calendar: Iniciando nova seleção');
       setSelectedStartDate(clickedDate);
       setSelectedEndDate(null);
-      setMessage({ type: 'info', text: `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Selecione check-out.` });
+      setMessage({ type: 'info', text: (() => {
+        const currentLang = currentLanguage || 'pt';
+        if (currentLang === 'en') return `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Select check-out.`;
+        if (currentLang === 'fr') return `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Sélectionnez check-out.`;
+        if (currentLang === 'de') return `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Wählen Sie check-out.`;
+        return `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Selecione check-out.`;
+      })() });
       setTimeout(() => setMessage(null), 3000);
       if (onDateSelection) {
         onDateSelection('', '', false);
@@ -281,7 +291,13 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
       console.log('Calendar: Selecionando check-in');
       setSelectedStartDate(clickedDate);
       setSelectedEndDate(null);
-      setMessage({ type: 'info', text: `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Selecione check-out.` });
+      setMessage({ type: 'info', text: (() => {
+        const currentLang = currentLanguage || 'pt';
+        if (currentLang === 'en') return `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Select check-out.`;
+        if (currentLang === 'fr') return `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Sélectionnez check-out.`;
+        if (currentLang === 'de') return `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Wählen Sie check-out.`;
+        return `Check-in: ${clickedDate.getDate()}/${clickedDate.getMonth() + 1}. Selecione check-out.`;
+      })() });
       setTimeout(() => setMessage(null), 3000);
       if (onDateSelection) {
         onDateSelection('', '', false);
@@ -293,7 +309,13 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
         console.log('Calendar: Limpar seleção');
         setSelectedStartDate(null);
         setSelectedEndDate(null);
-        setMessage({ type: 'info', text: 'Seleção limpa. Escolha novas datas.' });
+        setMessage({ type: 'info', text: (() => {
+        const currentLang = currentLanguage || 'pt';
+        if (currentLang === 'en') return 'Selection cleared. Choose new dates.';
+        if (currentLang === 'fr') return 'Sélection effacée. Choisissez nouvelles dates.';
+        if (currentLang === 'de') return 'Auswahl gelöscht. Wählen Sie neue Daten.';
+        return 'Seleção limpa. Escolha novas datas.';
+      })() });
         setTimeout(() => setMessage(null), 3000);
         if (onDateSelection) {
           onDateSelection('', '', false);
@@ -305,7 +327,13 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
       const nightsDiff = Math.ceil((clickedDate.getTime() - selectedStartDate.getTime()) / (1000 * 60 * 60 * 24));
       
       if (nightsDiff < minNights) {
-        setMessage({ type: 'error', text: `Estadia mínima de ${minNights} noite${minNights > 1 ? 's' : ''}.` });
+        setMessage({ type: 'error', text: (() => {
+          const currentLang = currentLanguage || 'pt';
+          if (currentLang === 'en') return `Minimum stay of ${minNights} night${minNights > 1 ? 's' : ''}.`;
+          if (currentLang === 'fr') return `Séjour minimum de ${minNights} nuit${minNights > 1 ? 's' : ''}.`;
+          if (currentLang === 'de') return `Mindestaufenthalt von ${minNights} Nacht${minNights > 1 ? 'en' : ''}.`;
+          return `Estadia mínima de ${minNights} noite${minNights > 1 ? 's' : ''}.`;
+        })() });
         setTimeout(() => setMessage(null), 4000);
         return;
       }
@@ -320,7 +348,13 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
       }
       
       if (hasBookedDates) {
-        setMessage({ type: 'error', text: 'O período contém datas ocupadas.' });
+        setMessage({ type: 'error', text: (() => {
+          const currentLang = currentLanguage || 'pt';
+          if (currentLang === 'en') return 'This date is occupied. Please select another date.';
+          if (currentLang === 'fr') return 'Cette date est occupée. Veuillez sélectionner une autre date.';
+          if (currentLang === 'de') return 'Dieses Datum ist belegt. Bitte wählen Sie ein anderes Datum.';
+          return 'Esta data está ocupada. Por favor, selecione outra data.';
+        })() });
         setTimeout(() => setMessage(null), 4000);
         return;
       }
@@ -330,7 +364,13 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
       setSelectedEndDate(clickedDate);
       setMessage({ 
         type: 'success', 
-        text: `Período: ${nightsDiff} noite${nightsDiff > 1 ? 's' : ''}` 
+        text: (() => {
+          const currentLang = currentLanguage || 'pt';
+          if (currentLang === 'en') return `Period: ${nightsDiff} night${nightsDiff > 1 ? 's' : ''}`;
+          if (currentLang === 'fr') return `Période: ${nightsDiff} nuit${nightsDiff > 1 ? 's' : ''}`;
+          if (currentLang === 'de') return `Zeitraum: ${nightsDiff} Nacht${nightsDiff > 1 ? 'en' : ''}`;
+          return `Período: ${nightsDiff} noite${nightsDiff > 1 ? 's' : ''}`;
+        })()
       });
       setTimeout(() => setMessage(null), 5000);
       
@@ -423,12 +463,12 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
         <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-3">
           <div className="flex items-center gap-2">
             <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse shadow-lg" />
-            <span className="text-xs font-medium text-primary-800">Selecione check-in e check-out</span>
+            <span className="text-xs font-medium text-primary-800">{t('calendar.selectDates')}</span>
           </div>
           {minNights > 1 && (
             <div className="flex items-center gap-1 bg-white/60 px-2 py-0.5 rounded-full border border-primary-200">
               <div className="w-1.5 h-1.5 bg-primary-600 rounded-full" />
-              <span className="text-xs font-semibold text-primary-700">Mínimo {minNights} noites</span>
+              <span className="text-xs font-semibold text-primary-700">{t('calendar.minNights', { count: minNights })}</span>
             </div>
           )}
         </div>
@@ -466,20 +506,20 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
         <div className="flex flex-wrap items-center justify-center gap-3 mt-3 pt-3 border-t border-gray-100">
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded bg-green-100 border border-green-300" />
-            <span className="text-xs text-gray-600">Livre</span>
+            <span className="text-xs text-gray-600">{t('calendar.free')}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded bg-red-100 border border-red-300" />
-            <span className="text-xs text-gray-600">Ocupado</span>
+            <span className="text-xs text-gray-600">{t('calendar.busy')}</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded bg-primary-50 border border-primary-300" />
-            <span className="text-xs text-gray-600">Hoje</span>
+            <span className="text-xs text-gray-600">{t('calendar.today')}</span>
           </div>
           {minNights > 1 && (
             <div className="flex items-center gap-1.5">
               <div className="w-3 h-3 rounded bg-yellow-100 border border-yellow-300" />
-              <span className="text-xs text-gray-600">Mín. {minNights} noites</span>
+              <span className="text-xs text-gray-600">{t('calendar.minNightsShort', { count: minNights })}</span>
             </div>
           )}
           {(selectedStartDate || selectedEndDate) && (

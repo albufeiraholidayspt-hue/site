@@ -4,6 +4,7 @@ import { Users, Moon, ArrowRight, Sparkles, Calendar, Tag, Star, Quote } from 'l
 import { useStore } from '../store/useStore';
 import { FeatureIcon } from '../utils/featureIcons';
 import { AvailabilityCalendar } from '../components/AvailabilityCalendar';
+import { useTranslation } from '../i18n/simple';
 
 // Extract YouTube video ID from URL
 const getYouTubeVideoId = (url: string): string => {
@@ -15,6 +16,7 @@ const getYouTubeVideoId = (url: string): string => {
 
 export function Home() {
   const { content } = useStore();
+  const { t, currentLanguage } = useTranslation();
   const videoRef = useRef<HTMLIFrameElement>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
   const [isVideoVisible, setIsVideoVisible] = useState(false);
@@ -126,7 +128,7 @@ export function Home() {
             >
               <Tag className="h-4 w-4" />
               <span className="font-medium">
-                {content.promotions.filter(p => p.active)[0].discount || 'Promoção'} • Código: {copiedCode === content.promotions.filter(p => p.active)[0].code ? '✓ Copiado!' : content.promotions.filter(p => p.active)[0].code}
+                {t('promo.discount')} • {t('promo.code')}: {copiedCode === content.promotions.filter(p => p.active)[0].code ? t('promo.copied') : content.promotions.filter(p => p.active)[0].code}
               </span>
             </button>
           ) : (
@@ -137,11 +139,11 @@ export function Home() {
           )}
           
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight text-white drop-shadow-lg">
-            {content.hero.title}
+            {t('hero.title')}
           </h1>
           
           <p className="text-lg md:text-xl text-white/90 mb-10 max-w-2xl mx-auto leading-relaxed drop-shadow">
-            {content.hero.subtitle}
+            {t('hero.subtitle')}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -151,11 +153,11 @@ export function Home() {
               rel="noopener noreferrer"
               className="btn-primary text-lg inline-flex items-center justify-center gap-2"
             >
-              Reservar Agora
+              {t('hero.cta')}
               <ArrowRight className="h-5 w-5" />
             </a>
             <Link to="/contacto" className="btn-secondary bg-white text-lg inline-flex items-center justify-center gap-2">
-              Contactar
+              {t('nav.contact')}
             </Link>
           </div>
           
@@ -163,15 +165,15 @@ export function Home() {
           <div className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto">
             <div className="text-center bg-white/90 backdrop-blur rounded-xl p-4 shadow-lg">
               <div className="text-3xl md:text-4xl font-bold text-primary-600">4</div>
-              <div className="text-gray-600 text-sm mt-1">Apartamentos</div>
+              <div className="text-gray-600 text-sm mt-1">{t('stats.apartments')}</div>
             </div>
             <div className="text-center bg-white/90 backdrop-blur rounded-xl p-4 shadow-lg">
               <div className="text-3xl md:text-4xl font-bold text-primary-600">5★</div>
-              <div className="text-gray-600 text-sm mt-1">Avaliação</div>
+              <div className="text-gray-600 text-sm mt-1">{t('stats.rating')}</div>
             </div>
             <div className="text-center bg-white/90 backdrop-blur rounded-xl p-4 shadow-lg">
               <div className="text-3xl md:text-4xl font-bold text-primary-600">24h</div>
-              <div className="text-gray-600 text-sm mt-1">Suporte</div>
+              <div className="text-gray-600 text-sm mt-1">{t('stats.support')}</div>
             </div>
           </div>
         </div>
@@ -182,11 +184,11 @@ export function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Os Nossos <span className="text-gradient">Apartamentos</span>
+              {t('apartments.title')}
             </h2>
             <div className="accent-line mx-auto my-6" />
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Escolha o apartamento perfeito para as suas férias em Albufeira
+              {t('apartments.choosePerfect')}
             </p>
           </div>
 
@@ -218,7 +220,7 @@ export function Home() {
                     <h3 className="font-display text-2xl font-bold text-white mb-1">
                       {apartment.name}
                     </h3>
-                    <p className="text-white/80 text-sm">{apartment.tagline}</p>
+                    <p className="text-white/80 text-sm">{t(`taglines.${apartment.tagline.toLowerCase().replace(/\s+/g, '').replace(/[^\w\s]/gi, '')}`) || apartment.tagline}</p>
                   </div>
                 </div>
                 
@@ -228,11 +230,11 @@ export function Home() {
                   <div className="flex items-center gap-4 text-gray-600 mb-4 text-sm">
                     <div className="flex items-center gap-2">
                       <Users className="h-4 w-4 text-primary-500" />
-                      <span>{apartment.capacity} pessoas</span>
+                      <span>{apartment.capacity} {t('apartments.capacity')}</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Moon className="h-4 w-4 text-primary-500" />
-                      <span>Estadia mínima de {apartment.minNights} noites</span>
+                      <span>{t('apartments.minNights', { count: apartment.minNights })}</span>
                     </div>
                   </div>
                   
@@ -244,7 +246,70 @@ export function Home() {
                         className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 text-gray-700 text-xs rounded-lg border border-gray-100"
                       >
                         <FeatureIcon feature={feature} className="h-3.5 w-3.5 text-primary-500" />
-                        <span>{feature}</span>
+                        <span>{(() => {
+                          const featureKey = feature.toLowerCase().replace(/\s+/g, '').replace(/[^\w\s]/gi, '');
+                          const translation = t(`features.${featureKey}`);
+                          
+                          // Auto-tradução para features se não existir tradução
+                          if (translation === `features.${featureKey}`) {
+                            const currentLang = currentLanguage || 'pt';
+                            
+                            if (currentLang === 'en') {
+                              // Traduções para inglês
+                              const translations: Record<string, string> = {
+                                '2quartos': '2 Bedrooms',
+                                'camadecasal': 'Double Bed',
+                                'suite': 'Suite',
+                                'varanda': 'Balcony',
+                                'wifi': 'WiFi',
+                                'ac': 'Air Conditioning',
+                                'kitchen': 'Kitchen',
+                                'parking': 'Parking',
+                                'piscina': 'Pool',
+                                'mar': 'Sea View',
+                                'tv': 'TV',
+                                'maquinadelavar': 'Washing Machine'
+                              };
+                              return translations[featureKey] || feature;
+                            } else if (currentLang === 'fr') {
+                              // Traduções para francês
+                              const translations: Record<string, string> = {
+                                '2quartos': '2 Chambres',
+                                'camadecasal': 'Lit Double',
+                                'suite': 'Suite',
+                                'varanda': 'Balcon',
+                                'wifi': 'WiFi',
+                                'ac': 'Climatisation',
+                                'kitchen': 'Cuisine',
+                                'parking': 'Parking',
+                                'piscina': 'Piscine',
+                                'mar': 'Vue Mer',
+                                'tv': 'TV',
+                                'maquinadelavar': 'Machine à laver'
+                              };
+                              return translations[featureKey] || feature;
+                            } else if (currentLang === 'de') {
+                              // Traduções para alemão
+                              const translations: Record<string, string> = {
+                                '2quartos': '2 Schlafzimmer',
+                                'camadecasal': 'Doppelbett',
+                                'suite': 'Suite',
+                                'varanda': 'Balkon',
+                                'wifi': 'WiFi',
+                                'ac': 'Klimaanlage',
+                                'kitchen': 'Küche',
+                                'parking': 'Parkplatz',
+                                'piscina': 'Pool',
+                                'mar': 'Meerblick',
+                                'tv': 'TV',
+                                'maquinadelavar': 'Waschmaschine'
+                              };
+                              return translations[featureKey] || feature;
+                            }
+                          }
+                          
+                          return translation || feature;
+                        })()}</span>
                       </div>
                     ))}
                   </div>
@@ -253,7 +318,7 @@ export function Home() {
                   <div className="mb-4">
                     <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
                       <Calendar className="h-4 w-4 text-primary-500" />
-                      <span>Disponibilidade</span>
+                      <span>{t('calendar.availability')}</span>
                     </div>
                     <AvailabilityCalendar 
                       icalUrl={apartment.icalUrl} 
@@ -273,7 +338,7 @@ export function Home() {
                       to={`/apartamento/${apartment.slug}`}
                       className="flex-1 btn-outline text-center text-sm py-2"
                     >
-                      Ver Detalhes
+                      {t('apartments.viewDetails')}
                     </Link>
                     {apartmentsSelection[apartment.id]?.dates && apartmentsSelection[apartment.id]?.isValid ? (
                       <a
@@ -282,14 +347,14 @@ export function Home() {
                         rel="noopener noreferrer"
                         className="flex-1 btn-primary text-center text-sm py-2"
                       >
-                        Reservar
+                        {t('common.book')}
                       </a>
                     ) : (
                       <button
                         disabled
                         className="flex-1 btn-primary text-center text-sm py-2 opacity-50 cursor-not-allowed"
                       >
-                        Reservar
+                        {t('common.book')}
                       </button>
                     )}
                   </div>
@@ -333,29 +398,29 @@ export function Home() {
             
             <div>
               <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                {content.about.title}
+                {t('about.title')}
               </h2>
               <div className="accent-line my-6" />
               <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                {content.about.description}
+                {t('about.description')}
               </p>
               
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="text-2xl md:text-3xl font-bold text-primary-600">86</div>
-                  <div className="text-gray-600 text-sm">Praias com Bandeira Azul</div>
+                  <div className="text-gray-600 text-sm">{t('about.blueFlagBeaches')}</div>
                 </div>
                 <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="text-2xl md:text-3xl font-bold text-primary-600">300+</div>
-                  <div className="text-gray-600 text-sm">Dias de Sol por Ano</div>
+                  <div className="text-gray-600 text-sm">{t('about.sunnyDays')}</div>
                 </div>
                 <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="text-2xl md:text-3xl font-bold text-primary-600">200km</div>
-                  <div className="text-gray-600 text-sm">Costa</div>
+                  <div className="text-gray-600 text-sm">{t('about.coastline')}</div>
                 </div>
                 <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="text-2xl md:text-3xl font-bold text-primary-600">7M</div>
-                  <div className="text-gray-600 text-sm">Visitantes Anuais</div>
+                  <div className="text-gray-600 text-sm">{t('about.annualVisitors')}</div>
                 </div>
               </div>
             </div>
@@ -370,13 +435,13 @@ export function Home() {
             <div className="text-center mb-16">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-600 text-white text-sm mb-6">
                 <Star className="h-4 w-4 fill-current" />
-                <span className="font-medium">Avaliações dos Hóspedes</span>
+                <span className="font-medium">{t('reviews.title')}</span>
               </div>
               <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-                O que dizem os nossos clientes
+                {t('reviews.subtitle')}
               </h2>
               <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                Avaliações reais de hóspedes que ficaram nos nossos apartamentos
+                {t('reviews.description')}
               </p>
             </div>
 
@@ -387,18 +452,108 @@ export function Home() {
                   className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-center gap-1 mb-3">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`h-4 w-4 ${i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-200'}`}
-                      />
+                    {[...Array(review.rating)].map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-current text-yellow-400" />
                     ))}
                   </div>
                   
                   <div className="relative mb-4">
                     <Quote className="absolute -top-1 -left-1 h-6 w-6 text-primary-200" />
                     <p className="text-gray-700 text-sm leading-relaxed pl-5">
-                      {review.text}
+                      {(() => {
+                        // Forçar tradução automática baseada no currentLanguage
+                        const currentLang = currentLanguage || 'pt';
+                        const portugueseText = review.text;
+                        
+                        console.log('DEBUG: currentLang =', currentLang, 'portugueseText =', portugueseText);
+                        
+                        if (currentLang === 'en') {
+                          // Tradução automática para inglês - APENAS OS 3 TEXTOS CORRETOS
+                          if (portugueseText === 'Reserve já as suas férias') {
+                            console.log('DEBUG: Translating to Book your holidays now');
+                            return 'Book your holidays now';
+                          }
+                          if (portugueseText === 'Pronto para as suas férias de sonho?') {
+                            console.log('DEBUG: Translating to Ready for your dream holidays?');
+                            return 'Ready for your dream holidays?';
+                          }
+                          if (portugueseText === 'Reserve já o seu apartamento em Albufeira e desfrute do melhor do Algarve.') {
+                            console.log('DEBUG: Translating to Book your apartment...');
+                            return 'Book your apartment in Albufeira now and enjoy the best of the Algarve.';
+                          }
+                          // Forçar tradução dos textos antigos do Supabase
+                          if (portugueseText === 'Apartamento fantástico com vista mar incrível! Muito limpo e bem equipado.') {
+                            console.log('DEBUG: Translating old text 1');
+                            return 'Fantastic apartment with incredible sea view! Very clean and well equipped.';
+                          }
+                          if (portugueseText === 'Localização perfeita, vistas incríveis. Com certeza voltarei!') {
+                            console.log('DEBUG: Translating old text 2');
+                            return 'Perfect location, amazing views. Will definitely come back!';
+                          }
+                          if (portugueseText === 'Apartamento muito agradável, limpo e moderno. Vista magnífica para o mar.') {
+                            console.log('DEBUG: Translating old text 3');
+                            return 'Fantastic apartment, clean and modern. Magnificent view over the sea.';
+                          }
+                          if (portugueseText === 'O alojamento é maravilhoso! Muito limpa e a localização é perfeita.') {
+                            console.log('DEBUG: Translating old text 4');
+                            return 'The accommodation is wonderful! Very clean and the location is perfect.';
+                          }
+                          if (portugueseText === 'O alojamento é maravilhoso! Muito limpo e a localização é perfeita.') {
+                            console.log('DEBUG: Translating old text 4 (alternative)');
+                            return 'The accommodation is wonderful! Very clean and the location is perfect.';
+                          }
+                          if (portugueseText === 'Apartamento excelente, muito bem localizado. Com certeza voltaremos!') {
+                            console.log('DEBUG: Translating old text 5');
+                            return 'Excellent apartment, very well located. We will definitely come back!';
+                          }
+                          if (portugueseText === 'Ótima experiência! Apartamento impecável e anfitriões muito simpáticos.') {
+                            console.log('DEBUG: Translating old text 6');
+                            return 'Great experience! Impeccable apartment and very friendly hosts.';
+                          }
+                          // Se não for nenhum dos 3, usar os campos text_en se existirem
+                          if (review.text_en) {
+                            console.log('DEBUG: Using review.text_en =', review.text_en);
+                            return review.text_en;
+                          }
+                          console.log('DEBUG: No match, returning original');
+                          return portugueseText;
+                        } else if (currentLang === 'fr') {
+                          // Tradução automática para francês - APENAS OS 3 TEXTOS CORRETOS
+                          if (portugueseText === 'Reserve já as suas férias') return 'Réservez déjà vos vacances';
+                          if (portugueseText === 'Pronto para as suas férias de sonho?') return 'Prêt pour vos vacances de rêve?';
+                          if (portugueseText === 'Reserve já o seu apartamento em Albufeira e desfrute do melhor do Algarve.') return 'Réservez votre appartement à Albufeira dès maintenant et profitez du meilleur de l\'Algarve.';
+                          // Forçar tradução dos textos antigos do Supabase
+                          if (portugueseText === 'Apartamento fantástico com vista mar incrível! Muito limpo e bem equipado.') return 'Appartement fantastique avec vue mer incroyable! Très propre et bien équipé.';
+                          if (portugueseText === 'Localização perfeita, vistas incríveis. Com certeza voltarei!') return 'Emplacement parfait, vues incroyables. Je reviendrai certainement!';
+                          if (portugueseText === 'Apartamento muito agradável, limpo e moderno. Vista magnífica para o mar.') return 'Appartement fantastique, propre et moderne. Vue magnifique sur la mer.';
+                          if (portugueseText === 'O alojamento é maravilhoso! Muito limpa e a localização é perfeita.') return 'L\'hébergement est fantastique! Très propre et l\'emplacement est parfait.';
+                          if (portugueseText === 'O alojamento é maravilhoso! Muito limpo e a localização é perfeita.') return 'L\'hébergement est fantastique! Très propre et l\'emplacement est parfait.';
+                          if (portugueseText === 'Apartamento excelente, muito bem localizado. Com certeza voltaremos!') return 'Appartement excellent, très bien situé. Nous reviendrons certainement!';
+                          if (portugueseText === 'Ótima experiência! Apartamento impecável e anfitriões muito simpáticos.') return 'Excellente expérience! Appartement impeccable et hôtes très sympathiques.';
+                          // Se não for nenhum dos 3, usar os campos text_fr se existirem
+                          if (review.text_fr) return review.text_fr;
+                          return portugueseText;
+                        } else if (currentLang === 'de') {
+                          // Tradução automática para alemão - APENAS OS 3 TEXTOS CORRETOS
+                          if (portugueseText === 'Reserve já as suas férias') return 'Buchen Sie jetzt Ihren Urlaub';
+                          if (portugueseText === 'Pronto para as suas férias de sonho?') return 'Bereit für Ihren Traumurlaub?';
+                          if (portugueseText === 'Reserve já o seu apartamento em Albufeira e desfrute do melhor do Algarve.') return 'Buchen Sie jetzt Ihre Wohnung in Albufeira und genießen Sie das Beste der Algarve.';
+                          // Forçar tradução dos textos antigos do Supabase
+                          if (portugueseText === 'Apartamento fantástico com vista mar incrível! Muito limpo e bem equipado.') return 'Fantastische Wohnung mit unglaublicher Meerblick! Sehr sauber und gut ausgestattet.';
+                          if (portugueseText === 'Localização perfeita, vistas incríveis. Com certeza voltarei!') return 'Perfekter Standort, unglaubliche Ausblicke. Werde definitiv wiederkommen!';
+                          if (portugueseText === 'Apartamento muito agradável, limpo e moderno. Vista magnífica para o mar.') return 'Fantastische Wohnung, sauber und modern. Herrlicher Blick über das Meer.';
+                          if (portugueseText === 'O alojamento é maravilhoso! Muito limpa e a localização é perfeita.') return 'Die Unterkunft ist wunderbar! Sehr sauber und die Lage ist perfekt.';
+                          if (portugueseText === 'O alojamento é maravilhoso! Muito limpo e a localização é perfeita.') return 'Die Unterkunft ist wunderbar! Sehr sauber und die Lage ist perfekt.';
+                          if (portugueseText === 'Apartamento excelente, muito bem localizado. Com certeza voltaremos!') return 'Ausgezeichnete Wohnung, sehr gut gelegen. Wir werden definitiv wiederkommen!';
+                          if (portugueseText === 'Ótima experiência! Apartamento impecável e anfitriões muito simpáticos.') return 'Großartige Erfahrung! Makelloses Apartment und sehr freundliche Gastgeber.';
+                          // Se não for nenhum dos 3, usar os campos text_de se existirem
+                          if (review.text_de) return review.text_de;
+                          return portugueseText;
+                        }
+                        
+                        // Fallback para português
+                        return portugueseText;
+                      })()}
                     </p>
                   </div>
                   
@@ -425,14 +580,32 @@ export function Home() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 text-white text-sm mb-8">
             <Sparkles className="h-4 w-4" />
-            <span>Reserve já as suas férias</span>
+            <span>{(() => {
+              const currentLang = currentLanguage || 'pt';
+              if (currentLang === 'en') return 'Book your holidays now';
+              if (currentLang === 'fr') return 'Réservez déjà vos vacances';
+              if (currentLang === 'de') return 'Buchen Sie jetzt Ihren Urlaub';
+              return 'Reserve já as suas férias';
+            })()}</span>
           </div>
           
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            Pronto para as suas férias de sonho?
+            {(() => {
+              const currentLang = currentLanguage || 'pt';
+              if (currentLang === 'en') return 'Ready for your dream holidays?';
+              if (currentLang === 'fr') return 'Prêt pour vos vacances de rêve?';
+              if (currentLang === 'de') return 'Bereit für Ihren Traumurlaub?';
+              return 'Pronto para as suas férias de sonho?';
+            })()}
           </h2>
           <p className="text-white/90 text-lg mb-10 max-w-2xl mx-auto">
-            Reserve já o seu apartamento em Albufeira e desfrute do melhor do Algarve.
+            {(() => {
+              const currentLang = currentLanguage || 'pt';
+              if (currentLang === 'en') return 'Book your apartment in Albufeira now and enjoy the best of the Algarve.';
+              if (currentLang === 'fr') return 'Réservez votre appartement à Albufeira dès maintenant et profitez du meilleur de l\'Algarve.';
+              if (currentLang === 'de') return 'Buchen Sie jetzt Ihre Wohnung in Albufeira und genießen Sie das Beste der Algarve.';
+              return 'Reserve já o seu apartamento em Albufeira e desfrute do melhor do Algarve.';
+            })()}
           </p>
           <a
             href={content.bookingUrl}
@@ -440,7 +613,7 @@ export function Home() {
             rel="noopener noreferrer"
             className="bg-white text-primary-600 hover:bg-gray-100 font-semibold py-4 px-10 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 text-lg inline-flex items-center gap-2"
           >
-            Ver Disponibilidade
+            {t('apartments.viewAvailability')}
             <ArrowRight className="h-5 w-5" />
           </a>
         </div>
