@@ -672,9 +672,9 @@ export function Dashboard() {
                         ]).map((method, index) => (
                           <div key={index} className="border rounded-lg p-4 bg-gray-50">
                             <div className="flex items-start gap-4">
-                              {method.imageUrl && (
+                              {(method as any).imageUrl && (
                                 <img 
-                                  src={method.imageUrl} 
+                                  src={(method as any).imageUrl} 
                                   alt={method.title}
                                   className="w-24 h-24 object-cover rounded-lg flex-shrink-0"
                                 />
@@ -690,10 +690,15 @@ export function Dashboard() {
                                     Imagem do Transporte
                                   </label>
                                   <ImageUploadImgBB
-                                    value={method.imageUrl || ''}
+                                    value={(method as any).imageUrl || ''}
                                     onChange={(url) => {
-                                      const updatedMethods = [...(content.algarve?.travel?.methods || [])];
-                                      updatedMethods[index] = { ...updatedMethods[index], imageUrl: url };
+                                      const updatedMethods = [...(content.algarve?.travel?.methods || [
+                          { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
+                          { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
+                          { icon: '🚌', title: 'Autocarro', description: 'Ligações regulares das principais cidades portuguesas' },
+                          { icon: '🚆', title: 'Comboio', description: 'Ligação CP de Lisboa ao Algarve com paradas em principais estações' }
+                        ])];
+                                      updatedMethods[index] = { ...updatedMethods[index], imageUrl: url } as any;
                                       updateAlgarve({
                                         travel: {
                                           ...content.algarve?.travel,
@@ -703,19 +708,24 @@ export function Dashboard() {
                                         }
                                       });
                                     }}
-                                    showUrlInput={true}
+                                    className="w-full"
                                   />
                                 </div>
                                 <div>
                                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Link do Google Maps
+                                    Google Maps URL (opcional)
                                   </label>
                                   <input
                                     type="url"
-                                    value={method.googleMapsUrl || ''}
+                                    value={(method as any).googleMapsUrl || ''}
                                     onChange={(e) => {
-                                      const updatedMethods = [...(content.algarve?.travel?.methods || [])];
-                                      updatedMethods[index] = { ...updatedMethods[index], googleMapsUrl: e.target.value };
+                                      const updatedMethods = [...(content.algarve?.travel?.methods || [
+                          { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
+                          { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
+                          { icon: '🚌', title: 'Autocarro', description: 'Ligações regulares das principais cidades portuguesas' },
+                          { icon: '🚆', title: 'Comboio', description: 'Ligação CP de Lisboa ao Algarve com paradas em principais estações' }
+                        ])];
+                                      updatedMethods[index] = { ...updatedMethods[index], googleMapsUrl: e.target.value } as any;
                                       updateAlgarve({
                                         travel: {
                                           ...content.algarve?.travel,
