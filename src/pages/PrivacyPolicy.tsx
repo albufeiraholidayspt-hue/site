@@ -92,6 +92,33 @@ export function PrivacyPolicy() {
               </div>
             </div>
 
+            {/* Consumer Information */}
+            <div className="p-6 md:p-8 border-b border-gray-100">
+              <div className="flex items-center gap-3 mb-6">
+                <UserCheck className="h-6 w-6 text-primary-600" />
+                <h2 className="text-2xl font-bold text-gray-900">Informação ao Consumidor</h2>
+              </div>
+              
+              <div className="prose prose-gray max-w-none">
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                  <p className="text-gray-700 leading-relaxed mb-4">
+                    Ao abrigo do disposto no artigo 18.º da Lei n.º 144/2015, em caso de litígio o consumidor pode recorrer a uma Entidade de Resolução Alternativa de Litígios de consumo:
+                  </p>
+                  
+                  <div className="bg-white rounded-lg p-4 border border-blue-100">
+                    <h3 className="font-semibold text-gray-900 mb-3">CIMAAL – Centro de Informação, Mediação e Arbitragem de Conflitos de Consumo do Algarve</h3>
+                    <div className="space-y-2 text-sm text-gray-600">
+                      <p><strong>Abrange:</strong> Municípios do distrito de Faro</p>
+                      <p><strong>Morada:</strong> Ninho de Empresas, Edifício ANJE, Estrada da Penha, 3º andar, sala 26, 8000 Faro</p>
+                      <p><strong>Telefone:</strong> <a href="tel:289823135" className="text-primary-600 hover:underline">289 823 135</a></p>
+                      <p><strong>Email:</strong> <a href="mailto:cimaal@mail.telepac.pt" className="text-primary-600 hover:underline">cimaal@mail.telepac.pt</a></p>
+                      <p><strong>Website:</strong> <a href="http://www.consumoalgarve.pt" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">www.consumoalgarve.pt</a></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* User Commitment */}
             <div className="p-6 md:p-8 border-b border-gray-100">
               <div className="flex items-center gap-3 mb-6">
