@@ -8,65 +8,116 @@ export interface TranslationResult {
 
 class TranslationService {
   private apiKey: string;
-  private baseUrl = 'https://translation.googleapis.com/language/translate/v2';
+  private provider: 'libre' | 'myMemory' | 'google';
 
   constructor() {
-    this.apiKey = import.meta.env.VITE_GOOGLE_TRANSLATE_API_KEY || '';
+    this.apiKey = import.meta.env.VITE_TRANSLATION_API_KEY || '';
+    // Prioritize free services: LibreTranslate -> MyMemory -> Google
+    this.provider = this.apiKey ? 'libre' : 'myMemory';
   }
 
   async translateText(text: string, targetLanguage: string, sourceLanguage?: string): Promise<TranslationResult> {
-    if (!this.apiKey) {
-      throw new Error('Google Translate API key not configured');
-    }
-
     try {
-      const response = await axios.post(
-        `${this.baseUrl}?key=${this.apiKey}`,
-        {
-          q: text,
-          source: sourceLanguage || 'auto',
-          target: targetLanguage,
-          format: 'text'
-        }
-      );
-
-      const translation = response.data.data.translations[0];
-      return {
-        translatedText: translation.translatedText,
-        sourceLanguage: translation.detectedSourceLanguage || sourceLanguage || 'auto',
-        targetLanguage
-      };
+      if (this.provider === 'libre') {
+        return await this.translateWithLibre(text, targetLanguage, sourceLanguage);
+      } else if (this.provider === 'myMemory') {
+        return await this.translateWithMyMemory(text, targetLanguage, sourceLanguage);
+      } else {
+        return await this.translateWithGoogle(text, targetLanguage, sourceLanguage);
+      }
     } catch (error) {
       console.error('Translation error:', error);
+      // Fallback to MyMemory if LibreTranslate fails
+      if (this.provider === 'libre') {
+        console.log('Falling back to MyMemory API');
+        return await this.translateWithMyMemory(text, targetLanguage, sourceLanguage);
+      }
       throw new Error('Failed to translate text');
     }
   }
 
-  async translateMultipleTexts(texts: string[], targetLanguage: string, sourceLanguage?: string): Promise<TranslationResult[]> {
-    if (!this.apiKey) {
-      throw new Error('Google Translate API key not configured');
-    }
+  private async translateWithLibre(text: string, targetLanguage: string, sourceLanguage?: string): Promise<TranslationResult> {
+    const libreUrl = import.meta.env.VITE_LIBRETRANSLATE_URL || 'https://libretranslate.de/translate';
+    
+    const response = await axios.post(libreUrl, {
+      q: text,
+      source: sourceLanguage || 'pt',
+      target: targetLanguage,
+      format: 'text',
+      api_key: this.apiKey
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
 
-    try {
-      const response = await axios.post(
-        `${this.baseUrl}?key=${this.apiKey}`,
-        {
-          q: texts,
-          source: sourceLanguage || 'auto',
-          target: targetLanguage,
-          format: 'text'
-        }
-      );
+    return {
+      translatedText: response.data.translatedText,
+      sourceLanguage: sourceLanguage || 'pt',
+      targetLanguage
+    };
+  }
 
-      return response.data.data.translations.map((translation: any) => ({
-        translatedText: translation.translatedText,
-        sourceLanguage: translation.detectedSourceLanguage || sourceLanguage || 'auto',
+  private async translateWithMyMemory(text: string, targetLanguage: string, sourceLanguage?: string): Promise<TranslationResult> {
+    const myMemoryUrl = 'https://api.mymemory.translated.net/get';
+    
+    const response = await axios.get(myMemoryUrl, {
+      params: {
+        q: text,
+        langpair: `${sourceLanguage || 'pt'}|${targetLanguage}`
+      }
+    });
+
+    if (response.data.responseStatus === 200) {
+      return {
+        translatedText: response.data.responseData.translatedText,
+        sourceLanguage: sourceLanguage || 'pt',
         targetLanguage
-      }));
-    } catch (error) {
-      console.error('Translation error:', error);
-      throw new Error('Failed to translate texts');
+      };
     }
+
+    throw new Error('MyMemory translation failed');
+  }
+
+  private async translateWithGoogle(text: string, targetLanguage: string, sourceLanguage?: string): Promise<TranslationResult> {
+    const googleUrl = 'https://translation.googleapis.com/language/translate/v2';
+    
+    const response = await axios.post(
+      `${googleUrl}?key=${this.apiKey}`,
+      {
+        q: text,
+        source: sourceLanguage || 'auto',
+        target: targetLanguage,
+        format: 'text'
+      }
+    );
+
+    const translation = response.data.data.translations[0];
+    return {
+      translatedText: translation.translatedText,
+      sourceLanguage: translation.detectedSourceLanguage || sourceLanguage || 'auto',
+      targetLanguage
+    };
+  }
+
+  async translateMultipleTexts(texts: string[], targetLanguage: string, sourceLanguage?: string): Promise<TranslationResult[]> {
+    const results: TranslationResult[] = [];
+    
+    // Process texts in batches to avoid rate limits
+    for (let i = 0; i < texts.length; i += 5) {
+      const batch = texts.slice(i, i + 5);
+      const batchResults = await Promise.all(
+        batch.map(text => this.translateText(text, targetLanguage, sourceLanguage))
+      );
+      results.push(...batchResults);
+      
+      // Small delay between batches
+      if (i + 5 < texts.length) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+    }
+    
+    return results;
   }
 
   async translateObject(obj: any, targetLanguage: string, sourceLanguage?: string): Promise<any> {
@@ -115,8 +166,41 @@ class TranslationService {
     return ['pt', 'en', 'fr', 'de', 'es', 'it', 'nl', 'sv', 'no', 'da'];
   }
 
+  getProvider(): string {
+    return this.provider;
+  }
+
   isConfigured(): boolean {
-    return !!this.apiKey;
+    return this.provider === 'myMemory' || !!this.apiKey;
+  }
+
+  getProviderInfo(): { name: string; description: string; isFree: boolean } {
+    switch (this.provider) {
+      case 'libre':
+        return {
+          name: 'LibreTranslate',
+          description: 'Serviço de tradução gratuito e open-source',
+          isFree: true
+        };
+      case 'myMemory':
+        return {
+          name: 'MyMemory',
+          description: 'Serviço gratuito com limite de 10.000 palavras/dia',
+          isFree: true
+        };
+      case 'google':
+        return {
+          name: 'Google Translate',
+          description: 'Serviço pago da Google Cloud',
+          isFree: false
+        };
+      default:
+        return {
+          name: 'Unknown',
+          description: 'Serviço de tradução desconhecido',
+          isFree: false
+        };
+    }
   }
 }
 

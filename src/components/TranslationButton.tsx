@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Languages, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { Languages, Loader2, CheckCircle, AlertCircle, Info } from 'lucide-react';
 import { translationService } from '../services/translationService';
 
 const languages = [
@@ -16,12 +16,6 @@ export function TranslationButton() {
   const translateContent = useStore((state) => state.translateContent);
 
   const handleTranslate = async () => {
-    if (!translationService.isConfigured()) {
-      setTranslationStatus('error');
-      setTimeout(() => setTranslationStatus('idle'), 3000);
-      return;
-    }
-
     setIsTranslating(true);
     setTranslationStatus('idle');
 
@@ -38,6 +32,8 @@ export function TranslationButton() {
     }
   };
 
+  const providerInfo = translationService.getProviderInfo();
+
   return (
     <div className="bg-white rounded-lg shadow-md p-4 border border-gray-200">
       <div className="flex items-center gap-2 mb-3">
@@ -45,16 +41,21 @@ export function TranslationButton() {
         <h3 className="font-semibold text-gray-900">Tradução Automática</h3>
       </div>
 
-      {!translationService.isConfigured() && (
-        <div className="mb-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <div className="flex items-center gap-2 text-yellow-800">
-            <AlertCircle className="h-4 w-4" />
-            <span className="text-sm">
-              Google Translate API não configurada. Adicione VITE_GOOGLE_TRANSLATE_API_KEY ao .env
+      {/* Provider Info */}
+      <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <div className="flex items-center gap-2 text-blue-800">
+          <Info className="h-4 w-4" />
+          <div className="flex-1">
+            <span className="text-sm font-medium">{providerInfo.name}</span>
+            <p className="text-xs text-blue-600 mt-1">{providerInfo.description}</p>
+            <span className={`inline-block mt-1 px-2 py-1 text-xs rounded-full ${
+              providerInfo.isFree ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+            }`}>
+              {providerInfo.isFree ? 'GRÁTIS' : 'PAGO'}
             </span>
           </div>
         </div>
-      )}
+      </div>
 
       <div className="space-y-3">
         <div>
@@ -77,7 +78,7 @@ export function TranslationButton() {
 
         <button
           onClick={handleTranslate}
-          disabled={isTranslating || !translationService.isConfigured()}
+          disabled={isTranslating}
           className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
           {isTranslating ? (
@@ -106,7 +107,7 @@ export function TranslationButton() {
           <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-lg">
             <AlertCircle className="h-4 w-4 text-red-600" />
             <span className="text-sm text-red-800">
-              Erro ao traduzir conteúdo. Verifique a API key.
+              Erro ao traduzir conteúdo. Tente novamente.
             </span>
           </div>
         )}
@@ -115,6 +116,7 @@ export function TranslationButton() {
           <p>• A tradução afeta todo o conteúdo do site</p>
           <p>• O conteúdo original em português será substituído</p>
           <p>• Recomendado fazer backup antes de traduzir</p>
+          <p>• MyMemory: limite de 10.000 palavras/dia</p>
         </div>
       </div>
     </div>
