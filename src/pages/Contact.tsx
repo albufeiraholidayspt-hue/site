@@ -1,8 +1,12 @@
 import { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, ArrowRight, Send, ExternalLink } from 'lucide-react';
+import { Phone, Mail, MapPin, ArrowRight, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { useStore } from '../store/useStore';
+import emailjs from '@emailjs/browser';
 
-const GOOGLE_MAPS_URL = 'https://www.google.com/maps/place/Albufeira+Holidays/@37.0887034,-8.2517451,651m/data=!3m2!1e3!4b1!4m6!3m5!1s0xd1acdb1d8016371:0xa3fefccb5c8fa1fd!8m2!3d37.0887034!4d-8.2491702!16s%2Fg%2F11fd4k61fn?entry=ttu&g_ep=EgoyMDI2MDEwNi4wIKXMDSoKLDEwMDc5MjA2OUgBUAM%3D';
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = 'albufeiraholidays.pt';
+const EMAILJS_TEMPLATE_ID = 'template_wlkwop7';
+const EMAILJS_PUBLIC_KEY = '_NbJOpDuu9ruCLQL6';
 
 export function Contact() {
   const { content } = useStore();
@@ -14,24 +18,40 @@ export function Contact() {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus('idle');
     
-    // Simular envio (pode ser integrado com um serviço real depois)
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Abrir email com os dados preenchidos
-    const mailtoLink = `mailto:${content.contact.email}?subject=${encodeURIComponent(formData.subject || 'Contacto via Website')}&body=${encodeURIComponent(
-      `Nome: ${formData.name}\nEmail: ${formData.email}\nTelefone: ${formData.phone}\n\nMensagem:\n${formData.message}`
-    )}`;
-    window.location.href = mailtoLink;
-    
-    setIsSubmitting(false);
-    setSubmitted(true);
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    try {
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          name: formData.name,
+          from_name: formData.name,
+          email: formData.email,
+          from_email: formData.email,
+          phone: formData.phone || 'Não fornecido',
+          subject: formData.subject || 'Contacto via Website',
+          message: formData.message,
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+      
+      setSubmitStatus('success');
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    } catch (error: unknown) {
+      console.error('Erro ao enviar email:', error);
+      if (error && typeof error === 'object' && 'text' in error) {
+        console.error('Detalhes do erro:', (error as { text: string }).text);
+      }
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -53,10 +73,10 @@ export function Contact() {
       {/* Main Content */}
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
             
             {/* Contact Info */}
-            <div className="lg:col-span-1 space-y-6">
+            <div className="lg:col-span-1 flex flex-col gap-6">
               {/* Info Cards */}
               <div className="bg-white rounded-xl p-6 shadow-sm">
                 <h2 className="font-semibold text-gray-900 mb-6">Informações de Contacto</h2>
@@ -88,41 +108,30 @@ export function Contact() {
                     </div>
                   </a>
 
-                  <a
-                    href={GOOGLE_MAPS_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-start gap-4 group"
-                  >
-                    <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center group-hover:bg-gray-200 transition-colors flex-shrink-0">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <MapPin className="h-5 w-5 text-gray-500" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-400 uppercase tracking-wide">Morada</p>
                       <p className="font-medium text-gray-900">{content.contact.address}</p>
-                      <span className="inline-flex items-center gap-1 text-xs text-primary-600 mt-1 group-hover:underline">
-                        Ver no Google Maps <ExternalLink className="h-3 w-3" />
-                      </span>
-                    </div>
-                  </a>
-
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                      <Clock className="h-5 w-5 text-gray-500" />
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-400 uppercase tracking-wide">Horário</p>
-                      <p className="font-medium text-gray-900">Seg - Dom: 9:00 - 20:00</p>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Company Info */}
-              <div className="bg-white rounded-xl p-6 shadow-sm">
-                <h3 className="font-semibold text-gray-900 mb-3">Dados da Empresa</h3>
-                <p className="text-gray-600 text-sm">{content.contact.companyName}</p>
-                <p className="text-gray-600 text-sm">NIF: {content.contact.nif}</p>
+              {/* Map Embed - Small */}
+              <div className="bg-white rounded-xl overflow-hidden shadow-sm">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3175.8!2d-8.2517451!3d37.0887034!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1acdb1d8016371%3A0xa3fefccb5c8fa1fd!2sAlbufeira%20Holidays!5e0!3m2!1spt-PT!2spt!4v1704672000000!5m2!1spt-PT!2spt"
+                  width="100%"
+                  height="150"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Localização Albufeira Holidays"
+                />
               </div>
 
               {/* Quick Booking */}
@@ -144,27 +153,41 @@ export function Contact() {
             </div>
 
             {/* Contact Form */}
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm">
+            <div className="lg:col-span-2 flex flex-col">
+              <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm flex-1 flex flex-col">
                 <h2 className="font-semibold text-gray-900 mb-2">Envie-nos uma Mensagem</h2>
                 <p className="text-gray-500 text-sm mb-6">Preencha o formulário e entraremos em contacto consigo brevemente.</p>
 
-                {submitted ? (
+                {submitStatus === 'success' ? (
                   <div className="text-center py-12">
                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Send className="h-8 w-8 text-green-600" />
+                      <CheckCircle className="h-8 w-8 text-green-600" />
                     </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">Mensagem Preparada!</h3>
-                    <p className="text-gray-600 text-sm mb-4">O seu cliente de email foi aberto com a mensagem.</p>
+                    <h3 className="font-semibold text-gray-900 mb-2">Mensagem Enviada!</h3>
+                    <p className="text-gray-600 text-sm mb-4">Recebemos a sua mensagem e entraremos em contacto brevemente.</p>
                     <button
-                      onClick={() => setSubmitted(false)}
+                      onClick={() => setSubmitStatus('idle')}
                       className="text-primary-600 text-sm font-medium hover:underline"
                     >
                       Enviar outra mensagem
                     </button>
                   </div>
+                ) : submitStatus === 'error' ? (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <AlertCircle className="h-8 w-8 text-red-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">Erro ao Enviar</h3>
+                    <p className="text-gray-600 text-sm mb-4">Ocorreu um erro ao enviar a mensagem. Por favor tente novamente.</p>
+                    <button
+                      onClick={() => setSubmitStatus('idle')}
+                      className="text-primary-600 text-sm font-medium hover:underline"
+                    >
+                      Tentar novamente
+                    </button>
+                  </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5">
+                  <form onSubmit={handleSubmit} className="space-y-5 flex-1 flex flex-col">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
@@ -225,17 +248,16 @@ export function Contact() {
                       </div>
                     </div>
 
-                    <div>
+                    <div className="flex-1 flex flex-col">
                       <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
                         Mensagem *
                       </label>
                       <textarea
                         id="message"
                         required
-                        rows={5}
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors resize-none"
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors resize-none flex-1 min-h-[120px]"
                         placeholder="Escreva a sua mensagem aqui..."
                       />
                     </div>
@@ -261,19 +283,6 @@ export function Contact() {
                 )}
               </div>
 
-              {/* Map Embed */}
-              <div className="mt-8 bg-white rounded-xl overflow-hidden shadow-sm">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3175.8!2d-8.2517451!3d37.0887034!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1acdb1d8016371%3A0xa3fefccb5c8fa1fd!2sAlbufeira%20Holidays!5e0!3m2!1spt-PT!2spt!4v1704672000000!5m2!1spt-PT!2spt"
-                  width="100%"
-                  height="300"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Localização Albufeira Holidays"
-                />
-              </div>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { Users, Moon, ArrowRight, Sparkles, MapPin, Calendar, Wifi, Car, Tag, Star, Quote } from 'lucide-react';
+import { Users, Moon, ArrowRight, Sparkles, Calendar, Tag, Star, Quote } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { FeatureIcon } from '../utils/featureIcons';
 import { AvailabilityCalendar } from '../components/AvailabilityCalendar';
@@ -329,36 +329,6 @@ export function Home() {
                   />
                 )}
               </div>
-              
-              {/* Google Maps floating card */}
-              <a 
-                href="https://www.google.pt/maps/place/Albufeira+Holidays/@37.0887034,-8.2517451,17z/data=!3m1!4b1!4m6!3m5!1s0xd1acdb1d8016371:0xa3fefccb5c8fa1fd!8m2!3d37.0887034!4d-8.2491702!16s%2Fg%2F11fd4k61fn"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-xl max-w-[200px] z-10 overflow-hidden group hover:shadow-2xl transition-shadow cursor-pointer"
-              >
-                <div className="w-full h-28 overflow-hidden relative">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d800!2d-8.2491702!3d37.0887034!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1spt-PT!2spt"
-                    className="w-full h-full pointer-events-none"
-                    style={{ border: 0, transform: 'scale(2)', transformOrigin: 'center' }}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                  {/* Overlay to hide Google branding */}
-                  <div className="absolute bottom-0 left-0 right-0 h-6 bg-white" />
-                  <div className="absolute top-0 left-0 w-8 h-8 bg-white" />
-                </div>
-                <div className="p-3 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center flex-shrink-0">
-                    <MapPin className="h-5 w-5 text-primary-600" />
-                  </div>
-                  <div>
-                    <div className="text-gray-900 font-semibold text-sm">Albufeira Holidays</div>
-                    <div className="text-gray-500 text-xs">Ver no Google Maps</div>
-                  </div>
-                </div>
-              </a>
             </div>
             
             <div>
@@ -370,24 +340,22 @@ export function Home() {
                 {content.about.description}
               </p>
               
-              <div className="grid grid-cols-2 gap-6">
-                <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100">
-                  <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
-                    <Wifi className="h-6 w-6 text-primary-600" />
-                  </div>
-                  <div>
-                    <div className="text-gray-900 font-medium">Wi-Fi</div>
-                    <div className="text-gray-500 text-sm">Alta velocidade</div>
-                  </div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">86</div>
+                  <div className="text-gray-600 text-sm">Praias com Bandeira Azul</div>
                 </div>
-                <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 border border-gray-100">
-                  <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
-                    <Car className="h-6 w-6 text-primary-600" />
-                  </div>
-                  <div>
-                    <div className="text-gray-900 font-medium">Parking</div>
-                    <div className="text-gray-500 text-sm">Privado</div>
-                  </div>
+                <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">300+</div>
+                  <div className="text-gray-600 text-sm">Dias de Sol por Ano</div>
+                </div>
+                <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">200km</div>
+                  <div className="text-gray-600 text-sm">Costa</div>
+                </div>
+                <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
+                  <div className="text-2xl md:text-3xl font-bold text-primary-600">7M</div>
+                  <div className="text-gray-600 text-sm">Visitantes Anuais</div>
                 </div>
               </div>
             </div>
@@ -400,7 +368,7 @@ export function Home() {
         <section className="py-20 md:py-28 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 text-primary-600 text-sm mb-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-600 text-white text-sm mb-6">
                 <Star className="h-4 w-4 fill-current" />
                 <span className="font-medium">Avaliações dos Hóspedes</span>
               </div>

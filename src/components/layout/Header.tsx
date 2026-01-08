@@ -65,7 +65,7 @@ export function Header() {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 text-gray-600 hover:text-primary-600 hover:bg-primary-50"
+                  className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 text-gray-600 hover:text-white hover:bg-primary-600"
                 >
                   {item.name}
                 </a>
@@ -77,7 +77,7 @@ export function Header() {
                     'px-4 py-2 rounded-full text-sm font-medium transition-all duration-300',
                     isActive(item.href)
                       ? 'bg-gray-100 text-gray-700'
-                      : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
+                      : 'text-gray-600 hover:text-white hover:bg-primary-600'
                   )}
                 >
                   {item.name}
@@ -115,7 +115,7 @@ export function Header() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-gray-600 hover:text-primary-600 hover:bg-primary-50"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-gray-600 hover:text-white hover:bg-primary-600"
                   >
                     <item.icon className="h-5 w-5" />
                     {item.name}
@@ -129,7 +129,7 @@ export function Header() {
                       'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300',
                       isActive(item.href)
                         ? 'bg-gray-100 text-gray-700'
-                        : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
+                        : 'text-gray-600 hover:text-white hover:bg-primary-600'
                     )}
                   >
                     <item.icon className="h-5 w-5" />
