@@ -154,9 +154,6 @@ export function Footer() {
         >
           Política de Privacidade
         </Link>
-        <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
-          Termos de Uso
-        </a>
         <Link
           to="/admin"
           className="text-white hover:text-orange-100 text-sm transition-colors"
