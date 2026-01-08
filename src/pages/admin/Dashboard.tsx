@@ -692,6 +692,7 @@ export function Dashboard() {
                                   <ImageUploadImgBB
                                     value={(method as any).imageUrl || ''}
                                     onChange={(url) => {
+                                      console.log('🔄 Upload recebido:', { url, method: method.title, index });
                                       const currentMethods = content.algarve?.travel?.methods || [
                                         { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
                                         { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
@@ -700,6 +701,7 @@ export function Dashboard() {
                                       ];
                                       const updatedMethods = [...currentMethods];
                                       updatedMethods[index] = { ...updatedMethods[index], imageUrl: url } as any;
+                                      console.log('📝 Métodos atualizados:', updatedMethods);
                                       updateAlgarve({
                                         travel: {
                                           ...content.algarve?.travel,
@@ -708,6 +710,7 @@ export function Dashboard() {
                                           methods: updatedMethods
                                         }
                                       });
+                                      console.log('✅ updateAlgarve chamado');
                                     }}
                                     className="w-full"
                                   />
