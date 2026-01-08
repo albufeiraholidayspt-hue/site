@@ -57,13 +57,13 @@ export function Contact() {
   return (
     <div className="bg-gray-50 min-h-screen pt-20">
       {/* Hero Section */}
-      <section className="bg-white py-12 md:py-16">
+      <section className="bg-orange-500 py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="font-display text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
               Contacte-nos
             </h1>
-            <p className="text-gray-600 max-w-xl mx-auto">
+            <p className="text-orange-100 max-w-xl mx-auto">
               Estamos disponíveis para responder a todas as suas questões sobre os nossos apartamentos.
             </p>
           </div>
