@@ -232,7 +232,7 @@ export function Home() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Moon className="h-4 w-4 text-primary-500" />
-                      <span>Min. {apartment.minNights} noites</span>
+                      <span>Estadia mínima de {apartment.minNights} noites</span>
                     </div>
                   </div>
                   
