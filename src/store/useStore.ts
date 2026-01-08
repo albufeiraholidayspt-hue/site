@@ -144,12 +144,15 @@ export const useStore = create<AppState>()(
           },
         })),
       updateAlgarve: (algarve) =>
-        set((state) => ({
-          content: {
-            ...state.content,
-            algarve: { ...(state.content.algarve || {}), ...algarve },
-          },
-        })),
+        set((state) => {
+          const currentAlgarve = state.content.algarve || {};
+          return {
+            content: {
+              ...state.content,
+              algarve: { ...currentAlgarve, ...algarve },
+            },
+          };
+        }),
       addAlgarveImage: (image) =>
         set((state) => ({
           content: {
