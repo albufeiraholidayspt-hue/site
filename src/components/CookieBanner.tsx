@@ -1,5 +1,6 @@
 import { X, Settings, Check } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useCookieConsent } from '../hooks/useCookieConsent';
 
 export function CookieBanner() {
@@ -100,9 +101,9 @@ export function CookieBanner() {
             <p className="text-sm text-gray-700">
               <span className="font-medium">Usamos cookies</span> para melhorar sua experiência e analisar o tráfego do site. 
               Ao continuar, você concorda com o uso de cookies de acordo com nossa{' '}
-              <a href="#" className="text-orange-500 hover:text-orange-600 underline">
+              <Link to="/politica-privacidade" className="text-orange-500 hover:text-orange-600 underline">
                 Política de Privacidade
-              </a>.
+              </Link>.
             </p>
           </div>
           
