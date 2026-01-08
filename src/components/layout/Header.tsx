@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Home, Phone, Building2, MapPin, Car } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { cn } from '../../lib/utils';
+import { LanguageSelector } from '../LanguageSelector';
 
 interface NavItem {
   name: string;
@@ -84,6 +85,7 @@ export function Header() {
                 </Link>
               )
             ))}
+            <LanguageSelector />
             <a
               href={content.bookingUrl}
               target="_blank"
@@ -145,6 +147,9 @@ export function Header() {
               >
                 Reservar
               </a>
+              <div className="mt-4 pt-4 border-t border-gray-200">
+                <LanguageSelector />
+              </div>
             </div>
           </div>
         )}
