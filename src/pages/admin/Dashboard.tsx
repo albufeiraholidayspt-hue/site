@@ -692,12 +692,13 @@ export function Dashboard() {
                                   <ImageUploadImgBB
                                     value={(method as any).imageUrl || ''}
                                     onChange={(url) => {
-                                      const updatedMethods = [...(content.algarve?.travel?.methods || [
-                          { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
-                          { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
-                          { icon: '🚌', title: 'Autocarro', description: 'Ligações regulares das principais cidades portuguesas' },
-                          { icon: '🚆', title: 'Comboio', description: 'Ligação CP de Lisboa ao Algarve com paradas em principais estações' }
-                        ])];
+                                      const currentMethods = content.algarve?.travel?.methods || [
+                                        { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
+                                        { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
+                                        { icon: '🚌', title: 'Autocarro', description: 'Ligações regulares das principais cidades portuguesas' },
+                                        { icon: '🚆', title: 'Comboio', description: 'Ligação CP de Lisboa ao Algarve com paradas em principais estações' }
+                                      ];
+                                      const updatedMethods = [...currentMethods];
                                       updatedMethods[index] = { ...updatedMethods[index], imageUrl: url } as any;
                                       updateAlgarve({
                                         travel: {
@@ -719,12 +720,13 @@ export function Dashboard() {
                                     type="url"
                                     value={(method as any).googleMapsUrl || ''}
                                     onChange={(e) => {
-                                      const updatedMethods = [...(content.algarve?.travel?.methods || [
-                          { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
-                          { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
-                          { icon: '🚌', title: 'Autocarro', description: 'Ligações regulares das principais cidades portuguesas' },
-                          { icon: '🚆', title: 'Comboio', description: 'Ligação CP de Lisboa ao Algarve com paradas em principais estações' }
-                        ])];
+                                      const currentMethods = content.algarve?.travel?.methods || [
+                                        { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
+                                        { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
+                                        { icon: '🚌', title: 'Autocarro', description: 'Ligações regulares das principais cidades portuguesas' },
+                                        { icon: '🚆', title: 'Comboio', description: 'Ligação CP de Lisboa ao Algarve com paradas em principais estações' }
+                                      ];
+                                      const updatedMethods = [...currentMethods];
                                       updatedMethods[index] = { ...updatedMethods[index], googleMapsUrl: e.target.value } as any;
                                       updateAlgarve({
                                         travel: {
