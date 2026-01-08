@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { SiteContent, User, Apartment, Promotion, SeoSettings, SocialLinks, Review, AlgarveContent, AlgarveGalleryImage } from '../types';
+import { SiteContent, User, Apartment, Promotion, SeoSettings, PartialSeoSettings, SocialLinks, Review, AlgarveContent, AlgarveGalleryImage } from '../types';
 import { initialContent } from '../data/initialContent';
 import { supabaseStorage } from '../lib/supabaseStorage';
 
@@ -125,13 +125,17 @@ export const useStore = create<AppState>()(
             reviews: (state.content.reviews || []).filter((review) => review.id !== id),
           },
         })),
-      updateSeo: (seo) =>
-        set((state) => ({
-          content: {
-            ...state.content,
-            seo: { ...initialContent.seo!, ...(state.content.seo || {}), ...seo } as typeof initialContent.seo,
-          },
-        })),
+      updateSeo: (seo: PartialSeoSettings) =>
+        set((state) => {
+          const currentSeo = state.content.seo || initialContent.seo;
+          const newSeo = { ...currentSeo, ...seo };
+          return {
+            content: {
+              ...state.content,
+              seo: newSeo as SeoSettings,
+            },
+          };
+        }),
       updateSocialLinks: (links) =>
         set((state) => ({
           content: {

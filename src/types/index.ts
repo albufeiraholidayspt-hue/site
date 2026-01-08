@@ -59,6 +59,8 @@ export interface SeoSettings {
   robotsTxt: string;
 }
 
+export interface PartialSeoSettings extends Partial<SeoSettings> {}
+
 export interface SocialLinks {
   facebook?: string;
   instagram?: string;
