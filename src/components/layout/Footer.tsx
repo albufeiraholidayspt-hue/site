@@ -148,9 +148,12 @@ export function Footer() {
         © {new Date().getFullYear()} {content.contact.companyName}. Todos os direitos reservados.
       </p>
       <div className="flex items-center gap-4">
-        <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
+        <Link
+          to="/politica-privacidade"
+          className="text-white hover:text-orange-100 text-sm transition-colors"
+        >
           Política de Privacidade
-        </a>
+        </Link>
         <a href="#" className="text-white hover:text-orange-100 text-sm transition-colors">
           Termos de Uso
         </a>
