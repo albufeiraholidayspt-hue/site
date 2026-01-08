@@ -361,7 +361,7 @@ export const initialContent: SiteContent = {
       tagline: 'Vista panorâmica sobre o mar',
       description: 'Apartamento T1 no 6º andar com vista mar espetacular. Um espaço acolhedor e deslumbrante para desfrutar das suas férias em paz. Estacionamento privado, portão automatizado e elevador panorâmico interior.',
       capacity: 6,
-      minNights: 5,
+      minNights: 3,
       features: ['Vista Mar', 'Varanda', 'Ar Condicionado', 'Wi-Fi', 'TV', 'Cozinha Equipada', 'Estacionamento'],
       images: [
         'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80',
@@ -385,7 +385,7 @@ export const initialContent: SiteContent = {
       tagline: 'Elegância e conforto premium',
       description: 'O apartamento Prestige oferece um ambiente sofisticado com acabamentos de alta qualidade. Ideal para famílias ou grupos que procuram uma experiência de luxo no Algarve.',
       capacity: 8,
-      minNights: 5,
+      minNights: 3,
       features: ['Vista Mar', '2 Quartos', 'Ar Condicionado', 'Wi-Fi', 'TV', 'Cozinha Equipada', 'Estacionamento', 'Terraço'],
       images: [
         'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80',
@@ -409,7 +409,7 @@ export const initialContent: SiteContent = {
       tagline: 'Espaço amplo em dois pisos',
       description: 'Apartamento duplex com design moderno distribuído em dois pisos. Perfeito para quem valoriza espaço e privacidade, com áreas de estar separadas dos quartos.',
       capacity: 5,
-      minNights: 5,
+      minNights: 3,
       features: ['2 Pisos', 'Vista Cidade', 'Ar Condicionado', 'Wi-Fi', 'TV', 'Cozinha Equipada', 'Estacionamento'],
       images: [
         'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80',
@@ -433,7 +433,7 @@ export const initialContent: SiteContent = {
       tagline: 'Conforto moderno e funcional',
       description: 'O apartamento Deluxe combina funcionalidade com estilo contemporâneo. Uma escolha excelente para casais ou pequenas famílias que procuram qualidade a um preço acessível.',
       capacity: 5,
-      minNights: 5,
+      minNights: 3,
       features: ['Vista Mar Parcial', 'Ar Condicionado', 'Wi-Fi', 'TV', 'Cozinha Equipada', 'Estacionamento'],
       images: [
         'https://images.unsplash.com/photo-1536376072261-38c75010e6c9?w=800&q=80',
