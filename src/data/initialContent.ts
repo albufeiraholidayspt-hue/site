@@ -380,7 +380,7 @@ export const initialContent: SiteContent = {
       description: 'Apartamento T1 no 6º andar com vista mar espetacular. Um espaço acolhedor e deslumbrante para desfrutar das suas férias em paz. Estacionamento privado, portão automatizado e elevador panorâmico interior.',
       capacity: 6,
       minNights: 3,
-      features: ['Vista Mar', 'Varanda', 'Ar Condicionado', 'Wi-Fi', 'TV', 'Cozinha Equipada', 'Estacionamento'],
+      features: ['Cobertores', 'Cofre'],
       images: [
         'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80',
         'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80',

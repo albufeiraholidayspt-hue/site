@@ -18,7 +18,7 @@ const getYouTubeVideoId = (url: string): string => {
 export function ApartmentDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { content } = useStore();
-  const { t } = useTranslation();
+  const { t, currentLanguage } = useTranslation();
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [selectedDates, setSelectedDates] = useState<{ start: string; end: string } | null>(null);
@@ -68,18 +68,65 @@ export function ApartmentDetail() {
           className="absolute top-24 left-4 sm:left-8 z-20 flex items-center gap-2 text-white/90 hover:text-white transition-colors bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full"
         >
           <ArrowLeft className="h-5 w-5" />
-          <span>Voltar</span>
+          <span>{(() => {
+            const currentLang = currentLanguage || 'pt';
+            if (currentLang === 'en') return 'Back';
+            if (currentLang === 'fr') return 'Retour';
+            if (currentLang === 'de') return 'Zurück';
+            return 'Voltar';
+          })()}</span>
         </Link>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 w-full">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-500 text-white text-sm mb-4 shadow-lg">
             <Users className="h-4 w-4" />
-            <span>{apartment.capacity} pessoas</span>
+            <span>{apartment.capacity} {(() => {
+              const currentLang = currentLanguage || 'pt';
+              if (currentLang === 'en') return 'people';
+              if (currentLang === 'fr') return 'personnes';
+              if (currentLang === 'de') return 'Personen';
+              return 'pessoas';
+            })()}</span>
           </div>
           <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 drop-shadow-lg">
             {apartment.name}
           </h1>
-          <p className="text-xl text-white/90 drop-shadow">{t(`apartment.${apartment.tagline.toLowerCase().replace(/\s+/g, '')}`) || apartment.tagline}</p>
+          <p className="text-xl text-white/90 drop-shadow">{(() => {
+                      const currentLang = currentLanguage || 'pt';
+                      const taglineKey = apartment.tagline.toLowerCase().replace(/\s+/g, '').replace(/[^\w\s]/gi, '').replace(/[àáâãäå]/g, 'a').replace(/[èéêë]/g, 'e').replace(/[ìíîï]/g, 'i').replace(/[òóôõö]/g, 'o').replace(/[ùúûü]/g, 'u').replace(/[ýÿ]/g, 'y').replace(/[ñ]/g, 'n').replace(/[ç]/g, 'c');
+                      
+                      // Tradução automática para taglines
+                      if (currentLang === 'en') {
+                        const translations: Record<string, string> = {
+                          'vistapanorâmicasobreomar': 'Panoramic Sea View',
+                          'vistapanoramicasobreomar': 'Panoramic Sea View',
+                          'vistapanormicasobreomar': 'Panoramic Sea View',
+                          'elegânciaeconfortopremium': 'Elegance and Premium Comfort',
+                          'confortomodernoefuncional': 'Modern and Functional Comfort'
+                        };
+                        return translations[taglineKey] || translations['vistapanorâmicasobreomar'] || apartment.tagline;
+                      } else if (currentLang === 'fr') {
+                        const translations: Record<string, string> = {
+                          'vistapanorâmicasobreomar': 'Vue Panoramique sur la Mer',
+                          'vistapanoramicasobreomar': 'Vue Panoramique sur la Mer',
+                          'vistapanormicasobreomar': 'Vue Panoramique sur la Mer',
+                          'elegânciaeconfortopremium': 'Élégance et Confort Premium',
+                          'confortomodernoefuncional': 'Confort Moderne et Fonctionnel'
+                        };
+                        return translations[taglineKey] || translations['vistapanorâmicasobreomar'] || apartment.tagline;
+                      } else if (currentLang === 'de') {
+                        const translations: Record<string, string> = {
+                          'vistapanorâmicasobreomar': 'Panoramische Meeresansicht',
+                          'vistapanoramicasobreomar': 'Panoramische Meeresansicht',
+                          'vistapanormicasobreomar': 'Panoramische Meeresansicht',
+                          'elegânciaeconfortopremium': 'Eleganz und Premium Komfort',
+                          'confortomodernoefuncional': 'Modern und Funktionaler Komfort'
+                        };
+                        return translations[taglineKey] || translations['vistapanorâmicasobreomar'] || apartment.tagline;
+                      }
+                      
+                      return t(`apartment.${taglineKey}`) || apartment.tagline;
+                    })()}</p>
         </div>
       </section>
 
@@ -91,11 +138,41 @@ export function ApartmentDetail() {
             <div className="lg:col-span-2 space-y-10">
               <div>
                 <h2 className="font-display text-2xl font-bold text-gray-900 mb-4">
-                  Sobre o Apartamento
+                  {(() => {
+                    const currentLang = currentLanguage || 'pt';
+                    if (currentLang === 'en') return 'About the Apartment';
+                    if (currentLang === 'fr') return 'À propos de l\'Appartement';
+                    if (currentLang === 'de') return 'Über die Wohnung';
+                    return 'Sobre o Apartamento';
+                  })()}
                 </h2>
                 <div className="accent-line mb-6" />
                 <p className="text-gray-600 text-lg leading-relaxed">
-                  {apartment.description}
+                  {(() => {
+                    const currentLang = currentLanguage || 'pt';
+                    const description = apartment.description;
+                    
+                    // Tradução automática para descrições longas
+                    if (currentLang === 'en') {
+                      // Tradução para inglês
+                      if (description.includes('Com localização privilegiada, em frente à praia dos pescadores no centro de albufeira')) {
+                        return 'With a privileged location, in front of Fishermen\'s Beach in the center of Albufeira, a 6-story building, with unparalleled privacy, and an impressive view of the beach and city. It also stands out for its 2 panoramic elevators, panoramic pool on the 3rd floor and surrounding space. Private parking and interior elevator.\n\nOur apartments are fully furnished and equipped, with elegant and charming decoration, thinking about your comfort...\n\nYou can also delight yourself in the late afternoon, with an impressive sunset.\n\nALLOW YOURSELF... RELAX AND FEEL AT HOME!';
+                      }
+                    } else if (currentLang === 'fr') {
+                      // Tradução para francês
+                      if (description.includes('Com localização privilegiada, em frente à praia dos pescadores no centro de albufeira')) {
+                        return 'Avec une localisation privilégiée, en face de la plage des pêcheurs au centre d\'Albufeira, un immeuble de 6 étages, avec une intimité sans pareille et une vue imprenable sur la plage et la ville. Il se distingue également par ses 2 ascenseurs panoramiques, piscine panoramique au 3ème étage et espace environnant. Parking privé et ascenseur intérieur.\n\nNos appartements sont entièrement meublés et équipés, avec une décoration élégante et charmante, pensant à votre confort...\n\nVous pouvez également vous émerveiller en fin d\'après-midi, avec un coucher de soleil impressionnant.\n\nPERMETTEZ-VOUS... RELAXEZ-VOUS ET SENTIR-VOUS CHEZ VOUS!';
+                      }
+                    } else if (currentLang === 'de') {
+                      // Tradução para alemão
+                      if (description.includes('Com localização privilegiada, em frente à praia dos pescadores no centro de albufeira')) {
+                        return 'Mit privilegierter Lage, direkt vor dem Strand der Fischer im Zentrum von Albufeira, ein 6-stöckiges Gebäude mit unvergleichlicher Privatsphäre und einem beeindruckenden Blick auf Strand und Stadt. Es zeichnet sich auch durch seine 2 Panorama-Aufzüge, Panorama-Pool im 3. Stock und umgebenden Raum aus. Privater Parkplatz und innerer Aufzug.\n\nUnsere Wohnungen sind vollständig möbliert und ausgestattet, mit eleganter und charmanter Dekoration, die an Ihren Komfort denkt...\n\nSie können sich auch am späten Nachmittag mit einem beeindruckenden Sonnenuntergang verzaubern lassen.\n\nERLAUBEN SIE SICH... ENTSPANNEN SIE UND FÜHLEN SIE SICH ZU HAUSE!';
+                      }
+                    }
+                    
+                    // Fallback para português
+                    return description;
+                  })()}
                 </p>
               </div>
 
@@ -110,7 +187,151 @@ export function ApartmentDetail() {
                       className="flex items-center gap-2 p-2 rounded-lg bg-gray-50 border border-gray-100"
                     >
                       <FeatureIcon feature={feature} className="h-4 w-4 text-primary-500 flex-shrink-0" />
-                      <span className="text-gray-700 text-xs truncate">{t(`features.${feature.toLowerCase().replace(/\s+/g, '')}`) || feature}</span>
+                      <span className="text-gray-700 text-xs truncate">{(() => {
+                      const currentLang = currentLanguage || 'pt';
+                      
+                      // Função para normalizar string (remover acentos e caracteres especiais)
+                      const normalizeString = (str: string) => {
+                        return str.toLowerCase()
+                          .replace(/\s+/g, '')
+                          .replace(/[^\w\s]/gi, '')
+                          .replace(/[àáâãäå]/g, 'a')
+                          .replace(/[èéêë]/g, 'e')
+                          .replace(/[ìíîï]/g, 'i')
+                          .replace(/[òóôõö]/g, 'o')
+                          .replace(/[ùúûü]/g, 'u')
+                          .replace(/[ýÿ]/g, 'y')
+                          .replace(/[ñ]/g, 'n')
+                          .replace(/[ç]/g, 'c');
+                      };
+                      
+                      const featureKey = normalizeString(feature);
+                      
+                      // Tradução automática para features - EXPANDIDA
+                      if (currentLang === 'en') {
+                        const translations: Record<string, string> = {
+                          'cobertores': 'Blankets',
+                          'cofre': 'Safe',
+                          'tbuadeengomar': 'Ironing Board',
+                          'tábuadeengomar': 'Ironing Board',
+                          'toalhas': 'Towels',
+                          'roupadecama': 'Bed Linen',
+                          'elevador': 'Elevator',
+                          'parking': 'Parking',
+                          'garagempreosobconsulta': 'Garage (price on request)',
+                          'garagem(preçosobconsulta)': 'Garage (price on request)',
+                          'microondas': 'Microwave',
+                          'micro-ondas': 'Microwave',
+                          'frigorfico': 'Fridge',
+                          'frigorifico': 'Fridge',
+                          'mquinadelavarloia': 'Dishwasher',
+                          'maquinadelavarloiça': 'Dishwasher',
+                          'utensliosdecozinha': 'Kitchen Utensils',
+                          'utensiliosdecozinha': 'Kitchen Utensils',
+                          'utensíliosdecozinha': 'Kitchen Utensils',
+                          'mquinadelavarroupa': 'Washing Machine',
+                          'maquinadelavarroupa': 'Washing Machine',
+                          'ferrodeengomar': 'Iron',
+                          'berodisponvel': 'Baby Cot Available',
+                          'bercodisponivel': 'Baby Cot Available',
+                          'bercodisponível': 'Baby Cot Available',
+                          'camadecasal': 'Double Bed',
+                          'torradeira': 'Toaster',
+                          'chaleira': 'Kettle',
+                          'vistamar': 'Sea View',
+                          'vistacidade': 'City View',
+                          'varanda': 'Balcony',
+                          'arcondicionado': 'Air Conditioning',
+                          'wi-fi': 'WiFi',
+                          'tv': 'TV',
+                          'cozinhaequipada': 'Equipped Kitchen',
+                          'estacionamento': 'Parking'
+                        };
+                        return translations[featureKey] || feature;
+                      } else if (currentLang === 'fr') {
+                        const translations: Record<string, string> = {
+                          'cobertores': 'Couvertures',
+                          'cofre': 'Coffre',
+                          'tbuadeengomar': 'Table à Repasser',
+                          'tábuadeengomar': 'Table à Repasser',
+                          'toalhas': 'Serviettes',
+                          'roupadecama': 'Linge de Lit',
+                          'elevador': 'Ascenseur',
+                          'parking': 'Parking',
+                          'garagempreosobconsulta': 'Garage (prix sur demande)',
+                          'garagem(preçosobconsulta)': 'Garage (prix sur demande)',
+                          'microondas': 'Micro-ondes',
+                          'micro-ondas': 'Micro-ondes',
+                          'frigorfico': 'Réfrigérateur',
+                          'frigorifico': 'Réfrigérateur',
+                          'mquinadelavarloia': 'Lave-vaisselle',
+                          'maquinadelavarloiça': 'Lave-vaisselle',
+                          'utensliosdecozinha': 'Ustensiles de Cuisine',
+                          'utensiliosdecozinha': 'Ustensiles de Cuisine',
+                          'utensíliosdecozinha': 'Ustensiles de Cuisine',
+                          'mquinadelavarroupa': 'Machine à Laver',
+                          'maquinadelavarroupa': 'Machine à Laver',
+                          'ferrodeengomar': 'Fer à Repasser',
+                          'berodisponvel': 'Lit Bébé Disponible',
+                          'bercodisponivel': 'Lit Bébé Disponible',
+                          'bercodisponível': 'Lit Bébé Disponible',
+                          'camadecasal': 'Lit Double',
+                          'torradeira': 'Grille-pain',
+                          'chaleira': 'Bouilloire',
+                          'vistamar': 'Vue Mer',
+                          'vistacidade': 'Vue Ville',
+                          'varanda': 'Balcon',
+                          'arcondicionado': 'Climatisation',
+                          'wi-fi': 'WiFi',
+                          'tv': 'TV',
+                          'cozinhaequipada': 'Cuisine Équipée',
+                          'estacionamento': 'Parking'
+                        };
+                        return translations[featureKey] || feature;
+                      } else if (currentLang === 'de') {
+                        const translations: Record<string, string> = {
+                          'cobertores': 'Decken',
+                          'cofre': 'Tresor',
+                          'tbuadeengomar': 'Bügelbrett',
+                          'tábuadeengomar': 'Bügelbrett',
+                          'toalhas': 'Handtücher',
+                          'roupadecama': 'Bettwäsche',
+                          'elevador': 'Aufzug',
+                          'parking': 'Parkplatz',
+                          'garagempreosobconsulta': 'Garage (Preis auf Anfrage)',
+                          'garagem(preçosobconsulta)': 'Garage (Preis auf Anfrage)',
+                          'microondas': 'Mikrowelle',
+                          'micro-ondas': 'Mikrowelle',
+                          'frigorfico': 'Kühlschrank',
+                          'frigorifico': 'Kühlschrank',
+                          'mquinadelavarloia': 'Geschirrspüler',
+                          'maquinadelavarloiça': 'Geschirrspüler',
+                          'utensliosdecozinha': 'Küchenutensilien',
+                          'utensiliosdecozinha': 'Küchenutensilien',
+                          'utensíliosdecozinha': 'Küchenutensilien',
+                          'mquinadelavarroupa': 'Waschmaschine',
+                          'maquinadelavarroupa': 'Waschmaschine',
+                          'ferrodeengomar': 'Bügeleisen',
+                          'berodisponvel': 'Kinderbett Verfügbar',
+                          'bercodisponivel': 'Kinderbett Verfügbar',
+                          'bercodisponível': 'Kinderbett Verfügbar',
+                          'camadecasal': 'Doppelbett',
+                          'torradeira': 'Toaster',
+                          'chaleira': 'Wasserkocher',
+                          'vistamar': 'Meerblick',
+                          'vistacidade': 'Stadtblick',
+                          'varanda': 'Balkon',
+                          'arcondicionado': 'Klimaanlage',
+                          'wi-fi': 'WiFi',
+                          'tv': 'TV',
+                          'cozinhaequipada': 'Ausgestattete Küche',
+                          'estacionamento': 'Parkplatz'
+                        };
+                        return translations[featureKey] || feature;
+                      }
+                      
+                      return t(`features.${featureKey}`) || feature;
+                    })()}</span>
                     </div>
                   ))}
                 </div>
@@ -120,7 +341,13 @@ export function ApartmentDetail() {
               <div>
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="font-display text-xl font-bold text-gray-900">
-                    Galeria {(apartment.images?.length || 0) > 0 ? `(${apartment.images.length} fotos)` : ''}
+                    {(() => {
+                      const currentLang = currentLanguage || 'pt';
+                      if (currentLang === 'en') return `Gallery ${apartment.images?.length ? `(${apartment.images.length} photos)` : ''}`;
+                      if (currentLang === 'fr') return `Galerie ${apartment.images?.length ? `(${apartment.images.length} photos)` : ''}`;
+                      if (currentLang === 'de') return `Galerie ${apartment.images?.length ? `(${apartment.images.length} Fotos)` : ''}`;
+                      return `Galeria ${(apartment.images?.length || 0) > 0 ? `(${apartment.images.length} fotos)` : ''}`;
+                    })()}
                   </h3>
                   {(apartment.images?.length || 0) > 6 && (
                     <button
@@ -131,7 +358,13 @@ export function ApartmentDetail() {
                       className="flex items-center gap-2 text-primary-600 hover:text-primary-700 font-medium text-sm"
                     >
                       <ImageIcon className="h-4 w-4" />
-                      Ver todas
+                      {(() => {
+                        const currentLang = currentLanguage || 'pt';
+                        if (currentLang === 'en') return 'View all';
+                        if (currentLang === 'fr') return 'Voir tout';
+                        if (currentLang === 'de') return 'Alle ansehen';
+                        return 'Ver todas';
+                      })()}
                     </button>
                   )}
                 </div>
@@ -169,11 +402,71 @@ export function ApartmentDetail() {
               {apartment.additionalInfo && (
                 <div>
                   <h3 className="font-display text-xl font-bold text-gray-900 mb-6">
-                    Informações Adicionais
+                    {(() => {
+                      const currentLang = currentLanguage || 'pt';
+                      if (currentLang === 'en') return 'Additional Information';
+                      if (currentLang === 'fr') return 'Informations Supplémentaires';
+                      if (currentLang === 'de') return 'Zusätzliche Informationen';
+                      return 'Informações Adicionais';
+                    })()}
                   </h3>
                   <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100">
                     <p className="text-gray-600 leading-relaxed whitespace-pre-line">
-                      {apartment.additionalInfo}
+                      {(() => {
+                        const currentLang = currentLanguage || 'pt';
+                        const additionalInfo = apartment.additionalInfo;
+                        
+                        // Tradução automática para informações adicionais
+                        if (currentLang === 'en') {
+                          // Tradução para inglês
+                          if (additionalInfo.includes('T1+1 com 100m2')) {
+                            return `T1+1 with 100m2
+
+Terrace ideal for enjoying a meal for two or with family, enjoying a view over the beach and the city. Or simply to relax with an impressive sea view.
+
+Living room - common living room and dining room, furnished with the same class as the entire property, equipped with TV, LCD and A/C, with sofa bed (1 place).
+
+Bedroom - master bedroom with queen size double bed, wardrobe, A/C and direct access to the terrace.
+
+Bedroom with a bunk bed, thinking especially of children.
+
+Kitchen - completely furnished and equipped with all utensils and small appliances necessary for your convenience.`;
+                          }
+                        } else if (currentLang === 'fr') {
+                          // Tradução para francês
+                          if (additionalInfo.includes('T1+1 com 100m2')) {
+                            return `T1+1 avec 100m2
+
+Terrasse idéale pour apprécier un repas à deux ou en famille, profitant d\'une vue sur la plage et la ville. Ou simplement pour vous détendre avec une vue imprenue sur la mer.
+
+Salon - salon et salle à manger communs, meublés avec la même classe que l\'ensemble du bien, équipés avec TV, LCD et C/L, avec canapé-lit (1 place).
+
+Chambre - chambre principale avec lit double queen size, penderie, C/L et accès direct à la terrasse.
+
+Chambre avec lit superposé, pensant spécialement aux enfants.
+
+Cuisine - entièrement meublée et équipée avec tous les ustensiles et petits électroménagers nécessaires pour votre confort.`;
+                          }
+                        } else if (currentLang === 'de') {
+                          // Tradução para alemão
+                          if (additionalInfo.includes('T1+1 com 100m2')) {
+                            return `T1+1 mit 100m2
+
+Terrasse ideal für ein Essen zu zweit oder mit der Familie, mit Blick auf den Strand und die Stadt. Oder einfach zum Entspannen mit beeindruckendem Meerblick.
+
+Wohnzimmer - gemeinsames Wohn- und Esszimmer, möbliert mit der gleichen Klasse wie die gesamte Immobilie, ausgestattet mit TV, LCD und Klimaanlage, mit Schlafcouch (1 Platz).
+
+Schlafzimmer - Hauptschlafzimmer mit Queen-Size-Doppelbett, Kleiderschrank, Klimaanlage und direktem Zugang zur Terrasse.
+
+Schlafzimmer mit Etagenbett, besonders für Kinder gedacht.
+
+Küche - vollständig möbliert und ausgestattet mit allen Utensilien und Kleingeräten, die für Ihren Komfort notwendig sind.`;
+                          }
+                        }
+                        
+                        // Fallback para português
+                        return additionalInfo;
+                      })()}
                     </p>
                   </div>
                 </div>
@@ -184,26 +477,56 @@ export function ApartmentDetail() {
             <div className="lg:col-span-1">
               <div className="card-modern p-6 sticky top-24">
                 <h3 className="font-display text-xl font-bold text-gray-900 mb-6">
-                  Informações
+                  {(() => {
+                    const currentLang = currentLanguage || 'pt';
+                    if (currentLang === 'en') return 'Information';
+                    if (currentLang === 'fr') return 'Informations';
+                    if (currentLang === 'de') return 'Informationen';
+                    return 'Informações';
+                  })()}
                 </h3>
 
                 <div className="space-y-4 mb-6">
                   <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50">
                     <div className="flex items-center gap-3 text-gray-600">
                       <Users className="h-5 w-5 text-primary-500" />
-                      <span>Capacidade</span>
+                      <span>{(() => {
+                        const currentLang = currentLanguage || 'pt';
+                        if (currentLang === 'en') return 'Capacity';
+                        if (currentLang === 'fr') return 'Capacité';
+                        if (currentLang === 'de') return 'Kapazität';
+                        return 'Capacidade';
+                      })()}</span>
                     </div>
                     <span className="font-semibold text-gray-900">
-                      {apartment.capacity} PAX
+                      {apartment.capacity} {(() => {
+                        const currentLang = currentLanguage || 'pt';
+                        if (currentLang === 'en') return 'PAX';
+                        if (currentLang === 'fr') return 'PAX';
+                        if (currentLang === 'de') return 'PAX';
+                        return 'PAX';
+                      })()}
                     </span>
                   </div>
                   <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50">
                     <div className="flex items-center gap-3 text-gray-600">
                       <Moon className="h-5 w-5 text-primary-500" />
-                      <span>Estadia mínima</span>
+                      <span>{(() => {
+                        const currentLang = currentLanguage || 'pt';
+                        if (currentLang === 'en') return 'Minimum Stay';
+                        if (currentLang === 'fr') return 'Séjour Minimum';
+                        if (currentLang === 'de') return 'Mindestaufenthalt';
+                        return 'Estadia mínima';
+                      })()}</span>
                     </div>
                     <span className="font-semibold text-gray-900">
-                      {apartment.minNights} noites
+                      {apartment.minNights} {(() => {
+                        const currentLang = currentLanguage || 'pt';
+                        if (currentLang === 'en') return 'nights';
+                        if (currentLang === 'fr') return 'nuits';
+                        if (currentLang === 'de') return 'Nächte';
+                        return 'noites';
+                      })()}
                     </span>
                   </div>
                 </div>
@@ -260,14 +583,26 @@ export function ApartmentDetail() {
                     className="mt-3 w-full text-center inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-primary-500 text-primary-600 rounded-xl font-semibold hover:bg-primary-50 transition-colors"
                   >
                     <Star className="h-5 w-5" />
-                    Ver Avaliações
+                    {(() => {
+                      const currentLang = currentLanguage || 'pt';
+                      if (currentLang === 'en') return 'See Reviews';
+                      if (currentLang === 'fr') return 'Voir les Avis';
+                      if (currentLang === 'de') return 'Bewertungen Ansehen';
+                      return 'Ver Avaliações';
+                    })()}
                   </a>
                 )}
 
                 {/* Social Links & Reviews */}
                 {(content.socialLinks?.tripadvisor || content.socialLinks?.airbnb || content.socialLinks?.booking || content.socialLinks?.googleReviews || content.socialLinks?.facebook || content.socialLinks?.instagram) && (
                   <div className="mt-6 pt-6 border-t">
-                    <p className="text-sm text-gray-500 mb-3">Siga-nos e veja avaliações</p>
+                    <p className="text-sm text-gray-500 mb-3">{(() => {
+                      const currentLang = currentLanguage || 'pt';
+                      if (currentLang === 'en') return 'Follow us and see reviews';
+                      if (currentLang === 'fr') return 'Suivez-nous et voir les avis';
+                      if (currentLang === 'de') return 'Folgen Sie uns und sehen Sie Bewertungen';
+                      return 'Siga-nos e veja avaliações';
+                    })()}</p>
                     <div className="flex flex-wrap gap-3">
                       {content.socialLinks?.facebook && (
                         <a href={content.socialLinks.facebook} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors" title="Facebook">
