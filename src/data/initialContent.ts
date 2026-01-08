@@ -127,6 +127,11 @@ export const initialContent: SiteContent = {
           title: 'Autocarro',
           description: 'Ligações regulares das principais cidades portuguesas',
         },
+        {
+          icon: '🚆',
+          title: 'Comboio',
+          description: 'Ligação CP de Lisboa ao Algarve com paradas em principais estações',
+        },
       ],
     },
     gallery: {

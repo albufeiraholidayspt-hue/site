@@ -446,7 +446,7 @@ export function Algarve() {
               <p className="text-gray-600 leading-relaxed mb-8">
                 {algarve.travel.description}
               </p>
-              <div className="grid md:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {algarve.travel.methods.map((method, index) => (
                   <div key={index} className="group relative rounded-xl overflow-hidden hover:shadow-lg transition-all h-64">
                     {method.imageUrl ? (
