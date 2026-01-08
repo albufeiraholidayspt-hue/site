@@ -2183,12 +2183,10 @@ export function Dashboard() {
                           <label className="block text-sm font-medium text-gray-700 mb-2">
                             Imagem de Partilha (Open Graph)
                           </label>
-                          <input
-                            type="url"
+                          <ImageUploadImgBB
                             value={content.seo?.ogImage || ''}
-                            onChange={(e) => updateSeo({ ogImage: e.target.value })}
-                            placeholder="https://exemplo.com/imagem-partilha.jpg"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                            onChange={(url) => updateSeo({ ogImage: url })}
+                            className="w-full"
                           />
                           <p className="text-xs text-gray-500 mt-1">Imagem que aparece ao partilhar o site nas redes sociais (1200x630px recomendado)</p>
                         </div>
