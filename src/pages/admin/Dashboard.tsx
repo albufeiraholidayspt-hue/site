@@ -664,7 +664,7 @@ export function Dashboard() {
                         Adicione imagens a cada método de transporte.
                       </p>
                       <div className="space-y-4">
-                        {(content.algarve?.travel?.methods && content.algarve.travel.methods.length >= 4 ? content.algarve?.travel?.methods : [
+                        {(content.algarve?.travel?.methods || [
                           { icon: '✈️', title: 'Aéreo', description: 'Aeroporto de Faro com voos diretos de toda a Europa' },
                           { icon: '🚗', title: 'Carro', description: 'Acesso fácil pela A2 a partir de Lisboa (aprox. 3h)' },
                           { icon: '🚌', title: 'Autocarro', description: 'Ligações regulares das principais cidades portuguesas' },
