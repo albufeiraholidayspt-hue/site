@@ -478,6 +478,10 @@ export function Algarve() {
                         </div>
                         <h3 className="font-bold text-xl text-gray-900 mb-2">{method.title}</h3>
                         <p className="text-gray-600 text-sm">{method.description}</p>
+                        <div className="mt-4 text-xs text-gray-500">
+                          <p>• Upload de imagem disponível no backoffice</p>
+                          <p>• Configure na secção "Algarve"</p>
+                        </div>
                       </div>
                     )}
                   </div>
