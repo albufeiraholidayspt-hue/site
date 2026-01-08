@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { SiteContent, User, Apartment, Promotion, SeoSettings, PartialSeoSettings, SocialLinks, Review, AlgarveContent, AlgarveGalleryImage } from '../types';
 import { initialContent } from '../data/initialContent';
 import { supabaseStorage } from '../lib/supabaseStorage';
+import { translationService } from '../services/translationService';
 
 interface AppState {
   content: SiteContent;
@@ -18,7 +19,7 @@ interface AppState {
   addReview: (review: Review) => void;
   updateReview: (id: string, data: Partial<Review>) => void;
   deleteReview: (id: string) => void;
-  updateSeo: (seo: Partial<SeoSettings>) => void;
+  updateSeo: (seo: PartialSeoSettings) => void;
   updateSocialLinks: (links: Partial<SocialLinks>) => void;
   updateAlgarve: (algarve: Partial<AlgarveContent>) => void;
   addAlgarveImage: (image: AlgarveGalleryImage) => void;
@@ -27,6 +28,7 @@ interface AppState {
   login: (username: string, password: string) => boolean;
   logout: () => void;
   resetContent: () => void;
+  translateContent: (targetLanguage: string) => Promise<void>;
 }
 
 const ADMIN_CREDENTIALS = {
@@ -209,6 +211,21 @@ export const useStore = create<AppState>()(
       },
       logout: () => set({ user: { username: '', isAuthenticated: false } }),
       resetContent: () => set({ content: initialContent }),
+      translateContent: async (targetLanguage: string) => {
+        const state = _get();
+        try {
+          if (!translationService.isConfigured()) {
+            console.warn('Google Translate API not configured');
+            return;
+          }
+
+          const translatedContent = await translationService.translateObject(state.content, targetLanguage, 'pt');
+          set({ content: translatedContent });
+        } catch (error) {
+          console.error('Failed to translate content:', error);
+          throw error;
+        }
+      },
     }),
     {
       name: 'albufeira-holidays-storage',

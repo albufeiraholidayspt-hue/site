@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { ImageUploadImgBB } from '../../components/ImageUploadImgBB';
+import { TranslationButton } from '../../components/TranslationButton';
 import { GalleryUploadImgBB } from '../../components/GalleryUploadImgBB';
 import { AutoExport } from '../../components/AutoExport';
 import '../../utils/contentSync'; // Importa para disponibilizar globalmente
@@ -191,6 +192,7 @@ export function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-100">
       <AutoExport enabled={false} />
+      <TranslationButton />
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
