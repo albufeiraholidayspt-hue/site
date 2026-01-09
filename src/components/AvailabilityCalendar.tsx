@@ -138,39 +138,8 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
           return;
         }
 
-        // Tentar proxy próprio primeiro (mais rápido)
-        try {
-          console.log('🚀 Tentando proxy rápido...');
-          const controller = new AbortController();
-          const proxyTimeout = setTimeout(() => controller.abort(), 5000); // 5 segundos
-          
-          const response = await fetch(`/api/proxy-ical?url=${encodeURIComponent(icalUrl)}`, { 
-            signal: controller.signal,
-            headers: {
-              'Accept': 'text/calendar,text/plain,*/*'
-            }
-          });
-          
-          clearTimeout(proxyTimeout);
-          
-          if (response.ok) {
-            const data = await response.text();
-            if (data && data.trim() && (data.includes('BEGIN:VCALENDAR') || data.includes('DTSTART'))) {
-              // Salvar no cache
-              localStorage.setItem(cacheKey, data);
-              localStorage.setItem(`${cacheKey}-time`, now.toString());
-              
-              const parsed = parseIcal(data);
-              console.log('✅ iCal via proxy rápido:', parsed.length, 'datas');
-              setBookedDates(parsed);
-              setLoading(false);
-              clearTimeout(timeoutId);
-              return;
-            }
-          }
-        } catch (proxyError) {
-          console.log('Proxy rápido falhou, tentando outros...');
-        }
+        // Ir direto para o proxy público (site é estático, não tem backend)
+        // O proxy próprio /api/proxy-ical não existe no Render
 
         // Se proxy rápido falhar, tentar um proxy público apenas
         try {
