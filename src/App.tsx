@@ -30,28 +30,29 @@ const PageLoader = () => (
 
 function App() {
   useEffect(() => {
-    // Inicializar Mobile Cache Buster (sem elementos visuais)
-    const cacheBuster = MobileCacheBuster.getInstance();
-    cacheBuster.initMobileOptimizations();
+    // Defer non-critical initialization to reduce main thread blocking
+    const initTimeout = setTimeout(() => {
+      // Inicializar Mobile Cache Buster
+      const cacheBuster = MobileCacheBuster.getInstance();
+      cacheBuster.initMobileOptimizations();
+      
+      // Inicializar solução para mobile
+      const aggressive = AggressiveMobileSolution.getInstance();
+      aggressive.init();
+      
+      // Debug apenas em desenvolvimento
+      if (import.meta.env.DEV) {
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (isMobile) {
+          const debug = MobileDebug.getInstance();
+          debug.debugFullSystem();
+        }
+        (window as any).mobileDebug = MobileDebug.getInstance();
+        (window as any).aggressiveMobile = AggressiveMobileSolution.getInstance();
+      }
+    }, 100); // Defer by 100ms to let critical content render first
     
-    // Inicializar solução AGRESSIVA para mobile
-    const aggressive = AggressiveMobileSolution.getInstance();
-    aggressive.init();
-    
-    // Debug completo no mobile
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    if (isMobile) {
-      console.log('📱 Mobile detectado - iniciando debug completo...');
-      const debug = MobileDebug.getInstance();
-      debug.debugFullSystem();
-    }
-    
-    // Adicionar debug global para fácil acesso
-    (window as any).mobileDebug = MobileDebug.getInstance();
-    (window as any).aggressiveMobile = AggressiveMobileSolution.getInstance();
-    console.log('🔍 Debug disponível em: window.mobileDebug.debugFullSystem()');
-    console.log('🔄 Reset disponível em: window.mobileDebug.forceFullReset()');
-    console.log('📱 Refresh agressivo: window.aggressiveMobile.forceCompleteRefresh()');
+    return () => clearTimeout(initTimeout);
   }, []);
 
   return (
