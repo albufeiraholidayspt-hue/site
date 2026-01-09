@@ -168,6 +168,39 @@ export function Home() {
               {t('nav.contact')}
             </Link>
           </div>
+
+          {/* Car Rental Banner - Auto-Prudente */}
+          <a
+            href="https://www.auto-prudente.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-8 mx-auto max-w-md block group"
+          >
+            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 p-1 shadow-2xl hover:shadow-emerald-500/50 transition-all duration-300 animate-pulse hover:animate-none">
+              <div className="bg-white rounded-xl p-4 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg p-2.5 group-hover:scale-110 transition-transform">
+                    <svg className="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xs font-semibold text-emerald-600 uppercase tracking-wide">
+                      {(() => {
+                        const currentLang = currentLanguage || 'pt';
+                        if (currentLang === 'en') return 'Car Rental';
+                        if (currentLang === 'fr') return 'Location de Voiture';
+                        if (currentLang === 'de') return 'Autovermietung';
+                        return 'Aluguer de Viaturas';
+                      })()}
+                    </p>
+                    <p className="text-sm font-bold text-gray-900">Auto-Prudente</p>
+                  </div>
+                </div>
+                <ArrowRight className="h-5 w-5 text-emerald-600 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </div>
+          </a>
           
           {/* Stats */}
           <div className="mt-16 grid grid-cols-3 gap-8 max-w-lg mx-auto">
