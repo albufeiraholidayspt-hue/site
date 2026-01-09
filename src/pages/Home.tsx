@@ -375,70 +375,68 @@ export function Home() {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* About Section - Text and Stats only */}
       <section className="py-20 md:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="relative" ref={videoContainerRef}>
-              <div className="rounded-2xl w-full h-[500px] overflow-hidden shadow-2xl relative bg-gray-900">
-                {isVideoVisible && content.about.videoUrl ? (
-                  <iframe
-                    ref={videoRef}
-                    src={`https://www.youtube.com/embed/${getYouTubeVideoId(content.about.videoUrl)}?start=${content.about.videoStartTime || 0}&autoplay=1&mute=1&loop=1&playlist=${getYouTubeVideoId(content.about.videoUrl)}&controls=0&showinfo=0&rel=0&modestbranding=1`}
-                    title="Algarve Video"
-                    className="absolute top-1/2 left-1/2 w-full h-full pointer-events-none"
-                    style={{ 
-                      transform: 'translate(-50%, -50%) scale(1.8)',
-                      minWidth: '100%',
-                      minHeight: '100%'
-                    }}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    frameBorder="0"
-                  />
-                ) : (
-                  <img
-                    src={content.about.image}
-                    alt="Albufeira"
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </div>
-            </div>
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              {t('about.title')}
+            </h2>
+            <div className="accent-line mx-auto my-6" />
+            <p className="text-gray-600 text-lg leading-relaxed mb-12">
+              {t('about.description')}
+            </p>
             
-            <div>
-              <h2 className="font-display text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                {t('about.title')}
-              </h2>
-              <div className="accent-line my-6" />
-              <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                {t('about.description')}
-              </p>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">86</div>
-                  <div className="text-gray-600 text-sm">{t('about.blueFlagBeaches')}</div>
-                </div>
-                <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">300+</div>
-                  <div className="text-gray-600 text-sm">{t('about.sunnyDays')}</div>
-                </div>
-                <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">200km</div>
-                  <div className="text-gray-600 text-sm">{t('about.coastline')}</div>
-                </div>
-                <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
-                  <div className="text-2xl md:text-3xl font-bold text-primary-600">7M</div>
-                  <div className="text-gray-600 text-sm">{t('about.annualVisitors')}</div>
-                </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="text-2xl md:text-3xl font-bold text-primary-600">86</div>
+                <div className="text-gray-600 text-sm">{t('about.blueFlagBeaches')}</div>
+              </div>
+              <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="text-2xl md:text-3xl font-bold text-primary-600">300+</div>
+                <div className="text-gray-600 text-sm">{t('about.sunnyDays')}</div>
+              </div>
+              <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="text-2xl md:text-3xl font-bold text-primary-600">200km</div>
+                <div className="text-gray-600 text-sm">{t('about.coastline')}</div>
+              </div>
+              <div className="text-center p-4 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="text-2xl md:text-3xl font-bold text-primary-600">7M</div>
+                <div className="text-gray-600 text-sm">{t('about.annualVisitors')}</div>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Video Section - 16:9 horizontal format */}
+      {content.about.videoUrl && (
+        <section className="py-16 bg-gray-50" ref={videoContainerRef}>
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-gray-900" style={{ aspectRatio: '16/9' }}>
+              {isVideoVisible ? (
+                <iframe
+                  ref={videoRef}
+                  src={`https://www.youtube.com/embed/${getYouTubeVideoId(content.about.videoUrl)}?start=${content.about.videoStartTime || 0}&autoplay=1&mute=1&loop=1&playlist=${getYouTubeVideoId(content.about.videoUrl)}&controls=0&showinfo=0&rel=0&modestbranding=1`}
+                  title="Algarve Video"
+                  className="absolute inset-0 w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  frameBorder="0"
+                />
+              ) : (
+                <img
+                  src={content.about.image}
+                  alt="Albufeira"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover"
+                />
+              )}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Reviews Section */}
       {content.reviews && content.reviews.filter(r => r.active).length > 0 && (
