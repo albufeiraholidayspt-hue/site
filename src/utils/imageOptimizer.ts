@@ -88,22 +88,38 @@ export function optimizeImage(
 
 /**
  * Optimizes an image for hero/banner use (large, high quality)
+ * Uses smaller size for mobile to reduce LCP
  */
 export function optimizeHeroImage(url: string): string {
+  // Detect mobile viewport for smaller images
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   return optimizeImage(url, {
-    width: 1920,
-    quality: 85,
+    width: isMobile ? 800 : 1920,
+    quality: isMobile ? 70 : 85,
+    format: 'auto'
+  });
+}
+
+/**
+ * Optimizes hero image specifically for mobile (smaller, faster)
+ */
+export function optimizeHeroImageMobile(url: string): string {
+  return optimizeImage(url, {
+    width: 800,
+    quality: 70,
     format: 'auto'
   });
 }
 
 /**
  * Optimizes an image for card/thumbnail use (medium size)
+ * Uses smaller size for mobile
  */
 export function optimizeCardImage(url: string): string {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   return optimizeImage(url, {
-    width: 800,
-    quality: 80,
+    width: isMobile ? 400 : 800,
+    quality: isMobile ? 70 : 80,
     format: 'auto'
   });
 }

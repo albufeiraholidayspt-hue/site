@@ -28,6 +28,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
     <title>Albufeira Holidays | Apartamentos de Férias</title>
+    <!-- Critical CSS to prevent CLS from fonts -->
+    <style>
+      /* Reserve space for fonts to prevent layout shift */
+      body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      h1, h2, h3, h4, h5, h6, .font-display { font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      /* Prevent hero CLS by setting min-height */
+      #root > div > section:first-child { min-height: 100vh; min-height: 100dvh; }
+      /* Hide content until fonts load to prevent FOUT */
+      .fonts-loading { opacity: 0.99; }
+    </style>
   </head>
   <body>
     <div id="root"></div>
