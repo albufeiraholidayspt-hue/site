@@ -10,9 +10,8 @@
  * Cloudinary Free Tier: 25GB bandwidth/month, 25K transformations
  */
 
-// Cloudinary cloud name - using demo account for fetch URLs
-// For production, create a free account at cloudinary.com and replace this
-const CLOUDINARY_CLOUD = 'demo';
+// Cloudinary cloud name - your account
+const CLOUDINARY_CLOUD = 'de6edaaft';
 
 // Enable/disable Cloudinary optimization
 const ENABLE_OPTIMIZATION = true;
