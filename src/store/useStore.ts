@@ -275,15 +275,15 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'albufeira-holidays-storage',
-      version: 23,
+      version: 24,
       storage: createJSONStorage(() => supabaseStorage),
       migrate: (persistedState: unknown, version: number) => {
         console.log('🔄 Migrando para versão:', version);
         
         const state = persistedState as AppState;
         
-        // Versão 23: Adicionar locais em falta e Google Maps URLs à galeria existente
-        if (version < 23 && state?.content?.algarve?.gallery?.images) {
+        // Versão 24: Adicionar locais em falta (Lagos, Sagres) e Google Maps URLs à galeria existente
+        if (version < 24 && state?.content?.algarve?.gallery?.images) {
           console.log('✨ Adicionando locais em falta e Google Maps URLs à galeria');
           
           // Mapa de Google Maps URLs por título
@@ -311,10 +311,28 @@ export const useStore = create<AppState>()(
             img => !existingTitles.includes(img.title)
           );
           
-          // Adicionar locais em falta
-          const finalImages = [...updatedImages, ...missingLocations];
+          // Separar Ponta da Piedade para colocar no final
+          const pontaDaPiedade = updatedImages.find(img => img.title === 'Ponta da Piedade');
+          const imagesWithoutPonta = updatedImages.filter(img => img.title !== 'Ponta da Piedade');
+          
+          // Adicionar Lagos e Sagres dos locais em falta (exceto Ponta da Piedade)
+          const lagosAndSagres = missingLocations.filter(img => 
+            img.title === 'Lagos' || img.title === 'Sagres'
+          );
+          const otherMissing = missingLocations.filter(img => 
+            img.title !== 'Lagos' && img.title !== 'Sagres' && img.title !== 'Ponta da Piedade'
+          );
+          
+          // Ordem final: imagens existentes (sem Ponta), Lagos, Sagres, outros em falta, Ponta da Piedade no final
+          const finalImages = [
+            ...imagesWithoutPonta,
+            ...lagosAndSagres,
+            ...otherMissing,
+            ...(pontaDaPiedade ? [pontaDaPiedade] : missingLocations.filter(img => img.title === 'Ponta da Piedade')),
+          ];
           
           console.log('📍 Locais em falta adicionados:', missingLocations.map(l => l.title));
+          console.log('📍 Ordem final:', finalImages.map(l => l.title));
           
           const defaultBeachItems = initialContent.algarve?.beaches?.items || [];
           
