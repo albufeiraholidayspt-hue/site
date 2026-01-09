@@ -456,7 +456,7 @@ export function Home() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
               {content.reviews.filter(r => r.active).slice(0, 6).map((review) => (
                 <div
                   key={review.id}
