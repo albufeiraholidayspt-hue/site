@@ -894,6 +894,7 @@ Küche - vollständig möbliert und ausgestattet mit allen Utensilien und Kleing
                     <AvailabilityCalendar 
                       icalUrl={apartment.icalUrl} 
                       minNights={apartment.minNights}
+                      minNightsByMonth={apartment.minNightsByMonth}
                       onDateSelection={(startDate, endDate, isValid) => {
                         setSelectedDates({ start: startDate, end: endDate });
                         setIsSelectionValid(isValid);

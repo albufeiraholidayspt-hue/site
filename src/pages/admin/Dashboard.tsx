@@ -1771,7 +1771,7 @@ export function Dashboard() {
                               </div>
                               <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                                  Noites Mínimas
+                                  Noites Mínimas (Padrão)
                                 </label>
                                 <input
                                   type="number"
@@ -1780,6 +1780,52 @@ export function Dashboard() {
                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
                                 />
                               </div>
+                            </div>
+
+                            {/* Noites Mínimas por Mês */}
+                            <div className="bg-gray-50 p-4 rounded-lg">
+                              <label className="block text-sm font-medium text-gray-700 mb-3">
+                                Noites Mínimas por Mês (deixe vazio para usar o padrão)
+                              </label>
+                              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                                {[
+                                  { key: 'january', label: 'Jan' },
+                                  { key: 'february', label: 'Fev' },
+                                  { key: 'march', label: 'Mar' },
+                                  { key: 'april', label: 'Abr' },
+                                  { key: 'may', label: 'Mai' },
+                                  { key: 'june', label: 'Jun' },
+                                  { key: 'july', label: 'Jul' },
+                                  { key: 'august', label: 'Ago' },
+                                  { key: 'september', label: 'Set' },
+                                  { key: 'october', label: 'Out' },
+                                  { key: 'november', label: 'Nov' },
+                                  { key: 'december', label: 'Dez' },
+                                ].map((month) => (
+                                  <div key={month.key} className="flex flex-col">
+                                    <label className="text-xs text-gray-500 mb-1">{month.label}</label>
+                                    <input
+                                      type="number"
+                                      min="1"
+                                      placeholder={String(apartment.minNights)}
+                                      value={apartment.minNightsByMonth?.[month.key as keyof typeof apartment.minNightsByMonth] || ''}
+                                      onChange={(e) => {
+                                        const value = e.target.value ? parseInt(e.target.value) : undefined;
+                                        updateApartment(apartment.id, {
+                                          minNightsByMonth: {
+                                            ...apartment.minNightsByMonth,
+                                            [month.key]: value,
+                                          },
+                                        });
+                                      }}
+                                      className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                              <p className="text-xs text-gray-500 mt-2">
+                                Configure noites mínimas diferentes para cada mês. Campos vazios usam o valor padrão ({apartment.minNights} noites).
+                              </p>
                             </div>
 
                             <ImageUploadImgBB

@@ -2,9 +2,25 @@ import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from '../i18n/simple';
 
+interface MinNightsByMonth {
+  january?: number;
+  february?: number;
+  march?: number;
+  april?: number;
+  may?: number;
+  june?: number;
+  july?: number;
+  august?: number;
+  september?: number;
+  october?: number;
+  november?: number;
+  december?: number;
+}
+
 interface AvailabilityCalendarProps {
   icalUrl?: string;
   minNights?: number;
+  minNightsByMonth?: MinNightsByMonth;
   onDateSelection?: (startDate: string, endDate: string, isValid: boolean) => void;
 }
 
@@ -13,8 +29,20 @@ interface BookedDate {
   end: Date;
 }
 
-export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }: AvailabilityCalendarProps) {
+export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth, onDateSelection }: AvailabilityCalendarProps) {
   const { t, currentLanguage } = useTranslation();
+  
+  // Função para obter noites mínimas baseado no mês
+  const getMinNightsForMonth = (date: Date): number => {
+    if (!minNightsByMonth) return minNights;
+    
+    const monthNames: (keyof MinNightsByMonth)[] = [
+      'january', 'february', 'march', 'april', 'may', 'june',
+      'july', 'august', 'september', 'october', 'november', 'december'
+    ];
+    const monthKey = monthNames[date.getMonth()];
+    return minNightsByMonth[monthKey] || minNights;
+  };
   const [currentDate, setCurrentDate] = useState(new Date());
   const [bookedDates, setBookedDates] = useState<BookedDate[]>([]);
   const [loading, setLoading] = useState(false);
@@ -323,16 +351,17 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
         return;
       }
       
-      // Verificar estadia mínima
+      // Verificar estadia mínima (usar noites mínimas do mês de check-in)
       const nightsDiff = Math.ceil((clickedDate.getTime() - selectedStartDate.getTime()) / (1000 * 60 * 60 * 24));
+      const requiredMinNights = getMinNightsForMonth(selectedStartDate);
       
-      if (nightsDiff < minNights) {
+      if (nightsDiff < requiredMinNights) {
         setMessage({ type: 'error', text: (() => {
           const currentLang = currentLanguage || 'pt';
-          if (currentLang === 'en') return `Minimum stay of ${minNights} night${minNights > 1 ? 's' : ''}.`;
-          if (currentLang === 'fr') return `Séjour minimum de ${minNights} nuit${minNights > 1 ? 's' : ''}.`;
-          if (currentLang === 'de') return `Mindestaufenthalt von ${minNights} Nacht${minNights > 1 ? 'en' : ''}.`;
-          return `Estadia mínima de ${minNights} noite${minNights > 1 ? 's' : ''}.`;
+          if (currentLang === 'en') return `Minimum stay of ${requiredMinNights} night${requiredMinNights > 1 ? 's' : ''}.`;
+          if (currentLang === 'fr') return `Séjour minimum de ${requiredMinNights} nuit${requiredMinNights > 1 ? 's' : ''}.`;
+          if (currentLang === 'de') return `Mindestaufenthalt von ${requiredMinNights} Nacht${requiredMinNights > 1 ? 'en' : ''}.`;
+          return `Estadia mínima de ${requiredMinNights} noite${requiredMinNights > 1 ? 's' : ''}.`;
         })() });
         setTimeout(() => setMessage(null), 4000);
         return;
@@ -465,12 +494,15 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
             <div className="w-2 h-2 bg-primary-500 rounded-full animate-pulse shadow-lg" />
             <span className="text-xs font-medium text-primary-800">{t('calendar.selectDates')}</span>
           </div>
-          {minNights > 1 && (
-            <div className="flex items-center gap-1 bg-white/60 px-2 py-0.5 rounded-full border border-primary-200">
-              <div className="w-1.5 h-1.5 bg-primary-600 rounded-full" />
-              <span className="text-xs font-semibold text-primary-700">{t('calendar.minNights', { count: minNights })}</span>
-            </div>
-          )}
+          {(() => {
+            const currentMonthMinNights = getMinNightsForMonth(currentDate);
+            return currentMonthMinNights > 1 ? (
+              <div className="flex items-center gap-1 bg-white/60 px-2 py-0.5 rounded-full border border-primary-200">
+                <div className="w-1.5 h-1.5 bg-primary-600 rounded-full" />
+                <span className="text-xs font-semibold text-primary-700">{t('calendar.minNights', { count: currentMonthMinNights })}</span>
+              </div>
+            ) : null;
+          })()}
         </div>
       </div>
 
@@ -516,12 +548,15 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
             <div className="w-3 h-3 rounded bg-primary-50 border border-primary-300" />
             <span className="text-xs text-gray-600">{t('calendar.today')}</span>
           </div>
-          {minNights > 1 && (
-            <div className="flex items-center gap-1.5">
-              <div className="w-3 h-3 rounded bg-yellow-100 border border-yellow-300" />
-              <span className="text-xs text-gray-600">{t('calendar.minNightsShort', { count: minNights })}</span>
-            </div>
-          )}
+          {(() => {
+            const currentMonthMinNights = getMinNightsForMonth(currentDate);
+            return currentMonthMinNights > 1 ? (
+              <div className="flex items-center gap-1.5">
+                <div className="w-3 h-3 rounded bg-yellow-100 border border-yellow-300" />
+                <span className="text-xs text-gray-600">{t('calendar.minNightsShort', { count: currentMonthMinNights })}</span>
+              </div>
+            ) : null;
+          })()}
           {(selectedStartDate || selectedEndDate) && (
             <>
               <div className="flex items-center gap-1.5">

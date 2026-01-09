@@ -19,6 +19,20 @@ export interface Apartment {
   additionalInfo_de?: string;
   capacity: number;
   minNights: number;
+  minNightsByMonth?: {
+    january?: number;
+    february?: number;
+    march?: number;
+    april?: number;
+    may?: number;
+    june?: number;
+    july?: number;
+    august?: number;
+    september?: number;
+    october?: number;
+    november?: number;
+    december?: number;
+  };
   features: string[];
   images: string[];
   heroImage: string;
