@@ -282,13 +282,59 @@ export const useStore = create<AppState>()(
         
         const state = persistedState as AppState;
         
-        // Versão 23: Forçar substituição COMPLETA do algarve (galeria com Google Maps e locais em falta)
-        if (version < 23) {
-          console.log('✨ FORÇANDO atualização completa - galeria com Google Maps, Lagos, Sagres, Praia da Marinha');
-          // Retornar estado completamente novo baseado em initialContent
+        // Versão 23: Adicionar locais em falta e Google Maps URLs à galeria existente
+        if (version < 23 && state?.content?.algarve?.gallery?.images) {
+          console.log('✨ Adicionando locais em falta e Google Maps URLs à galeria');
+          
+          // Mapa de Google Maps URLs por título
+          const googleMapsUrls: Record<string, string> = {
+            'Praia da Marinha': 'https://maps.google.com/?q=Praia+da+Marinha,+Lagoa,+Portugal',
+            'Gruta de Benagil': 'https://maps.google.com/?q=Benagil+Cave,+Lagoa,+Portugal',
+            'Praia da Falésia': 'https://maps.google.com/?q=Praia+da+Falésia,+Albufeira,+Portugal',
+            'Faro': 'https://maps.google.com/?q=Faro,+Algarve,+Portugal',
+            'Albufeira': 'https://maps.google.com/?q=Albufeira,+Algarve,+Portugal',
+            'Ponta da Piedade': 'https://maps.google.com/?q=Ponta+da+Piedade,+Lagos,+Portugal',
+            'Lagos': 'https://maps.google.com/?q=Lagos,+Algarve,+Portugal',
+            'Sagres': 'https://maps.google.com/?q=Sagres,+Algarve,+Portugal',
+          };
+          
+          // Adicionar Google Maps URLs às imagens existentes
+          const updatedImages = state.content.algarve.gallery.images.map(img => ({
+            ...img,
+            googleMapsUrl: img.googleMapsUrl || googleMapsUrls[img.title] || '',
+          }));
+          
+          // Verificar quais locais estão em falta
+          const existingTitles = updatedImages.map(img => img.title);
+          const defaultGalleryImages = initialContent.algarve?.gallery?.images || [];
+          const missingLocations = defaultGalleryImages.filter(
+            img => !existingTitles.includes(img.title)
+          );
+          
+          // Adicionar locais em falta
+          const finalImages = [...updatedImages, ...missingLocations];
+          
+          console.log('📍 Locais em falta adicionados:', missingLocations.map(l => l.title));
+          
+          const defaultBeachItems = initialContent.algarve?.beaches?.items || [];
+          
           return {
             ...state,
-            content: initialContent,
+            content: {
+              ...state.content,
+              algarve: {
+                ...state.content.algarve,
+                gallery: {
+                  ...state.content.algarve.gallery,
+                  images: finalImages,
+                },
+                // Adicionar praias premiadas se não existirem
+                beaches: {
+                  ...state.content.algarve.beaches,
+                  items: state.content.algarve.beaches?.items || defaultBeachItems,
+                },
+              },
+            },
           };
         }
         
