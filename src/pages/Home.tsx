@@ -333,6 +333,7 @@ export function Home() {
                     <AvailabilityCalendar 
                       icalUrl={apartment.icalUrl} 
                       minNights={apartment.minNights}
+                      minNightsByMonth={apartment.minNightsByMonth}
                       onDateSelection={(startDate, endDate, isValid) => {
                         setApartmentsSelection(prev => ({
                           ...prev,
