@@ -85,6 +85,11 @@ export function Header() {
             />
           </Link>
 
+          {/* Mobile Language Selector - Always visible */}
+          <div className="lg:hidden">
+            <SimpleLanguageSelector />
+          </div>
+
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-1">
             {navigation.map((item) => (
@@ -189,9 +194,6 @@ export function Header() {
                   return 'Reservar';
                 })()}
               </a>
-              <div className="mt-4 pt-4 border-t border-gray-200">
-                <SimpleLanguageSelector />
-              </div>
             </div>
           </div>
         )}
