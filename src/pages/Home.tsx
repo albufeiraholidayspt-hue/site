@@ -126,30 +126,38 @@ export function Home() {
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-white" />
           
-          {/* Car Rental Banner - Auto-Prudente - Top Right */}
+          {/* Car Rental Badge - Auto-Prudente - Top Right */}
           <a
             href="https://www.auto-prudente.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="absolute top-24 right-4 md:top-28 md:right-8 z-20 group"
+            className="absolute top-20 right-4 md:top-24 md:right-8 z-20 group"
           >
-            <div className="relative overflow-hidden rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 p-0.5 shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 animate-pulse hover:animate-none hover:scale-105">
-              <div className="bg-white rounded-full px-4 py-2 md:px-6 md:py-3 flex items-center gap-2 md:gap-3">
-                <svg className="h-5 w-5 md:h-6 md:w-6 text-cyan-600" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
-                </svg>
-                <div className="text-left">
-                  <p className="text-[10px] md:text-xs font-bold text-cyan-600 uppercase tracking-wide leading-tight">
+            <div className="relative backdrop-blur-md bg-white/95 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20 hover:-translate-y-1">
+              <div className="px-4 py-2.5 md:px-5 md:py-3 flex items-center gap-3">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-cyan-500 rounded-lg blur-sm opacity-50 group-hover:opacity-75 transition-opacity"></div>
+                  <div className="relative bg-gradient-to-br from-cyan-400 to-cyan-600 rounded-lg p-2">
+                    <svg className="h-4 w-4 md:h-5 md:w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M18.92 6.01C18.72 5.42 18.16 5 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h12v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-8l-2.08-5.99zM6.5 16c-.83 0-1.5-.67-1.5-1.5S5.67 13 6.5 13s1.5.67 1.5 1.5S7.33 16 6.5 16zm11 0c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM5 11l1.5-4.5h11L19 11H5z"/>
+                    </svg>
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] md:text-xs text-gray-500 font-medium uppercase tracking-wider">
                     {(() => {
                       const currentLang = currentLanguage || 'pt';
-                      if (currentLang === 'en') return 'Rent a Car';
+                      if (currentLang === 'en') return 'Car Rental';
                       if (currentLang === 'fr') return 'Location';
                       if (currentLang === 'de') return 'Mietwagen';
-                      return 'Aluguer';
+                      return 'Rent a Car';
                     })()}
-                  </p>
-                  <p className="text-xs md:text-sm font-bold text-gray-900 leading-tight">Auto-Prudente</p>
+                  </span>
+                  <span className="text-sm md:text-base font-bold text-gray-900 group-hover:text-cyan-600 transition-colors">Auto-Prudente</span>
                 </div>
+                <svg className="h-4 w-4 text-gray-400 group-hover:text-cyan-600 group-hover:translate-x-0.5 transition-all ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </div>
             </div>
           </a>
