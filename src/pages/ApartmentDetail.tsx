@@ -368,9 +368,7 @@ export function ApartmentDetail() {
                           'estacionamento': 'Parking',
                           'parking': 'Parking',
                           'estacionamentoprivado': 'Private Parking',
-                          'garagem(preosobconsulta)': 'Garage (price on request)',
-                          'garagem(preçosobconsulta)': 'Garage (price on request)',
-                          'garagempreosobconsulta': 'Garage (price on request)',
+                          'garagemprecosobconsulta': 'Garage (price on request)',
                           'porteiro': 'Doorman',
                           'entradaprivada': 'Private Entrance',
                           // Leisure
@@ -490,9 +488,7 @@ export function ApartmentDetail() {
                           'estacionamento': 'Parking',
                           'parking': 'Parking',
                           'estacionamentoprivado': 'Parking Privé',
-                          'garagem(preosobconsulta)': 'Garage (prix sur demande)',
-                          'garagem(preçosobconsulta)': 'Garage (prix sur demande)',
-                          'garagempreosobconsulta': 'Garage (prix sur demande)',
+                          'garagemprecosobconsulta': 'Garage (prix sur demande)',
                           'porteiro': 'Portier',
                           'entradaprivada': 'Entrée Privée',
                           // Leisure
@@ -611,9 +607,7 @@ export function ApartmentDetail() {
                           'estacionamento': 'Parkplatz',
                           'parking': 'Parkplatz',
                           'estacionamentoprivado': 'Privater Parkplatz',
-                          'garagem(preosobconsulta)': 'Garage (Preis auf Anfrage)',
-                          'garagem(preçosobconsulta)': 'Garage (Preis auf Anfrage)',
-                          'garagempreosobconsulta': 'Garage (Preis auf Anfrage)',
+                          'garagemprecosobconsulta': 'Garage (Preis auf Anfrage)',
                           'porteiro': 'Portier',
                           'entradaprivada': 'Privater Eingang',
                           // Leisure
