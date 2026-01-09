@@ -95,7 +95,7 @@ export function optimizeHeroImage(url: string): string {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   return optimizeImage(url, {
     width: isMobile ? 800 : 1920,
-    quality: isMobile ? 70 : 85,
+    quality: isMobile ? 60 : 80,
     format: 'auto'
   });
 }
@@ -119,7 +119,7 @@ export function optimizeCardImage(url: string): string {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   return optimizeImage(url, {
     width: isMobile ? 400 : 800,
-    quality: isMobile ? 70 : 80,
+    quality: isMobile ? 55 : 75,
     format: 'auto'
   });
 }

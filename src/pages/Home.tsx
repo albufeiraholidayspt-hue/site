@@ -107,6 +107,8 @@ export function Home() {
                       <img
                         src={optimizeHeroImage(image)}
                         alt="Albufeira Holidays"
+                        width={800}
+                        height={600}
                         className={`absolute inset-0 w-full h-full object-cover ${
                           index === currentHeroImage ? 'animate-kenburns' : ''
                         }`}
