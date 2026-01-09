@@ -66,6 +66,22 @@ export const initialContent: SiteContent = {
           description: 'Bares, restaurantes, espreguiçadeiras e desportos aquáticos',
         },
       ],
+      items: [
+        {
+          name: 'Praia da Marinha',
+          description: 'Considerada uma das praias mais bonitas do mundo, a Praia da Marinha é famosa pelas suas impressionantes formações rochosas, águas cristalinas e falésias douradas. Um verdadeiro paraíso para mergulho e snorkeling.',
+          imageUrl: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          googleMapsUrl: 'https://maps.google.com/?q=Praia+da+Marinha,+Lagoa,+Portugal',
+          awards: ['Bandeira Azul', 'Top 100 Praias do Mundo'],
+        },
+        {
+          name: 'Praia da Falésia',
+          description: 'Com mais de 6 km de extensão, a Praia da Falésia é conhecida pelas suas espetaculares falésias de tons vermelhos e laranja. Uma das praias mais fotogénicas do Algarve, perfeita para longas caminhadas à beira-mar.',
+          imageUrl: 'https://images.unsplash.com/photo-1555881400-74d7aca398ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          googleMapsUrl: 'https://maps.google.com/?q=Praia+da+Falésia,+Albufeira,+Portugal',
+          awards: ['Bandeira Azul', 'Praia de Qualidade de Ouro'],
+        },
+      ],
     },
     climate: {
       title: 'O Tempo no Algarve',
