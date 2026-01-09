@@ -23,18 +23,10 @@ import {
   Check,
   Shirt,
   Baby,
-  Flame,
-  Snowflake,
-  Armchair,
   BedDouble,
-  Home,
   CigaretteOff,
   ShowerHead,
   Droplets,
-  Utensils,
-  Blinds,
-  Shield,
-  PackageCheck,
   Thermometer
 } from 'lucide-react';
 

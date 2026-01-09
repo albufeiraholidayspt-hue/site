@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube, MessageCircle } from 'lucide-react';
+import { Phone, Mail, Facebook, Instagram, MessageCircle } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { useTranslation } from '../../i18n/simple';
 

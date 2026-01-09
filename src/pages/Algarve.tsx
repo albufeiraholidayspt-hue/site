@@ -896,7 +896,7 @@ export function Algarve() {
               
               <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                 {algarve.gallery.images.map((image, index) => {
-                  const totalImages = algarve.gallery.images.length;
+                  const totalImages = algarve.gallery?.images.length || 0;
                   const isFirst = index === 0;
                   const isLast = index === totalImages - 1;
                   const isFirstOrLast = isFirst || isLast;
