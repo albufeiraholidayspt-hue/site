@@ -77,8 +77,133 @@ export function Contact() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
             
-            {/* Contact Info */}
-            <div className="lg:col-span-1 flex flex-col gap-6">
+            {/* Contact Form - First on mobile */}
+            <div className="lg:col-span-2 flex flex-col order-1 lg:order-2">
+              <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm flex-1 flex flex-col">
+                <h2 className="font-semibold text-gray-900 mb-2">{t('contact.sendUsMessage')}</h2>
+                <p className="text-gray-500 text-sm mb-6">{t('contact.fillForm')}</p>
+
+                {submitStatus === 'success' ? (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle className="h-8 w-8 text-green-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">{t('contact.messageSent')}</h3>
+                    <p className="text-gray-600 text-sm mb-4">{t('contact.messageReceived')}</p>
+                    <button
+                      onClick={() => setSubmitStatus('idle')}
+                      className="text-primary-600 text-sm font-medium hover:underline"
+                    >
+                      {t('contact.sendAnother')}
+                    </button>
+                  </div>
+                ) : submitStatus === 'error' ? (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <AlertCircle className="h-8 w-8 text-red-600" />
+                    </div>
+                    <h3 className="font-semibold text-gray-900 mb-2">{t('contact.sendError')}</h3>
+                    <p className="text-gray-600 text-sm mb-4">{t('contact.errorOccurred')}</p>
+                    <button
+                      onClick={() => setSubmitStatus('idle')}
+                      className="text-primary-600 text-sm font-medium hover:underline"
+                    >
+                      {t('contact.tryAgain')}
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-5 flex-1 flex flex-col">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div>
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('contact.name')} *
+                        </label>
+                        <input
+                          type="text"
+                          id="name"
+                          required
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                          {t('contact.email')} *
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          required
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
+                        {t('contact.phone')}
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        value={formData.phone}
+                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+                        {t('contact.subject')}
+                      </label>
+                      <input
+                        type="text"
+                        id="subject"
+                        value={formData.subject}
+                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+                        {t('contact.message')} *
+                      </label>
+                      <textarea
+                        id="message"
+                        required
+                        rows={5}
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors resize-none"
+                      />
+                    </div>
+                    <div className="flex justify-end">
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="inline-flex items-center gap-2 bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            {t('contact.sending')}
+                          </>
+                        ) : (
+                          <>
+                            <Send className="h-4 w-4" />
+                            {t('contact.sendMessage')}
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
+
+            {/* Contact Info - Second on mobile */}
+            <div className="lg:col-span-1 flex flex-col gap-6 order-2 lg:order-1">
               {/* Info Cards */}
               <div className="bg-white rounded-xl p-6 shadow-sm">
                 <h2 className="font-semibold text-gray-900 mb-6">{t('contact.contactInfo')}</h2>
@@ -152,139 +277,6 @@ export function Contact() {
                   <ArrowRight className="h-4 w-4" />
                 </a>
               </div>
-            </div>
-
-            {/* Contact Form */}
-            <div className="lg:col-span-2 flex flex-col">
-              <div className="bg-white rounded-xl p-6 md:p-8 shadow-sm flex-1 flex flex-col">
-                <h2 className="font-semibold text-gray-900 mb-2">{t('contact.sendUsMessage')}</h2>
-                <p className="text-gray-500 text-sm mb-6">{t('contact.fillForm')}</p>
-
-                {submitStatus === 'success' ? (
-                  <div className="text-center py-12">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle className="h-8 w-8 text-green-600" />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">{t('contact.messageSent')}</h3>
-                    <p className="text-gray-600 text-sm mb-4">{t('contact.messageReceived')}</p>
-                    <button
-                      onClick={() => setSubmitStatus('idle')}
-                      className="text-primary-600 text-sm font-medium hover:underline"
-                    >
-                      {t('contact.sendAnother')}
-                    </button>
-                  </div>
-                ) : submitStatus === 'error' ? (
-                  <div className="text-center py-12">
-                    <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <AlertCircle className="h-8 w-8 text-red-600" />
-                    </div>
-                    <h3 className="font-semibold text-gray-900 mb-2">{t('contact.sendError')}</h3>
-                    <p className="text-gray-600 text-sm mb-4">{t('contact.errorOccurred')}</p>
-                    <button
-                      onClick={() => setSubmitStatus('idle')}
-                      className="text-primary-600 text-sm font-medium hover:underline"
-                    >
-                      {t('contact.tryAgain')}
-                    </button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5 flex-1 flex flex-col">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                          {t('contact.name')} *
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          required
-                          value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
-                          placeholder={t('contact.yourName')}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                          {t('contact.email')} *
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          required
-                          value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
-                          placeholder="email@exemplo.com"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                          {t('contact.phone')}
-                        </label>
-                        <input
-                          type="tel"
-                          id="phone"
-                          value={formData.phone}
-                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
-                          placeholder="+351 000 000 000"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
-                          {t('contact.subject')}
-                        </label>
-                        <input
-                          type="text"
-                          id="subject"
-                          value={formData.subject}
-                          onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
-                          placeholder={t('contact.messageSubject')}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="flex-1 flex flex-col">
-                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                        {t('contact.message')} *
-                      </label>
-                      <textarea
-                        id="message"
-                        required
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors resize-none flex-1 min-h-[120px]"
-                        placeholder={t('contact.writeMessage')}
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full md:w-auto px-8 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          {t('contact.sending')}
-                        </>
-                      ) : (
-                        <>
-                          <Send className="h-5 w-5" />
-                          {t('contact.send')}
-                        </>
-                      )}
-                    </button>
-                  </form>
-                )}
-              </div>
-
             </div>
           </div>
         </div>
