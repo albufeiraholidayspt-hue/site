@@ -154,17 +154,17 @@ export function Home() {
             {t('hero.subtitle')}
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center px-4">
             <a
               href={content.bookingUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary text-lg inline-flex items-center justify-center gap-2"
+              className="btn-primary text-sm md:text-lg inline-flex items-center justify-center gap-2 py-3 px-6"
             >
               {t('hero.cta')}
-              <ArrowRight className="h-5 w-5" />
+              <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
             </a>
-            <Link to="/contacto" className="btn-secondary bg-white text-lg inline-flex items-center justify-center gap-2">
+            <Link to="/contacto" className="btn-secondary bg-white text-sm md:text-lg inline-flex items-center justify-center gap-2 py-3 px-6">
               {t('nav.contact')}
             </Link>
           </div>
@@ -420,6 +420,7 @@ export function Home() {
                   src={`https://www.youtube.com/embed/${getYouTubeVideoId(content.about.videoUrl)}?start=${content.about.videoStartTime || 0}&autoplay=1&mute=1&loop=1&playlist=${getYouTubeVideoId(content.about.videoUrl)}&controls=0&showinfo=0&rel=0&modestbranding=1`}
                   title="Algarve Video"
                   className="absolute inset-0 w-full h-full"
+                  style={{ transform: 'scale(1.2)' }}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   frameBorder="0"
@@ -455,11 +456,11 @@ export function Home() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {content.reviews.filter(r => r.active).slice(0, 6).map((review) => (
                 <div
                   key={review.id}
-                  className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
+                  className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-center gap-1 mb-3">
                     {[...Array(review.rating)].map((_, i) => (
