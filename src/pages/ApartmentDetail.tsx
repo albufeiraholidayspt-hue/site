@@ -258,8 +258,6 @@ export function ApartmentDetail() {
                       // Função para normalizar string (remover acentos e caracteres especiais)
                       const normalizeString = (str: string) => {
                         return str.toLowerCase()
-                          .replace(/\s+/g, '')
-                          .replace(/[^\w\s]/gi, '')
                           .replace(/[àáâãäå]/g, 'a')
                           .replace(/[èéêë]/g, 'e')
                           .replace(/[ìíîï]/g, 'i')
@@ -267,7 +265,9 @@ export function ApartmentDetail() {
                           .replace(/[ùúûü]/g, 'u')
                           .replace(/[ýÿ]/g, 'y')
                           .replace(/[ñ]/g, 'n')
-                          .replace(/[ç]/g, 'c');
+                          .replace(/[ç]/g, 'c')
+                          .replace(/\s+/g, '')
+                          .replace(/[^\w]/gi, '');
                       };
                       
                       const featureKey = normalizeString(feature);
