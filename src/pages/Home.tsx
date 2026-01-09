@@ -103,15 +103,20 @@ export function Home() {
                       index === currentHeroImage ? 'opacity-100' : 'opacity-0'
                     }`}
                   >
-                    <div
-                      className={`absolute inset-0 bg-cover bg-center ${
-                        index === currentHeroImage ? 'animate-kenburns' : ''
-                      }`}
-                      style={{
-                        backgroundImage: image ? `url(${optimizeHeroImage(image)})` : 'none',
-                        backgroundColor: image ? 'transparent' : '#1f2937'
-                      }}
-                    />
+                    {image ? (
+                      <img
+                        src={optimizeHeroImage(image)}
+                        alt="Albufeira Holidays"
+                        className={`absolute inset-0 w-full h-full object-cover ${
+                          index === currentHeroImage ? 'animate-kenburns' : ''
+                        }`}
+                        fetchPriority={index === 0 ? 'high' : 'low'}
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                        decoding={index === 0 ? 'sync' : 'async'}
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gray-800" />
+                    )}
                   </div>
                 ));
               })()}
