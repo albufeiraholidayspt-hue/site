@@ -1,18 +1,28 @@
 import { X, Settings, Check } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useCookieConsent } from '../hooks/useCookieConsent';
 
 export function CookieBanner() {
   const { showBanner, acceptAllCookies, rejectAllCookies, saveCustomSettings } = useCookieConsent();
   const [showSettings, setShowSettings] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [settings, setSettings] = useState({
     analytics: false,
     marketing: false,
     functional: true,
   });
 
-  if (!showBanner) return null;
+  // Delay banner appearance to prevent CLS during initial page load
+  useEffect(() => {
+    if (showBanner) {
+      const timer = setTimeout(() => setIsVisible(true), 1000);
+      return () => clearTimeout(timer);
+    }
+    setIsVisible(false);
+  }, [showBanner]);
+
+  if (!showBanner || !isVisible) return null;
 
   const handleSaveSettings = () => {
     saveCustomSettings(settings);
