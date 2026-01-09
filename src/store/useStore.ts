@@ -275,24 +275,20 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'albufeira-holidays-storage',
-      version: 22,
+      version: 23,
       storage: createJSONStorage(() => supabaseStorage),
       migrate: (persistedState: unknown, version: number) => {
         console.log('🔄 Migrando para versão:', version);
         
         const state = persistedState as AppState;
         
-        // Versão 22: Forçar atualização completa da galeria com Google Maps e locais em falta
-        if (version < 22 && state?.content) {
-          console.log('✨ Atualizando galeria com Google Maps e locais em falta (Lagos, Sagres)');
+        // Versão 23: Forçar substituição COMPLETA do algarve (galeria com Google Maps e locais em falta)
+        if (version < 23) {
+          console.log('✨ FORÇANDO atualização completa - galeria com Google Maps, Lagos, Sagres, Praia da Marinha');
+          // Retornar estado completamente novo baseado em initialContent
           return {
             ...state,
-            content: {
-              ...state.content,
-              reviews: initialContent.reviews,
-              apartments: initialContent.apartments,
-              algarve: initialContent.algarve,
-            },
+            content: initialContent,
           };
         }
         
