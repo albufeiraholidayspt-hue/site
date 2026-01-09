@@ -150,6 +150,9 @@ export function Dashboard() {
       const response = await fetch(apiUrl);
       
       if (!response.ok) {
+        if (response.status === 429) {
+          throw new Error('Limite de pedidos atingido. Aguarde alguns minutos e tente novamente.');
+        }
         throw new Error(`Erro na API: ${response.status}`);
       }
       
