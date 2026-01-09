@@ -49,7 +49,7 @@ export function Home() {
     return () => clearInterval(interval);
   }, [content.hero.backgroundImages, content.hero.backgroundImage]);
 
-  // Detect when video section is in view
+  // Detect when video section is approaching view (preload earlier)
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -59,7 +59,7 @@ export function Home() {
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.01, rootMargin: '200px' } // Start loading 200px before visible
     );
 
     if (videoContainerRef.current) {
