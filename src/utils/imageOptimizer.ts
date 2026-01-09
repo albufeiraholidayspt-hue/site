@@ -47,8 +47,11 @@ export function optimizeImage(
     return url;
   }
 
-  // Skip non-image URLs
-  if (!url.match(/\.(jpg|jpeg|png|gif|webp|avif|bmp|tiff)(\?|$)/i) && !url.includes('ibb.co')) {
+  // Skip non-image URLs (but allow ibb.co and unsplash.com)
+  if (!url.match(/\.(jpg|jpeg|png|gif|webp|avif|bmp|tiff)(\?|$)/i) && 
+      !url.includes('ibb.co') && 
+      !url.includes('unsplash.com') &&
+      !url.includes('images.unsplash.com')) {
     return url;
   }
 
