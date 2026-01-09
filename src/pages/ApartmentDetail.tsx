@@ -284,14 +284,14 @@ export function ApartmentDetail() {
                 <h3 className="font-display text-2xl font-bold text-gray-900 mb-6">
                   {t('apartment.amenityTitle')}
                 </h3>
-                <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-5 gap-1">
+                <div className="grid grid-cols-5 sm:grid-cols-5 md:grid-cols-6 gap-1">
                   {apartment.features.map((feature) => (
                     <div
                       key={feature}
                       className="flex items-center gap-1 p-1 rounded-md bg-gray-50 border border-gray-100"
                     >
-                      <FeatureIcon feature={feature} className="h-2.5 w-2.5 md:h-4 md:w-4 text-primary-500 flex-shrink-0" />
-                      <span className="text-gray-700 text-[8px] md:text-xs truncate">{(() => {
+                      <FeatureIcon feature={feature} className="h-3 w-3 md:h-4 md:w-4 text-primary-500 flex-shrink-0" />
+                      <span className="text-gray-700 text-[10px] md:text-xs truncate">{(() => {
                       const currentLang = currentLanguage || 'pt';
                       
                       // Função para normalizar string (remover acentos e caracteres especiais)
@@ -983,24 +983,47 @@ Küche - vollständig möbliert und ausgestattet mit allen Utensilien und Kleing
                   </button>
                 )}
 
-                {/* Reviews Button */}
-                {apartment.reviewsUrl && (
-                  <a
-                    href={apartment.reviewsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 w-full text-center inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-primary-500 text-primary-600 rounded-xl font-semibold hover:bg-primary-50 transition-colors"
-                  >
-                    <Star className="h-5 w-5" />
-                    {(() => {
-                      const currentLang = currentLanguage || 'pt';
-                      if (currentLang === 'en') return 'See Reviews';
-                      if (currentLang === 'fr') return 'Voir les Avis';
-                      if (currentLang === 'de') return 'Bewertungen Ansehen';
-                      return 'Ver Avaliações';
-                    })()}
-                  </a>
-                )}
+                {/* Apartment Reviews */}
+                {(() => {
+                  const apartmentReviews = content.reviews?.filter(r => r.active && r.apartment === apartment.name) || [];
+                  if (apartmentReviews.length === 0) return null;
+                  
+                  return (
+                    <div className="mt-6 pt-6 border-t">
+                      <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                        {(() => {
+                          const currentLang = currentLanguage || 'pt';
+                          if (currentLang === 'en') return 'Reviews';
+                          if (currentLang === 'fr') return 'Avis';
+                          if (currentLang === 'de') return 'Bewertungen';
+                          return 'Avaliações';
+                        })()}
+                      </h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {apartmentReviews.slice(0, 6).map((review) => (
+                          <div key={review.id} className="bg-gray-50 rounded-lg p-2 border border-gray-100">
+                            <div className="flex items-center gap-0.5 mb-1">
+                              {[...Array(review.rating)].map((_, i) => (
+                                <Star key={i} className="h-2.5 w-2.5 fill-current text-yellow-400" />
+                              ))}
+                            </div>
+                            <p className="text-gray-600 text-[10px] line-clamp-3 leading-tight">
+                              {(() => {
+                                const lang = currentLanguage || 'pt';
+                                if (lang === 'en' && review.text_en) return review.text_en;
+                                if (lang === 'fr' && review.text_fr) return review.text_fr;
+                                if (lang === 'de' && review.text_de) return review.text_de;
+                                return review.text;
+                              })()}
+                            </p>
+                            <p className="text-gray-500 text-[9px] mt-1 font-medium">{review.name}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {/* Social Links & Reviews */}
                 {(content.socialLinks?.tripadvisor || content.socialLinks?.airbnb || content.socialLinks?.booking || content.socialLinks?.googleReviews || content.socialLinks?.facebook || content.socialLinks?.instagram) && (
@@ -1037,16 +1060,12 @@ Küche - vollständig möbliert und ausgestattet mit allen Utensilien und Kleing
                       )}
                       {content.socialLinks?.airbnb && (
                         <a href={content.socialLinks.airbnb} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors" title="Airbnb">
-                          <svg className="h-5 w-5 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12.001 18.275c-.942-1.299-1.538-2.49-1.845-3.467-.307-.977-.307-1.776 0-2.396.307-.62.835-1.024 1.538-1.214.703-.19 1.538-.19 2.241 0 .703.19 1.231.594 1.538 1.214.307.62.307 1.419 0 2.396-.307.977-.903 2.168-1.845 3.467-.471.649-.942 1.299-1.313 1.776-.371-.477-.842-1.127-1.314-1.776zm9.428-3.467c-.307 2.168-1.538 4.065-3.383 5.364-1.845 1.299-4.086 1.776-6.327 1.299-2.241-.477-4.086-1.776-5.327-3.645-1.241-1.869-1.538-4.243-.835-6.411.703-2.168 2.241-3.944 4.383-4.898 2.142-.954 4.584-.954 6.726 0 2.142.954 3.68 2.73 4.383 4.898.371 1.127.471 2.254.38 3.393z"/>
-                          </svg>
+                          <img src="/Airbnb.png" alt="Airbnb" className="h-5 w-5 object-contain" />
                         </a>
                       )}
                       {content.socialLinks?.booking && (
                         <a href={content.socialLinks.booking} target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors" title="Booking.com">
-                          <svg className="h-5 w-5 text-gray-600" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M2.273 0v24h6.545v-9.6h4.364c4.364 0 7.909-3.36 7.909-7.2S17.545 0 13.182 0H2.273zm6.545 4.8h4.364c1.636 0 2.909 1.2 2.909 2.4s-1.273 2.4-2.909 2.4H8.818V4.8z"/>
-                          </svg>
+                          <img src="/Booking.svg" alt="Booking.com" className="h-5 w-5 object-contain" />
                         </a>
                       )}
                     </div>

@@ -619,12 +619,12 @@ export function Algarve() {
               {algarve.beaches.items && algarve.beaches.items.length > 0 && (
                 <div className="mt-10">
                   <h3 className="text-2xl font-bold text-gray-900 mb-8">{getAlgarveText('awardedBeaches', 'Praias Premiadas')}</h3>
-                  <div className="grid md:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-2 gap-4 md:gap-8">
                     {algarve.beaches.items.map((beach, index) => (
-                      <div key={index} className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                      <div key={index} className="group bg-white rounded-xl md:rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
                         {beach.imageUrl && (
                           <div 
-                            className="relative h-56 overflow-hidden cursor-pointer"
+                            className="relative h-32 md:h-56 overflow-hidden cursor-pointer"
                             onClick={() => {
                               setBeachLightboxIndex(index);
                               setBeachLightboxOpen(true);
@@ -656,9 +656,9 @@ export function Algarve() {
                             )}
                           </div>
                         )}
-                        <div className="p-5">
-                          <h4 className="font-bold text-lg text-gray-900 mb-1">{beach.name}</h4>
-                          <p className="text-gray-500 text-sm mb-3">{beach.description}</p>
+                        <div className="p-3 md:p-5">
+                          <h4 className="font-bold text-sm md:text-lg text-gray-900 mb-1">{beach.name}</h4>
+                          <p className="text-gray-500 text-xs md:text-sm mb-2 md:mb-3 line-clamp-3">{beach.description}</p>
                           {beach.awards && beach.awards.length > 0 && (
                             <div className="flex flex-wrap gap-2">
                               {beach.awards.map((award, i) => (
@@ -740,9 +740,9 @@ export function Algarve() {
               <p className="text-gray-600 leading-relaxed mb-8">
                 {translateContent(algarve.activities.description)}
               </p>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-4 gap-2 md:gap-6">
                 {algarve.activities.items.map((item, index) => (
-                  <div key={index} className="group relative rounded-xl overflow-hidden hover:shadow-lg transition-all h-64">
+                  <div key={index} className="group relative rounded-lg md:rounded-xl overflow-hidden hover:shadow-lg transition-all h-32 md:h-64">
                     {item.imageUrl ? (
                       <>
                         <img 
@@ -753,9 +753,9 @@ export function Algarve() {
                           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
-                          <h3 className="font-bold text-xl mb-2">{translateContent(item.title)}</h3>
-                          <p className="text-white/90 text-sm">{translateContent(item.description)}</p>
+                        <div className="absolute bottom-0 left-0 right-0 p-2 md:p-5 text-white">
+                          <h3 className="font-bold text-[10px] md:text-xl mb-0 md:mb-2">{translateContent(item.title)}</h3>
+                          <p className="text-white/90 text-[8px] md:text-sm hidden md:block">{translateContent(item.description)}</p>
                         </div>
                         {item.googleMapsUrl && (
                           <button
@@ -836,9 +836,9 @@ export function Algarve() {
               <p className="text-gray-600 leading-relaxed mb-8">
                 {translateContent(algarve.travel.description)}
               </p>
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-4 gap-2 md:gap-6">
                 {algarve.travel.methods.map((method, index) => (
-                  <div key={index} className="group relative rounded-xl overflow-hidden hover:shadow-lg transition-all h-64">
+                  <div key={index} className="group relative rounded-lg md:rounded-xl overflow-hidden hover:shadow-lg transition-all h-32 md:h-64">
                     {method.imageUrl ? (
                       <>
                         <img 
@@ -849,9 +849,9 @@ export function Algarve() {
                           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
-                          <h3 className="font-bold text-xl mb-2">{translateContent(method.title)}</h3>
-                          <p className="text-white/90 text-sm">{translateContent(method.description)}</p>
+                        <div className="absolute bottom-0 left-0 right-0 p-2 md:p-5 text-white">
+                          <h3 className="font-bold text-[10px] md:text-xl mb-0 md:mb-2">{translateContent(method.title)}</h3>
+                          <p className="text-white/90 text-[8px] md:text-sm hidden md:block">{translateContent(method.description)}</p>
                         </div>
                         {method.googleMapsUrl && (
                           <button
@@ -894,13 +894,19 @@ export function Algarve() {
                 </p>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {algarve.gallery.images.map((image, index) => (
+              <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+                {algarve.gallery.images.map((image, index) => {
+                  const totalImages = algarve.gallery.images.length;
+                  const isFirst = index === 0;
+                  const isLast = index === totalImages - 1;
+                  const isFirstOrLast = isFirst || isLast;
+                  
+                  return (
                   <div 
                     key={image.id}
                     className={`group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer ${
                       image.featured ? 'md:col-span-2 lg:col-span-3' : ''
-                    }`}
+                    } ${isFirstOrLast ? 'col-span-2 md:col-span-1' : ''}`}
                     onClick={() => {
                       setLightboxIndex(index);
                       setLightboxOpen(true);
@@ -936,7 +942,8 @@ export function Algarve() {
                       </button>
                     )}
                   </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Lightbox */}
