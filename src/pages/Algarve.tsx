@@ -58,6 +58,60 @@ export function Algarve() {
           updateAlgarve(initialContent.algarve);
         }
       });
+    } else if (algarve?.gallery?.images) {
+      // Verificar se Lagos e Sagres estão em falta e adicionar
+      const existingTitles = algarve.gallery.images.map(img => img.title);
+      const missingLocations: { title: string; description: string; imageUrl: string; category: 'beach' | 'city' | 'landscape'; googleMapsUrl: string; enabledInHero: boolean; heroOrder: number; imagePosition: string; id: string }[] = [];
+      
+      if (!existingTitles.includes('Lagos')) {
+        missingLocations.push({
+          id: 'lagos-' + Date.now(),
+          title: 'Lagos',
+          description: 'Cidade histórica com praias deslumbrantes',
+          imageUrl: 'https://images.unsplash.com/photo-1580837119756-563d608dd119?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          category: 'city' as const,
+          enabledInHero: true,
+          heroOrder: 7,
+          imagePosition: 'center',
+          googleMapsUrl: 'https://maps.google.com/?q=Lagos,+Algarve,+Portugal',
+        });
+      }
+      
+      if (!existingTitles.includes('Sagres')) {
+        missingLocations.push({
+          id: 'sagres-' + Date.now(),
+          title: 'Sagres',
+          description: 'O extremo sudoeste da Europa',
+          imageUrl: 'https://images.unsplash.com/photo-1559628233-100c795629d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+          category: 'city' as const,
+          enabledInHero: true,
+          heroOrder: 8,
+          imagePosition: 'center',
+          googleMapsUrl: 'https://maps.google.com/?q=Sagres,+Algarve,+Portugal',
+        });
+      }
+      
+      if (missingLocations.length > 0) {
+        console.log('📍 Adicionando locais em falta:', missingLocations.map(l => l.title));
+        
+        // Separar Ponta da Piedade para colocar no final
+        const pontaDaPiedade = algarve.gallery.images.find(img => img.title === 'Ponta da Piedade');
+        const imagesWithoutPonta = algarve.gallery.images.filter(img => img.title !== 'Ponta da Piedade');
+        
+        const newImages = [
+          ...imagesWithoutPonta,
+          ...missingLocations,
+          ...(pontaDaPiedade ? [pontaDaPiedade] : []),
+        ];
+        
+        updateAlgarve({
+          ...algarve,
+          gallery: {
+            ...algarve.gallery,
+            images: newImages,
+          },
+        });
+      }
     }
   }, [algarve, updateAlgarve]);
 
