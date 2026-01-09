@@ -8,6 +8,7 @@ import { RentACar } from './pages/RentACar';
 import { PrivacyPolicy } from './pages/PrivacyPolicy';
 import { Login } from './pages/admin/Login';
 import { Dashboard } from './pages/admin/Dashboard';
+import { SEOAnalysis } from './pages/admin/SEOAnalysis';
 import UploadDemo from './pages/UploadDemo';
 import { DataBackup } from './components/DataBackup';
 import { CookieBanner } from './components/CookieBanner';
@@ -58,6 +59,7 @@ function App() {
         </Route>
         <Route path="/admin" element={<Login />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
+        <Route path="/admin/seo" element={<SEOAnalysis />} />
       </Routes>
     </>
   );

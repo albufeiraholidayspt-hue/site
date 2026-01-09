@@ -244,6 +244,12 @@ export function Dashboard() {
                 Limpar Cache
               </button>
               <a
+                href="/admin/seo"
+                className="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1"
+              >
+                📊 Análise SEO
+              </a>
+              <a
                 href="/"
                 target="_blank"
                 className="text-sm text-primary-600 hover:text-primary-700"
