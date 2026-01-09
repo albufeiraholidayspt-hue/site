@@ -46,6 +46,7 @@ export interface Apartment {
   seoTitle?: string;
   seoDescription?: string;
   seoKeywords?: string;
+  ogImage?: string;
 }
 
 export interface Promotion {
@@ -206,6 +207,7 @@ export interface AlgarveContent {
     title: string;
     description: string;
     keywords: string;
+    ogImage?: string;
   };
 }
 

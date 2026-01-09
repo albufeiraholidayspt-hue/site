@@ -50,6 +50,31 @@ export function Algarve() {
     }
     metaKeywords.setAttribute('content', seoKeywords);
     
+    // Open Graph meta tags
+    const ogImage = algarve?.seo?.ogImage || algarve?.hero?.backgroundImage || '';
+    const url = window.location.href;
+    
+    const updateMeta = (name: string, content: string, isProperty = false) => {
+      const attr = isProperty ? 'property' : 'name';
+      let meta = document.querySelector(`meta[${attr}="${name}"]`);
+      if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute(attr, name);
+        document.head.appendChild(meta);
+      }
+      meta.setAttribute('content', content);
+    };
+    
+    updateMeta('og:title', seoTitle, true);
+    updateMeta('og:description', seoDescription, true);
+    if (ogImage) updateMeta('og:image', ogImage, true);
+    updateMeta('og:url', url, true);
+    updateMeta('og:type', 'website', true);
+    updateMeta('twitter:card', 'summary_large_image');
+    updateMeta('twitter:title', seoTitle);
+    updateMeta('twitter:description', seoDescription);
+    if (ogImage) updateMeta('twitter:image', ogImage);
+    
     // Se não existir conteúdo do Algarve, inicializar com dados padrão
     if (!algarve) {
       console.log('⚠️ Conteúdo do Algarve não encontrado, inicializando...');

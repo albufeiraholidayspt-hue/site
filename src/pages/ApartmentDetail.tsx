@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { Users, Moon, ArrowRight, ArrowLeft, Calendar, Facebook, Instagram, Star, ImageIcon } from 'lucide-react';
 import { useStore } from '../store/useStore';
@@ -25,6 +25,42 @@ export function ApartmentDetail() {
   const [isSelectionValid, setIsSelectionValid] = useState(false);
 
   const apartment = content.apartments.find((apt) => apt.slug === slug);
+
+  // Update SEO meta tags
+  useEffect(() => {
+    if (apartment) {
+      const title = apartment.seoTitle || `${apartment.name} - Albufeira Holidays`;
+      const description = apartment.seoDescription || apartment.description.substring(0, 160);
+      const ogImage = apartment.ogImage || apartment.heroImage;
+      const url = window.location.href;
+
+      document.title = title;
+      
+      // Update or create meta tags
+      const updateMeta = (name: string, content: string, isProperty = false) => {
+        const attr = isProperty ? 'property' : 'name';
+        let meta = document.querySelector(`meta[${attr}="${name}"]`);
+        if (!meta) {
+          meta = document.createElement('meta');
+          meta.setAttribute(attr, name);
+          document.head.appendChild(meta);
+        }
+        meta.setAttribute('content', content);
+      };
+
+      updateMeta('description', description);
+      updateMeta('keywords', apartment.seoKeywords || 'apartamento, albufeira, férias, algarve');
+      updateMeta('og:title', title, true);
+      updateMeta('og:description', description, true);
+      updateMeta('og:image', ogImage, true);
+      updateMeta('og:url', url, true);
+      updateMeta('og:type', 'website', true);
+      updateMeta('twitter:card', 'summary_large_image');
+      updateMeta('twitter:title', title);
+      updateMeta('twitter:description', description);
+      updateMeta('twitter:image', ogImage);
+    }
+  }, [apartment]);
 
   if (!apartment) {
     return <Navigate to="/" replace />;

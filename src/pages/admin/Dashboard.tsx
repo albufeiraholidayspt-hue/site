@@ -1321,6 +1321,21 @@ export function Dashboard() {
                           />
                           <p className="text-xs text-gray-500 mt-1">Separadas por vírgula</p>
                         </div>
+
+                        <ImageUploadImgBB
+                          label="Imagem Open Graph (Partilha)"
+                          value={content.algarve?.seo?.ogImage || ''}
+                          onChange={(url) => updateAlgarve({ 
+                            seo: { 
+                              ...content.algarve?.seo,
+                              title: content.algarve?.seo?.title || '',
+                              description: content.algarve?.seo?.description || '',
+                              keywords: content.algarve?.seo?.keywords || '',
+                              ogImage: url
+                            }
+                          })}
+                        />
+                        <p className="text-xs text-gray-500 -mt-2">Imagem que aparece ao partilhar nas redes sociais (1200x630px recomendado).</p>
                       </div>
                     </div>
 
@@ -2317,6 +2332,13 @@ export function Dashboard() {
                                   />
                                   <p className="text-xs text-gray-500 mt-1">Separadas por vírgula</p>
                                 </div>
+
+                                <ImageUploadImgBB
+                                  label="Imagem Open Graph (Partilha)"
+                                  value={apartment.ogImage || ''}
+                                  onChange={(url) => updateApartment(apartment.id, { ogImage: url })}
+                                />
+                                <p className="text-xs text-gray-500 -mt-2">Imagem que aparece ao partilhar nas redes sociais (1200x630px recomendado). Se vazio, usa a imagem principal.</p>
                               </div>
                             </div>
 
