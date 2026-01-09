@@ -275,15 +275,15 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'albufeira-holidays-storage',
-      version: 18,
+      version: 19,
       storage: createJSONStorage(() => supabaseStorage),
       migrate: (persistedState: unknown, version: number) => {
         console.log('🔄 Migrando para versão:', version);
         
         const state = persistedState as AppState;
         
-        // Versão 17+: Forçar atualização dos reviews e apartamentos com imagens
-        if (version < 18 && state?.content) {
+        // Versão 19: Forçar atualização dos reviews e apartamentos com imagens Unsplash
+        if (version < 19 && state?.content) {
           console.log('✨ Atualizando reviews e apartamentos com imagens do backup');
           return {
             ...state,
