@@ -79,9 +79,9 @@ export function Header() {
             <img 
               src="/logo-symbol-small.png" 
               alt="Albufeira Holidays" 
-              width="56"
-              height="56"
-              className="h-14 md:h-16 w-auto rounded-lg transition-transform group-hover:scale-105"
+              width="64"
+              height="64"
+              className="h-16 md:h-20 w-auto rounded-lg transition-transform group-hover:scale-105"
             />
           </Link>
 
