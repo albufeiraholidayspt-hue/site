@@ -4,6 +4,7 @@ import { useStore } from '../store/useStore';
 import { ImageLightbox } from '../components/ImageLightbox';
 import { WeatherWidget } from '../components/WeatherWidget';
 import { useTranslation } from '../i18n/simple';
+import { optimizeHeroImage, optimizeCardImage, optimizeThumbnail } from '../utils/imageOptimizer';
 
 const getYouTubeVideoId = (url: string): string => {
   if (!url) return '';
@@ -536,7 +537,7 @@ export function Algarve() {
             </div>
           ) : currentSlideData?.type === 'image' ? (
             <img
-              src={currentSlideData.data.imageUrl}
+              src={optimizeHeroImage(currentSlideData.data.imageUrl)}
               alt={currentSlideData.data.title}
               loading="eager"
               decoding="async"
@@ -630,7 +631,7 @@ export function Algarve() {
                             }}
                           >
                             <img 
-                              src={beach.imageUrl} 
+                              src={optimizeCardImage(beach.imageUrl)} 
                               alt={beach.name}
                               loading="lazy"
                               decoding="async"
@@ -745,7 +746,7 @@ export function Algarve() {
                     {item.imageUrl ? (
                       <>
                         <img 
-                          src={item.imageUrl} 
+                          src={optimizeCardImage(item.imageUrl)} 
                           alt={item.title}
                           loading="lazy"
                           decoding="async"
@@ -784,7 +785,7 @@ export function Algarve() {
               {algarve.golf.imageUrl ? (
                 <div className="relative h-96 md:h-[500px] overflow-hidden group">
                   <img 
-                    src={algarve.golf.imageUrl} 
+                    src={optimizeHeroImage(algarve.golf.imageUrl)} 
                     alt={algarve.golf.title}
                     loading="lazy"
                     decoding="async"
@@ -841,7 +842,7 @@ export function Algarve() {
                     {method.imageUrl ? (
                       <>
                         <img 
-                          src={method.imageUrl} 
+                          src={optimizeCardImage(method.imageUrl)} 
                           alt={method.title}
                           loading="lazy"
                           decoding="async"
@@ -907,7 +908,7 @@ export function Algarve() {
                   >
                     <div className={image.featured ? 'aspect-w-16 aspect-h-8' : 'aspect-w-4 aspect-h-3'}>
                       <img
-                        src={image.imageUrl}
+                        src={optimizeThumbnail(image.imageUrl)}
                         alt={image.title}
                         loading="lazy"
                         decoding="async"

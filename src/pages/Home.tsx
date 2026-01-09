@@ -5,6 +5,7 @@ import { useStore } from '../store/useStore';
 import { FeatureIcon } from '../utils/featureIcons';
 import { AvailabilityCalendar } from '../components/AvailabilityCalendar';
 import { useTranslation } from '../i18n/simple';
+import { optimizeCardImage, optimizeHeroImage } from '../utils/imageOptimizer';
 
 // Extract YouTube video ID from URL
 const getYouTubeVideoId = (url: string): string => {
@@ -107,7 +108,7 @@ export function Home() {
                         index === currentHeroImage ? 'animate-kenburns' : ''
                       }`}
                       style={{
-                        backgroundImage: image ? `url(${image})` : 'none',
+                        backgroundImage: image ? `url(${optimizeHeroImage(image)})` : 'none',
                         backgroundColor: image ? 'transparent' : '#1f2937'
                       }}
                     />
@@ -201,7 +202,7 @@ export function Home() {
                 {/* Image */}
                 <div className="relative h-56 overflow-hidden">
                   <img
-                    src={apartment.heroImage}
+                    src={optimizeCardImage(apartment.heroImage)}
                     alt={apartment.name}
                     loading="lazy"
                     decoding="async"

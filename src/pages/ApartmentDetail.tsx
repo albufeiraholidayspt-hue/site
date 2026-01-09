@@ -6,6 +6,7 @@ import { FeatureIcon } from '../utils/featureIcons';
 import { AvailabilityCalendar } from '../components/AvailabilityCalendar';
 import { ImageLightbox } from '../components/ImageLightbox';
 import { useTranslation } from '../i18n/simple';
+import { optimizeHeroImage, optimizeThumbnail } from '../utils/imageOptimizer';
 
 // Extract YouTube video ID from URL
 const getYouTubeVideoId = (url: string): string => {
@@ -89,7 +90,7 @@ export function ApartmentDetail() {
             </div>
           ) : (
             <img
-              src={apartment.heroImage}
+              src={optimizeHeroImage(apartment.heroImage)}
               alt={apartment.name}
               loading="eager"
               decoding="async"
@@ -723,7 +724,7 @@ export function ApartmentDetail() {
                         className="relative group overflow-hidden rounded-2xl shadow-lg cursor-pointer"
                       >
                         <img
-                          src={image}
+                          src={optimizeThumbnail(image)}
                           alt={`${apartment.name} - Imagem ${index + 1}`}
                           loading="lazy"
                           decoding="async"
