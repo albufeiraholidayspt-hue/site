@@ -15,6 +15,9 @@ import {
   Search,
   Star,
   MapPin,
+  Gauge,
+  RefreshCw,
+  ExternalLink,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { ImageUploadImgBB } from '../../components/ImageUploadImgBB';
@@ -129,6 +132,35 @@ export function Dashboard() {
   const [expandedApartment, setExpandedApartment] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [isTranslating, setIsTranslating] = useState<string | null>(null); // ID do apartamento em tradução
+  
+  // PageSpeed Analysis states
+  const [pageSpeedUrl, setPageSpeedUrl] = useState('https://albufeiraholidays.pt');
+  const [pageSpeedStrategy, setPageSpeedStrategy] = useState<'mobile' | 'desktop'>('mobile');
+  const [pageSpeedLoading, setPageSpeedLoading] = useState(false);
+  const [pageSpeedResult, setPageSpeedResult] = useState<any>(null);
+  const [pageSpeedError, setPageSpeedError] = useState<string | null>(null);
+  
+  const runPageSpeedAnalysis = async () => {
+    setPageSpeedLoading(true);
+    setPageSpeedError(null);
+    setPageSpeedResult(null);
+    
+    try {
+      const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(pageSpeedUrl)}&strategy=${pageSpeedStrategy}&category=performance&category=accessibility&category=best-practices&category=seo`;
+      const response = await fetch(apiUrl);
+      
+      if (!response.ok) {
+        throw new Error(`Erro na API: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      setPageSpeedResult(data);
+    } catch (err) {
+      setPageSpeedError(err instanceof Error ? err.message : 'Erro ao analisar URL');
+    } finally {
+      setPageSpeedLoading(false);
+    }
+  };
 
   // Função para salvar com tradução automática
   const handleApartmentTextChange = async (apartmentId: string, field: string, value: string) => {
@@ -2817,6 +2849,99 @@ export function Dashboard() {
                         />
                         <p className="text-xs text-gray-500 mt-1">Instruções para os motores de busca</p>
                       </div>
+                    </div>
+
+                    {/* PageSpeed Analysis */}
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100">
+                      <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <Gauge className="h-5 w-5 text-blue-600" />
+                        Análise PageSpeed (Google)
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-4">
+                        Analise a performance, SEO e acessibilidade do seu website usando a API gratuita do Google PageSpeed Insights.
+                      </p>
+                      
+                      <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                        <input
+                          type="url"
+                          value={pageSpeedUrl}
+                          onChange={(e) => setPageSpeedUrl(e.target.value)}
+                          placeholder="https://albufeiraholidays.pt"
+                          className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                        />
+                        <select
+                          value={pageSpeedStrategy}
+                          onChange={(e) => setPageSpeedStrategy(e.target.value as 'mobile' | 'desktop')}
+                          title="Dispositivo para análise"
+                          className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                        >
+                          <option value="mobile">📱 Mobile</option>
+                          <option value="desktop">🖥️ Desktop</option>
+                        </select>
+                        <button
+                          onClick={runPageSpeedAnalysis}
+                          disabled={pageSpeedLoading}
+                          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+                        >
+                          {pageSpeedLoading ? (
+                            <>
+                              <RefreshCw className="h-5 w-5 animate-spin" />
+                              A analisar...
+                            </>
+                          ) : (
+                            <>
+                              <Search className="h-5 w-5" />
+                              Analisar
+                            </>
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Quick Links */}
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        <span className="text-xs text-gray-500">Páginas rápidas:</span>
+                        <button onClick={() => setPageSpeedUrl('https://albufeiraholidays.pt')} className="text-xs text-blue-600 hover:underline">Homepage</button>
+                        <button onClick={() => setPageSpeedUrl('https://albufeiraholidays.pt/algarve')} className="text-xs text-blue-600 hover:underline">Algarve</button>
+                        <button onClick={() => setPageSpeedUrl('https://albufeiraholidays.pt/contacto')} className="text-xs text-blue-600 hover:underline">Contacto</button>
+                      </div>
+
+                      {/* Results */}
+                      {pageSpeedResult && (
+                        <div className="mt-4">
+                          {/* Scores */}
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                            {(['performance', 'accessibility', 'best-practices', 'seo'] as const).map((cat) => {
+                              const score = pageSpeedResult.lighthouseResult?.categories?.[cat]?.score || 0;
+                              const scorePercent = Math.round(score * 100);
+                              const colorClass = score >= 0.9 ? 'bg-green-100 text-green-700 border-green-300' : score >= 0.5 ? 'bg-yellow-100 text-yellow-700 border-yellow-300' : 'bg-red-100 text-red-700 border-red-300';
+                              const names: Record<string, string> = { performance: 'Performance', accessibility: 'Acessibilidade', 'best-practices': 'Boas Práticas', seo: 'SEO' };
+                              return (
+                                <div key={cat} className={`p-4 rounded-lg border ${colorClass} text-center`}>
+                                  <div className="text-2xl font-bold">{scorePercent}</div>
+                                  <div className="text-xs">{names[cat]}</div>
+                                </div>
+                              );
+                            })}
+                          </div>
+
+                          {/* Link to full report */}
+                          <a
+                            href={`https://pagespeed.web.dev/report?url=${encodeURIComponent(pageSpeedUrl)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline"
+                          >
+                            Ver relatório completo no Google PageSpeed
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        </div>
+                      )}
+
+                      {pageSpeedError && (
+                        <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                          {pageSpeedError}
+                        </div>
+                      )}
                     </div>
 
                     <button
