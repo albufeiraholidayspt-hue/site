@@ -16,7 +16,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center justify-center gap-3 mb-4">
               <img 
-                src="/logo-symbol.png" 
+                src="/logo-symbol-small.png" 
                 alt="Albufeira Holidays" 
                 width="40"
                 height="40"
