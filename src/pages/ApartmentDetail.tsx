@@ -91,6 +91,8 @@ export function ApartmentDetail() {
             <img
               src={apartment.heroImage}
               alt={apartment.name}
+              loading="eager"
+              decoding="async"
               className={`w-full h-full object-cover ${apartment.enableAnimation !== false ? 'animate-kenburns' : ''}`}
               style={{ objectPosition: apartment.heroImagePosition || 'center' }}
             />
@@ -723,6 +725,8 @@ export function ApartmentDetail() {
                         <img
                           src={image}
                           alt={`${apartment.name} - Imagem ${index + 1}`}
+                          loading="lazy"
+                          decoding="async"
                           className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />

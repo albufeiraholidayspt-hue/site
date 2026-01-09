@@ -538,6 +538,8 @@ export function Algarve() {
             <img
               src={currentSlideData.data.imageUrl}
               alt={currentSlideData.data.title}
+              loading="eager"
+              decoding="async"
               className="w-full h-full object-cover animate-kenburns"
               style={{ objectPosition: currentSlideData.data.imagePosition || 'center' }}
             />
@@ -630,6 +632,8 @@ export function Algarve() {
                             <img 
                               src={beach.imageUrl} 
                               alt={beach.name}
+                              loading="lazy"
+                              decoding="async"
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             />
                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
@@ -743,6 +747,8 @@ export function Algarve() {
                         <img 
                           src={item.imageUrl} 
                           alt={item.title}
+                          loading="lazy"
+                          decoding="async"
                           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
@@ -780,6 +786,8 @@ export function Algarve() {
                   <img 
                     src={algarve.golf.imageUrl} 
                     alt={algarve.golf.title}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover transform scale-105 group-hover:scale-110 transition-transform duration-[8000ms] ease-out animate-slow-zoom"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-green-600/70 to-emerald-600/50 flex items-center">
@@ -835,6 +843,8 @@ export function Algarve() {
                         <img 
                           src={method.imageUrl} 
                           alt={method.title}
+                          loading="lazy"
+                          decoding="async"
                           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
@@ -899,6 +909,8 @@ export function Algarve() {
                       <img
                         src={image.imageUrl}
                         alt={image.title}
+                        loading="lazy"
+                        decoding="async"
                         className={`w-full ${image.featured ? 'h-64 md:h-96' : 'h-64'} object-cover group-hover:scale-105 transition-transform duration-500`}
                       />
                     </div>
