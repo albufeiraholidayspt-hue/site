@@ -275,16 +275,16 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'albufeira-holidays-storage',
-      version: 21,
+      version: 22,
       storage: createJSONStorage(() => supabaseStorage),
       migrate: (persistedState: unknown, version: number) => {
         console.log('🔄 Migrando para versão:', version);
         
         const state = persistedState as AppState;
         
-        // Versão 21: Forçar atualização completa (reviews, apartamentos, algarve com Google Maps)
-        if (version < 21 && state?.content) {
-          console.log('✨ Atualizando reviews, apartamentos e algarve com Google Maps');
+        // Versão 22: Forçar atualização completa da galeria com Google Maps e locais em falta
+        if (version < 22 && state?.content) {
+          console.log('✨ Atualizando galeria com Google Maps e locais em falta (Lagos, Sagres)');
           return {
             ...state,
             content: {
