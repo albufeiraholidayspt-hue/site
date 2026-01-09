@@ -1,4 +1,5 @@
 // Simple i18n system without complex dependencies
+import { useState, useEffect, useCallback } from 'react';
 
 const translations = {
   pt: {
@@ -1129,35 +1130,37 @@ const translations = {
   },
 };
 
+// Event emitter para notificar mudanças de idioma
+type LanguageChangeListener = (lang: string) => void;
+const listeners: Set<LanguageChangeListener> = new Set();
+
 class SimpleI18n {
   private currentLanguage: string = 'pt';
   
   constructor() {
-    // Detect language from localStorage or browser
     this.currentLanguage = this.detectLanguage();
   }
   
   private detectLanguage(): string {
-    // Check localStorage first
     const stored = localStorage.getItem('language');
     if (stored && ['pt', 'en', 'fr', 'de'].includes(stored)) {
       return stored;
     }
     
-    // Check browser language
     const browserLang = navigator.language.split('-')[0];
     if (['pt', 'en', 'fr', 'de'].includes(browserLang)) {
       return browserLang;
     }
     
-    // Default to Portuguese
     return 'pt';
   }
   
   setLanguage(lang: string): void {
-    if (['pt', 'en', 'fr', 'de'].includes(lang)) {
+    if (['pt', 'en', 'fr', 'de'].includes(lang) && lang !== this.currentLanguage) {
       this.currentLanguage = lang;
       localStorage.setItem('language', lang);
+      // Notificar todos os listeners imediatamente
+      listeners.forEach(listener => listener(lang));
     }
   }
   
@@ -1186,16 +1189,35 @@ class SimpleI18n {
       { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
     ];
   }
+  
+  subscribe(listener: LanguageChangeListener): () => void {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+  }
 }
 
 export const simpleI18n = new SimpleI18n();
 
-// Hook for React components
+// Hook for React components with instant updates
 export function useTranslation() {
+  const [lang, setLang] = useState(simpleI18n.getCurrentLanguage());
+  
+  useEffect(() => {
+    // Subscrever a mudanças de idioma
+    const unsubscribe = simpleI18n.subscribe((newLang) => {
+      setLang(newLang);
+    });
+    return unsubscribe;
+  }, []);
+  
+  const setLanguage = useCallback((newLang: string) => {
+    simpleI18n.setLanguage(newLang);
+  }, []);
+  
   return {
     t: (key: string, params?: Record<string, string | number>) => simpleI18n.translate(key, params),
-    currentLanguage: simpleI18n.getCurrentLanguage(),
-    setLanguage: (lang: string) => simpleI18n.setLanguage(lang),
+    currentLanguage: lang,
+    setLanguage,
     languages: simpleI18n.getSupportedLanguages(),
   };
 }
