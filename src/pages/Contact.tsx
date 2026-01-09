@@ -192,7 +192,7 @@ export function Contact() {
                         ) : (
                           <>
                             <Send className="h-4 w-4" />
-                            {t('contact.sendMessage') || 'Enviar Mensagem'}
+                            {t('contact.send')}
                           </>
                         )}
                       </button>
