@@ -164,6 +164,7 @@ export const initialContent: SiteContent = {
           enabledInHero: true,
           heroOrder: 1,
           imagePosition: 'center',
+          googleMapsUrl: 'https://maps.google.com/?q=Praia+da+Marinha,+Lagoa,+Portugal',
         },
         {
           id: '2',
@@ -174,6 +175,7 @@ export const initialContent: SiteContent = {
           enabledInHero: true,
           heroOrder: 2,
           imagePosition: 'center',
+          googleMapsUrl: 'https://maps.google.com/?q=Benagil+Cave,+Lagoa,+Portugal',
         },
         {
           id: '3',
@@ -184,6 +186,7 @@ export const initialContent: SiteContent = {
           enabledInHero: true,
           heroOrder: 3,
           imagePosition: 'center',
+          googleMapsUrl: 'https://maps.google.com/?q=Praia+da+Falésia,+Albufeira,+Portugal',
         },
         {
           id: '4',
@@ -194,6 +197,7 @@ export const initialContent: SiteContent = {
           enabledInHero: true,
           heroOrder: 4,
           imagePosition: 'center',
+          googleMapsUrl: 'https://maps.google.com/?q=Lagos,+Algarve,+Portugal',
         },
         {
           id: '5',
@@ -204,6 +208,7 @@ export const initialContent: SiteContent = {
           enabledInHero: true,
           heroOrder: 5,
           imagePosition: 'center',
+          googleMapsUrl: 'https://maps.google.com/?q=Sagres,+Algarve,+Portugal',
         },
         {
           id: '6',
@@ -214,6 +219,7 @@ export const initialContent: SiteContent = {
           enabledInHero: true,
           heroOrder: 6,
           imagePosition: 'center',
+          googleMapsUrl: 'https://maps.google.com/?q=Faro,+Algarve,+Portugal',
         },
         {
           id: '7',
@@ -225,6 +231,7 @@ export const initialContent: SiteContent = {
           enabledInHero: true,
           heroOrder: 7,
           imagePosition: 'center',
+          googleMapsUrl: 'https://maps.google.com/?q=Albufeira,+Algarve,+Portugal',
         },
         {
           id: '8',
@@ -233,6 +240,7 @@ export const initialContent: SiteContent = {
           imageUrl: 'https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
           category: 'landscape',
           featured: true,
+          googleMapsUrl: 'https://maps.google.com/?q=Ponta+da+Piedade,+Lagos,+Portugal',
           enabledInHero: true,
           heroOrder: 8,
           imagePosition: 'center',
