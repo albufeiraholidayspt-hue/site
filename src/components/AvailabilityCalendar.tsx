@@ -539,7 +539,12 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
                 onClick={() => {
                   setSelectedStartDate(null);
                   setSelectedEndDate(null);
-                  setMessage({ type: 'info', text: 'Seleção limpa.' });
+                  setMessage({ type: 'info', text: (() => {
+                    if (currentLanguage === 'en') return 'Selection cleared.';
+                    if (currentLanguage === 'fr') return 'Sélection effacée.';
+                    if (currentLanguage === 'de') return 'Auswahl gelöscht.';
+                    return 'Seleção limpa.';
+                  })() });
                   setTimeout(() => setMessage(null), 2000);
                   if (onDateSelection) {
                     onDateSelection('', '', false);
