@@ -18,6 +18,8 @@ export function Footer() {
               <img 
                 src="/logo-symbol.png" 
                 alt="Albufeira Holidays" 
+                width="40"
+                height="40"
                 className="h-10 w-auto transition-transform hover:scale-105"
               />
             </Link>
@@ -146,6 +148,8 @@ export function Footer() {
                   <img 
                     src="/livro-reclamacoes.png" 
                     alt="Livro de Reclamações" 
+                    width="24"
+                    height="24"
                     className="h-6 w-auto opacity-70 group-hover:opacity-100 transition-opacity"
                   />
                   <div className="text-left">
