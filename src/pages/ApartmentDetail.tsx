@@ -284,14 +284,14 @@ export function ApartmentDetail() {
                 <h3 className="font-display text-2xl font-bold text-gray-900 mb-6">
                   {t('apartment.amenityTitle')}
                 </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5">
                   {apartment.features.map((feature) => (
                     <div
                       key={feature}
-                      className="flex items-center gap-2 p-2 rounded-lg bg-gray-50 border border-gray-100"
+                      className="flex items-center gap-1.5 p-1.5 rounded-lg bg-gray-50 border border-gray-100"
                     >
-                      <FeatureIcon feature={feature} className="h-4 w-4 text-primary-500 flex-shrink-0" />
-                      <span className="text-gray-700 text-xs truncate">{(() => {
+                      <FeatureIcon feature={feature} className="h-3 w-3 md:h-4 md:w-4 text-primary-500 flex-shrink-0" />
+                      <span className="text-gray-700 text-[10px] md:text-xs truncate">{(() => {
                       const currentLang = currentLanguage || 'pt';
                       
                       // Função para normalizar string (remover acentos e caracteres especiais)
@@ -674,7 +674,13 @@ export function ApartmentDetail() {
                         return translations[featureKey] || feature;
                       }
                       
-                      return t(`features.${featureKey}`) || feature;
+                      // Para português, usar o texto original da feature
+                      const translated = t(`features.${featureKey}`);
+                      // Se a tradução retornar a chave (não encontrada), usar o texto original
+                      if (translated === `features.${featureKey}` || !translated) {
+                        return feature;
+                      }
+                      return translated;
                     })()}</span>
                     </div>
                   ))}
@@ -713,31 +719,39 @@ export function ApartmentDetail() {
                   )}
                 </div>
                 {(apartment.images?.length || 0) > 0 ? (
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {apartment.images.slice(0, 6).map((image, index) => (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-4">
+                    {apartment.images.slice(0, typeof window !== 'undefined' && window.innerWidth < 768 ? 4 : 6).map((image, index) => {
+                      const mobileLimit = 4;
+                      const desktopLimit = 6;
+                      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+                      const limit = isMobile ? mobileLimit : desktopLimit;
+                      const isLast = index === limit - 1;
+                      const hasMore = apartment.images.length > limit;
+                      
+                      return (
                       <button
                         key={index}
                         onClick={() => {
                           setLightboxIndex(index);
                           setLightboxOpen(true);
                         }}
-                        className="relative group overflow-hidden rounded-2xl shadow-lg cursor-pointer"
+                        className="relative group overflow-hidden rounded-xl md:rounded-2xl shadow-lg cursor-pointer"
                       >
                         <img
                           src={optimizeThumbnail(image)}
                           alt={`${apartment.name} - Imagem ${index + 1}`}
                           loading="lazy"
                           decoding="async"
-                          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
+                          className="w-full h-32 md:h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                        {index === 5 && apartment.images.length > 6 && (
+                        {isLast && hasMore && (
                           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">+{apartment.images.length - 6}</span>
+                            <span className="text-white font-bold text-lg">+{apartment.images.length - limit}</span>
                           </div>
                         )}
                       </button>
-                    ))}
+                    )})}
                   </div>
                 ) : (
                   <p className="text-gray-500 text-sm">Nenhuma imagem na galeria. Adicione imagens no backoffice.</p>
