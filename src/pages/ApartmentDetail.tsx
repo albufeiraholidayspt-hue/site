@@ -284,14 +284,14 @@ export function ApartmentDetail() {
                 <h3 className="font-display text-2xl font-bold text-gray-900 mb-6">
                   {t('apartment.amenityTitle')}
                 </h3>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-1.5">
+                <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-5 gap-1">
                   {apartment.features.map((feature) => (
                     <div
                       key={feature}
-                      className="flex items-center gap-1.5 p-1.5 rounded-lg bg-gray-50 border border-gray-100"
+                      className="flex items-center gap-1 p-1 rounded-md bg-gray-50 border border-gray-100"
                     >
-                      <FeatureIcon feature={feature} className="h-3 w-3 md:h-4 md:w-4 text-primary-500 flex-shrink-0" />
-                      <span className="text-gray-700 text-[10px] md:text-xs truncate">{(() => {
+                      <FeatureIcon feature={feature} className="h-2.5 w-2.5 md:h-4 md:w-4 text-primary-500 flex-shrink-0" />
+                      <span className="text-gray-700 text-[8px] md:text-xs truncate">{(() => {
                       const currentLang = currentLanguage || 'pt';
                       
                       // Função para normalizar string (remover acentos e caracteres especiais)
