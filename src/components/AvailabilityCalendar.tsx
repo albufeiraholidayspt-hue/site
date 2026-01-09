@@ -546,9 +546,9 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, onDateSelection }
                   }
                 }}
                 className="text-xs text-gray-500 hover:text-red-600 transition-colors"
-                title="Limpar seleção"
+                title={t('calendar.clearSelection')}
               >
-                ✕ Limpar
+                ✕ {t('calendar.clear')}
               </button>
             </>
           )}

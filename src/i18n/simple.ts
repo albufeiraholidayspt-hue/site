@@ -247,6 +247,7 @@ const translations = {
     'calendar.availability': 'Disponibilidade',
     'calendar.checkAvailability': 'Consulte a disponibilidade ao reservar',
     'calendar.clearSelection': 'Limpar seleção',
+    'calendar.clear': 'Limpar',
     // Promo
     'promo.code': 'Código',
     'promo.copied': '✓ Copiado!',
@@ -526,6 +527,7 @@ const translations = {
     'calendar.availability': 'Availability',
     'calendar.checkAvailability': 'Check availability when booking',
     'calendar.clearSelection': 'Clear selection',
+    'calendar.clear': 'Clear',
     
     // Promo
     'promo.code': 'Code',
@@ -807,6 +809,7 @@ const translations = {
     'calendar.availability': 'Disponibilité',
     'calendar.checkAvailability': 'Consultez la disponibilité lors de la réservation',
     'calendar.clearSelection': 'Effacer la sélection',
+    'calendar.clear': 'Effacer',
     
     // Promo
     'promo.code': 'Code',
@@ -1088,6 +1091,7 @@ const translations = {
     'calendar.availability': 'Verfügbarkeit',
     'calendar.checkAvailability': 'Verfügbarkeit bei Buchung prüfen',
     'calendar.clearSelection': 'Auswahl löschen',
+    'calendar.clear': 'Löschen',
     
     // Promo
     'promo.code': 'Code',
