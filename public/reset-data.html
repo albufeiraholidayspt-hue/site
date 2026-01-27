@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurar Dados - Albufeira Holidays</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2563eb; }
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover { background: #1d4ed8; }
+        .success { color: #10b981; font-weight: bold; }
+        .error { color: #ef4444; font-weight: bold; }
+        #log {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .log-line { margin: 5px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Restaurar Dados do Backup</h1>
+        <p>Esta ferramenta vai restaurar TODOS os dados (fotos, configurações) do backup para o Supabase.</p>
+        
+        <button onclick="clearLocalStorage()">🗑️ Limpar LocalStorage</button>
+        <button onclick="clearSupabase()">🗑️ Limpar Supabase</button>
+        <button onclick="restoreFromCode()">✅ Restaurar do Código</button>
+        <button onclick="window.location.href='/'">🏠 Voltar ao Site</button>
+        
+        <div id="log"></div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+        
+        const supabaseUrl = 'https://lposelwkdhpfgyqpxeyw.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxwb3NlbHdrZGhwZmd5cXB4ZXl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MDM2MzUsImV4cCI6MjA4MzI3OTYzNX0.Nf6IgklIQTEkbI85JBa_7q9P8lAUJay-lTtHM882qFw';
+        
+        const supabase = createClient(supabaseUrl, supabaseKey);
+        
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const line = document.createElement('div');
+            line.className = 'log-line ' + type;
+            line.textContent = message;
+            logDiv.appendChild(line);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+        
+        window.clearLocalStorage = function() {
+            log('🗑️ Limpando localStorage...');
+            localStorage.clear();
+            log('✅ LocalStorage limpo!', 'success');
+        };
+        
+        window.clearSupabase = async function() {
+            log('🗑️ Limpando dados do Supabase...');
+            try {
+                const { error } = await supabase
+                    .from('site_data')
+                    .delete()
+                    .eq('id', 'main');
+                
+                if (error) {
+                    log('❌ Erro: ' + error.message, 'error');
+                } else {
+                    log('✅ Supabase limpo!', 'success');
+                }
+            } catch (e) {
+                log('❌ Erro: ' + e.message, 'error');
+            }
+        };
+        
+        window.restoreFromCode = async function() {
+            log('🔄 Iniciando restauração completa...');
+            
+            // Limpar tudo primeiro
+            localStorage.clear();
+            log('✅ LocalStorage limpo');
+            
+            try {
+                // Deletar dados antigos do Supabase
+                await supabase.from('site_data').delete().eq('id', 'main');
+                log('✅ Supabase limpo');
+                
+                log('📥 Carregando dados do código...');
+                
+                // Forçar reload da página para carregar initialContent.ts
+                log('🔄 Recarregando página para aplicar dados do código...');
+                log('✅ Após reload, o site vai usar os dados corretos do initialContent.ts', 'success');
+                
+                setTimeout(() => {
+                    window.location.href = '/';
+                }, 2000);
+                
+            } catch (e) {
+                log('❌ Erro: ' + e.message, 'error');
+            }
+        };
+    </script>
+</body>
+</html>
