@@ -1,0 +1,11 @@
+services:
+  # Static Site
+  type: web
+  name: albufeira-holidays
+  envVars:
+    - key: VITE_IMGBB_API_KEY
+      value: dbd2aebb695d29ee20f3fc151c316242
+  buildCommand: "npm run build"
+  publishDir: "dist"
+  nodeVersion: "18"
+  autoDeploy: true

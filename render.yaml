@@ -5,6 +5,10 @@ services:
   envVars:
     - key: VITE_IMGBB_API_KEY
       value: dbd2aebb695d29ee20f3fc151c316242
+    - key: VITE_SUPABASE_URL
+      value: https://lposelwkdhpfgyqpxeyw.supabase.co
+    - key: VITE_SUPABASE_ANON_KEY
+      value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxwb3NlbHdrZGhwZmd5cXB4ZXl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MDM2MzUsImV4cCI6MjA4MzI3OTYzNX0.Nf6IgklIQTEkbI85JBa_7q9P8lAUJay-lTtHM882qFw
   buildCommand: "npm run build"
   publishDir: "dist"
   nodeVersion: "18"
