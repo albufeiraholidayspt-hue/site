@@ -97,7 +97,7 @@ export function Algarve() {
           imageUrl: 'https://images.unsplash.com/photo-1580837119756-563d608dd119?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
           category: 'city' as const,
           enabledInHero: true,
-          heroOrder: 7,
+          heroOrder: 6,
           imagePosition: 'center',
           googleMapsUrl: 'https://maps.google.com/?q=Lagos,+Algarve,+Portugal',
         });
@@ -111,7 +111,7 @@ export function Algarve() {
           imageUrl: 'https://images.unsplash.com/photo-1559628233-100c795629d2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
           category: 'city' as const,
           enabledInHero: true,
-          heroOrder: 8,
+          heroOrder: 7,
           imagePosition: 'center',
           googleMapsUrl: 'https://maps.google.com/?q=Sagres,+Algarve,+Portugal',
         });
