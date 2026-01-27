@@ -7,6 +7,7 @@ import { CookieBanner } from './components/CookieBanner';
 import MobileCacheBuster from './lib/mobileCacheBuster';
 import MobileDebug from './lib/mobileDebug';
 import AggressiveMobileSolution from './lib/aggressiveMobileSolution';
+import { autoBackupService } from './utils/autoBackup';
 
 // Lazy load pages for code splitting - reduces initial bundle size
 const ApartmentDetail = lazy(() => import('./pages/ApartmentDetail').then(m => ({ default: m.ApartmentDetail })));
@@ -30,6 +31,10 @@ const PageLoader = () => (
 
 function App() {
   useEffect(() => {
+    // Iniciar sistema de backup automático
+    autoBackupService.startAutoBackup();
+    console.log('🛡️ Sistema de proteção de dados ativado');
+    
     // Defer non-critical initialization to reduce main thread blocking
     const initTimeout = setTimeout(() => {
       // Inicializar Mobile Cache Buster

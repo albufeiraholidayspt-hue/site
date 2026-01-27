@@ -5,6 +5,14 @@ services:
   envVars:
     - key: VITE_IMGBB_API_KEY
       value: dbd2aebb695d29ee20f3fc151c316242
+    - key: VITE_CLOUDINARY_CLOUD_NAME
+      value: dqh8jxqxq
+    - key: VITE_CLOUDINARY_API_KEY
+      value: 154852278618715
+    - key: VITE_CLOUDINARY_API_SECRET
+      value: tdIVQUu2HL7iN2vAMK8Sqawfsa8
+    - key: VITE_CLOUDINARY_UPLOAD_PRESET
+      value: albufeira_holidays
     - key: VITE_SUPABASE_URL
       value: https://lposelwkdhpfgyqpxeyw.supabase.co
     - key: VITE_SUPABASE_ANON_KEY
