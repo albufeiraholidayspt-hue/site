@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Cache Algarve</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; margin-bottom: 20px; }
+        button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        button:hover { background: #e55a2b; }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+        .success { background: #d4edda; color: #155724; display: block; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        ul { text-align: left; line-height: 1.8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Reset Cache do Algarve</h1>
+        <p>Esta página vai limpar TODOS os dados em cache e forçar o carregamento da nova ordem:</p>
+        <ul>
+            <li>✅ Albufeira (posição 5)</li>
+            <li>✅ Lagos (posição 6) - ao lado de Albufeira</li>
+            <li>✅ Sagres (posição 7) - ao lado de Lagos</li>
+        </ul>
+        <button onclick="resetCache()">🔄 Limpar Cache e Recarregar</button>
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        async function resetCache() {
+            const status = document.getElementById('status');
+            status.className = 'status info';
+            status.style.display = 'block';
+            status.innerHTML = '⏳ A limpar cache...';
+
+            try {
+                // 1. Limpar localStorage
+                localStorage.clear();
+                console.log('✅ localStorage limpo');
+
+                // 2. Limpar sessionStorage
+                sessionStorage.clear();
+                console.log('✅ sessionStorage limpo');
+
+                // 3. Limpar IndexedDB
+                const databases = await indexedDB.databases();
+                for (const db of databases) {
+                    if (db.name) {
+                        indexedDB.deleteDatabase(db.name);
+                        console.log('✅ IndexedDB limpo:', db.name);
+                    }
+                }
+
+                // 4. Limpar Service Workers
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (const registration of registrations) {
+                        await registration.unregister();
+                        console.log('✅ Service Worker removido');
+                    }
+                }
+
+                // 5. Limpar Cache API
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    for (const cacheName of cacheNames) {
+                        await caches.delete(cacheName);
+                        console.log('✅ Cache removido:', cacheName);
+                    }
+                }
+
+                status.className = 'status success';
+                status.innerHTML = '✅ Cache limpo! A recarregar em 2 segundos...';
+
+                // Recarregar com force refresh
+                setTimeout(() => {
+                    window.location.href = '/algarve?nocache=' + Date.now();
+                }, 2000);
+
+            } catch (error) {
+                status.className = 'status';
+                status.style.background = '#f8d7da';
+                status.style.color = '#721c24';
+                status.style.display = 'block';
+                status.innerHTML = '❌ Erro: ' + error.message;
+                console.error('Erro ao limpar cache:', error);
+            }
+        }
+    </script>
+</body>
+</html>
