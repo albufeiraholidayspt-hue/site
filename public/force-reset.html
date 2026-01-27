@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RESET FORÇADO - Albufeira Holidays</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #000;
+            color: #0f0;
+            padding: 40px;
+            text-align: center;
+        }
+        h1 { color: #f00; font-size: 32px; }
+        button {
+            background: #f00;
+            color: #fff;
+            border: none;
+            padding: 30px 60px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px;
+            border-radius: 10px;
+        }
+        button:hover { background: #c00; }
+        #status {
+            margin-top: 30px;
+            font-size: 18px;
+            padding: 20px;
+            background: #111;
+            border: 2px solid #0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 RESET COMPLETO DO SISTEMA</h1>
+    <p style="font-size: 20px;">Esta ferramenta vai APAGAR TUDO e forçar o site a usar os dados do código.</p>
+    
+    <button onclick="forceReset()">🚨 RESET TOTAL AGORA</button>
+    
+    <div id="status"></div>
+
+    <script>
+        function log(msg) {
+            document.getElementById('status').innerHTML += msg + '<br>';
+            console.log(msg);
+        }
+        
+        function forceReset() {
+            log('🔥 INICIANDO RESET TOTAL...');
+            
+            // 1. Limpar TODO o localStorage
+            log('🗑️ Limpando localStorage...');
+            localStorage.clear();
+            log('✅ localStorage limpo!');
+            
+            // 2. Limpar sessionStorage
+            log('🗑️ Limpando sessionStorage...');
+            sessionStorage.clear();
+            log('✅ sessionStorage limpo!');
+            
+            // 3. Limpar IndexedDB
+            log('🗑️ Limpando IndexedDB...');
+            indexedDB.databases().then(dbs => {
+                dbs.forEach(db => {
+                    indexedDB.deleteDatabase(db.name);
+                    log('✅ Database ' + db.name + ' apagada');
+                });
+            });
+            
+            // 4. Limpar cookies
+            log('🗑️ Limpando cookies...');
+            document.cookie.split(";").forEach(c => {
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+            log('✅ Cookies limpos!');
+            
+            // 5. Limpar cache
+            log('🗑️ Limpando cache...');
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => {
+                        caches.delete(name);
+                        log('✅ Cache ' + name + ' apagado');
+                    });
+                });
+            }
+            
+            log('');
+            log('🎉 RESET COMPLETO!');
+            log('');
+            log('👉 A redirecionar para o site em 3 segundos...');
+            log('👉 O site vai carregar os dados CORRETOS do código!');
+            
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
