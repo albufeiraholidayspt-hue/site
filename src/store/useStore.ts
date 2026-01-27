@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { SiteContent, User, Apartment, Promotion, SeoSettings, PartialSeoSettings, SocialLinks, Review, AlgarveContent, AlgarveGalleryImage } from '../types';
 import { initialContent } from '../data/initialContent';
-import { supabaseStorage } from '../lib/supabaseStorage';
 import { translationService } from '../services/translationService';
 import { autoTranslateFields, fieldChanged } from '../hooks/useAutoTranslate';
 
@@ -276,7 +275,7 @@ export const useStore = create<AppState>()(
     {
       name: 'albufeira-holidays-storage',
       version: 24,
-      storage: createJSONStorage(() => supabaseStorage),
+      storage: createJSONStorage(() => localStorage),
       migrate: (persistedState: unknown, version: number) => {
         console.log('🔄 Migrando para versão:', version);
         
