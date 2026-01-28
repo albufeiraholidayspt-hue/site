@@ -72,10 +72,10 @@ export function ApartmentDetail() {
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          {apartment.heroVideoUrl ? (
+          {apartment.videoUrl ? (
             <div className="absolute inset-0 bg-gray-900 overflow-hidden">
               <iframe
-                src={`https://www.youtube.com/embed/${getYouTubeVideoId(apartment.heroVideoUrl)}?start=${apartment.heroVideoStartTime || 0}&autoplay=1&mute=1&loop=1&playlist=${getYouTubeVideoId(apartment.heroVideoUrl)}&controls=0&showinfo=0&rel=0&modestbranding=1`}
+                src={`https://www.youtube.com/embed/${getYouTubeVideoId(apartment.videoUrl)}?start=${apartment.videoStartTime || 0}&autoplay=1&mute=1&loop=1&playlist=${getYouTubeVideoId(apartment.videoUrl)}&controls=0&showinfo=0&rel=0&modestbranding=1`}
                 title={`${apartment.name} Video`}
                 className="absolute top-1/2 left-1/2 w-full h-full pointer-events-none"
                 style={{ 

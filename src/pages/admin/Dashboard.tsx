@@ -1920,10 +1920,10 @@ export function Dashboard() {
                                 <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 24 24">
                                   <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                                 </svg>
-                                Vídeo YouTube (Opcional)
+                                Vídeo YouTube na Imagem Principal (Opcional)
                               </h4>
                               <p className="text-sm text-gray-600 mb-4">
-                                Se configurar um vídeo, ele será usado como fundo da imagem principal
+                                Se configurar um vídeo, ele será usado como fundo da imagem principal do apartamento
                               </p>
                               <div className="space-y-4">
                                 <div>
@@ -1948,11 +1948,12 @@ export function Dashboard() {
                                   </label>
                                   <input
                                     type="number"
-                                    value={apartment.heroVideoStartTime || 0}
+                                    value={apartment.heroVideoUrl ? (apartment.heroVideoStartTime || 0) : 0}
                                     onChange={(e) => updateApartment(apartment.id, { heroVideoStartTime: parseInt(e.target.value) || 0 })}
                                     min={0}
                                     placeholder="0"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                    disabled={!apartment.heroVideoUrl}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none disabled:bg-gray-100 disabled:cursor-not-allowed"
                                   />
                                   <p className="text-xs text-gray-500 mt-1">
                                     O vídeo começará a partir deste segundo (ex: 30 para começar aos 30 segundos)
