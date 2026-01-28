@@ -94,9 +94,9 @@ export function optimizeHeroImage(url: string): string {
   // Detect mobile viewport for smaller images
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   return optimizeImage(url, {
-    width: isMobile ? 800 : 1920,
-    quality: isMobile ? 60 : 80,
-    format: 'auto'
+    width: isMobile ? 600 : 1400,
+    quality: isMobile ? 55 : 70,
+    format: 'webp'
   });
 }
 
@@ -118,9 +118,9 @@ export function optimizeHeroImageMobile(url: string): string {
 export function optimizeCardImage(url: string): string {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   return optimizeImage(url, {
-    width: isMobile ? 400 : 800,
-    quality: isMobile ? 55 : 75,
-    format: 'auto'
+    width: isMobile ? 300 : 600,
+    quality: isMobile ? 50 : 65,
+    format: 'webp'
   });
 }
 
@@ -129,9 +129,9 @@ export function optimizeCardImage(url: string): string {
  */
 export function optimizeThumbnail(url: string): string {
   return optimizeImage(url, {
-    width: 400,
-    quality: 75,
-    format: 'auto'
+    width: 300,
+    quality: 60,
+    format: 'webp'
   });
 }
 
