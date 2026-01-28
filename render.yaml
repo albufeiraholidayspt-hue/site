@@ -8,7 +8,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        value: PLACEHOLDER_NEON_DATABASE_URL
+        value: postgresql://neondb_owner:npg_b3SmP0VhtjfC@ep-floral-sunset-ag1qiuo7-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
       - key: VITE_IMGBB_API_KEY
         value: dbd2aebb695d29ee20f3fc151c316242
       - key: VITE_CLOUDINARY_CLOUD_NAME
