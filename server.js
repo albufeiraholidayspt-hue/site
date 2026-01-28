@@ -135,6 +135,41 @@ app.post('/api/save-content', async (req, res) => {
   }
 });
 
+// API: Upload para Cloudinary (assinado)
+app.post('/api/upload-cloudinary', async (req, res) => {
+  try {
+    const cloudinary = await import('cloudinary').then(m => m.v2);
+    
+    // Configurar Cloudinary
+    cloudinary.config({
+      cloud_name: process.env.VITE_CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.VITE_CLOUDINARY_API_KEY,
+      api_secret: process.env.VITE_CLOUDINARY_API_SECRET
+    });
+
+    // Gerar assinatura para upload
+    const timestamp = Math.round(new Date().getTime() / 1000);
+    const signature = cloudinary.utils.api_sign_request(
+      {
+        timestamp: timestamp,
+        upload_preset: process.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'albufeira_holidays'
+      },
+      process.env.VITE_CLOUDINARY_API_SECRET
+    );
+
+    res.json({
+      signature,
+      timestamp,
+      cloudName: process.env.VITE_CLOUDINARY_CLOUD_NAME,
+      apiKey: process.env.VITE_CLOUDINARY_API_KEY,
+      uploadPreset: process.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'albufeira_holidays'
+    });
+  } catch (error) {
+    console.error('❌ Erro ao gerar assinatura Cloudinary:', error);
+    res.status(500).json({ error: 'Erro ao gerar assinatura' });
+  }
+});
+
 // API: Carregar conteúdo
 app.get('/api/get-content', async (req, res) => {
   try {

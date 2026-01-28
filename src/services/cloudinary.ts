@@ -19,20 +19,35 @@ class CloudinaryService {
   }
 
   /**
-   * Upload de imagem para Cloudinary
+   * Upload de imagem para Cloudinary (com assinatura do servidor)
    * @param file - Ficheiro de imagem
    * @param folder - Pasta no Cloudinary (opcional)
    * @returns URL permanente da imagem
    */
   async uploadImage(file: File, folder: string = 'albufeira-holidays'): Promise<string> {
     try {
+      // Obter assinatura do servidor
+      const signatureResponse = await fetch('/api/upload-cloudinary', {
+        method: 'POST',
+      });
+
+      if (!signatureResponse.ok) {
+        throw new Error('Erro ao obter assinatura do servidor');
+      }
+
+      const { signature, timestamp, cloudName, apiKey, uploadPreset } = await signatureResponse.json();
+
+      // Upload com assinatura
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('upload_preset', this.uploadPreset);
+      formData.append('upload_preset', uploadPreset);
       formData.append('folder', folder);
+      formData.append('api_key', apiKey);
+      formData.append('timestamp', timestamp.toString());
+      formData.append('signature', signature);
 
       const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${this.cloudName}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
         {
           method: 'POST',
           body: formData,
@@ -40,6 +55,8 @@ class CloudinaryService {
       );
 
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error('❌ Erro Cloudinary:', errorData);
         throw new Error('Erro ao fazer upload para Cloudinary');
       }
 
