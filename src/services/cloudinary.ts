@@ -29,6 +29,10 @@ class CloudinaryService {
       // Obter assinatura do servidor
       const signatureResponse = await fetch('/api/upload-cloudinary', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ folder }),
       });
 
       if (!signatureResponse.ok) {

@@ -141,11 +141,25 @@ app.post('/api/upload-cloudinary', async (req, res) => {
     const crypto = await import('crypto');
     
     const timestamp = Math.round(new Date().getTime() / 1000);
-    const folder = 'albufeira-holidays';
+    const { folder = 'albufeira-holidays' } = req.body;
     
-    // Gerar assinatura manualmente (sem upload_preset)
-    const paramsToSign = `folder=${folder}&timestamp=${timestamp}${process.env.VITE_CLOUDINARY_API_SECRET}`;
-    const signature = crypto.createHash('sha1').update(paramsToSign).digest('hex');
+    // Parâmetros para assinar (ordenados alfabeticamente)
+    const params = {
+      folder: folder,
+      timestamp: timestamp
+    };
+    
+    // Criar string de parâmetros ordenada alfabeticamente
+    const sortedParams = Object.keys(params)
+      .sort()
+      .map(key => `${key}=${params[key]}`)
+      .join('&');
+    
+    // Adicionar API secret no final
+    const stringToSign = sortedParams + process.env.VITE_CLOUDINARY_API_SECRET;
+    
+    // Gerar assinatura SHA-1
+    const signature = crypto.createHash('sha1').update(stringToSign).digest('hex');
 
     res.json({
       signature,
