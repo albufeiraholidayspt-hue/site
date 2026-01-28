@@ -28,9 +28,9 @@ export async function autoTranslateField(
       const result = await translationService.translateText(text, lang, 'pt');
       translations[`${fieldName}_${lang}`] = result.translatedText;
       
-      // Delay de 2 segundos entre idiomas para respeitar rate limit da API MyMemory
+      // Delay de 5 segundos entre idiomas para respeitar rate limit da API MyMemory
       if (i < TARGET_LANGUAGES.length - 1) {
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 5000));
       }
     }
   } catch (error) {
