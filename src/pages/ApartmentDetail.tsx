@@ -77,11 +77,13 @@ export function ApartmentDetail() {
               <iframe
                 src={`https://www.youtube.com/embed/${getYouTubeVideoId(apartment.heroVideoUrl)}?start=${apartment.heroVideoStartTime || 0}&autoplay=1&mute=1&loop=1&playlist=${getYouTubeVideoId(apartment.heroVideoUrl)}&controls=0&showinfo=0&rel=0&modestbranding=1`}
                 title={`${apartment.name} Video`}
-                className="absolute top-1/2 left-1/2 w-full h-full pointer-events-none"
+                className="absolute top-1/2 left-1/2 pointer-events-none"
                 style={{ 
-                  transform: 'translate(-50%, -50%) scale(2)',
-                  minWidth: '100%',
-                  minHeight: '100%'
+                  transform: 'translate(-50%, -50%)',
+                  width: '100vw',
+                  height: '56.25vw', // 16:9 aspect ratio
+                  minWidth: '177.77vh', // 16:9 aspect ratio
+                  minHeight: '100vh'
                 }}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
