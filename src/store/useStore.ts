@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { SiteContent, User, Apartment, Promotion, SeoSettings, PartialSeoSettings, SocialLinks, Review, AlgarveContent, AlgarveGalleryImage } from '../types';
 import { initialContent } from '../data/initialContent';
 import { translationService } from '../services/translationService';
-import { autoTranslateFields, fieldChanged } from '../hooks/useAutoTranslate';
+import { autoTranslateFields } from '../hooks/useAutoTranslate';
 import { contentPersistenceService } from '../services/contentPersistence';
 
 interface AppState {
@@ -133,23 +133,23 @@ export const useStore = create<AppState>()((set, _get) => ({
         
         if (!currentApartment) return;
 
-        // Identificar campos de texto que foram alterados
+        // Identificar campos de texto para traduzir (sempre traduz se tiver conteúdo)
         const fieldsToTranslate: Record<string, string> = {};
         
-        if (data.name && fieldChanged(currentApartment.name, data.name)) {
+        if (data.name && data.name.trim()) {
           fieldsToTranslate.name = data.name;
         }
-        if (data.tagline && fieldChanged(currentApartment.tagline, data.tagline)) {
+        if (data.tagline && data.tagline.trim()) {
           fieldsToTranslate.tagline = data.tagline;
         }
-        if (data.description && fieldChanged(currentApartment.description, data.description)) {
+        if (data.description && data.description.trim()) {
           fieldsToTranslate.description = data.description;
         }
-        if (data.additionalInfo && fieldChanged(currentApartment.additionalInfo, data.additionalInfo)) {
+        if (data.additionalInfo && data.additionalInfo.trim()) {
           fieldsToTranslate.additionalInfo = data.additionalInfo;
         }
 
-        // Traduzir campos alterados
+        // Traduzir campos
         let translations = {};
         if (Object.keys(fieldsToTranslate).length > 0) {
           try {
