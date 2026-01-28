@@ -41,12 +41,32 @@ const ADMIN_CREDENTIALS = {
   password: 'albufeira2024',
 };
 
-export const useStore = create<AppState>()((set, _get) => ({
-  content: initialContent,
-  user: {
+// Carregar estado de autenticação do sessionStorage
+const loadAuthState = () => {
+  try {
+    const authData = sessionStorage.getItem('auth');
+    if (authData) {
+      const parsed = JSON.parse(authData);
+      // Verificar se ainda é válido (menos de 24 horas)
+      if (parsed.timestamp && Date.now() - parsed.timestamp < 24 * 60 * 60 * 1000) {
+        return {
+          username: parsed.username,
+          isAuthenticated: true,
+        };
+      }
+    }
+  } catch (error) {
+    console.error('Erro ao carregar autenticação:', error);
+  }
+  return {
     username: '',
     isAuthenticated: false,
-  },
+  };
+};
+
+export const useStore = create<AppState>()((set, _get) => ({
+  content: initialContent,
+  user: loadAuthState(),
   isLoaded: false,
   saveToServer: async () => {
     const state = _get();
@@ -292,12 +312,20 @@ export const useStore = create<AppState>()((set, _get) => ({
       },
       login: (username, password) => {
         if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+          // Guardar no sessionStorage
+          sessionStorage.setItem('auth', JSON.stringify({
+            username,
+            timestamp: Date.now()
+          }));
           set({ user: { username, isAuthenticated: true } });
           return true;
         }
         return false;
       },
-      logout: () => set({ user: { username: '', isAuthenticated: false } }),
+      logout: () => {
+        sessionStorage.removeItem('auth');
+        set({ user: { username: '', isAuthenticated: false } });
+      },
       resetContent: () => set({ content: initialContent }),
       translateContent: async (targetLanguage: string) => {
         const state = _get();
