@@ -2261,59 +2261,6 @@ export function Dashboard() {
                             </div>
 
                             <div className="border-t pt-6 mt-6">
-                              <h4 className="font-semibold text-gray-900 mb-4">Vídeo e Animação</h4>
-                              
-                              <div className="space-y-4">
-                                <div>
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    URL do Vídeo YouTube
-                                  </label>
-                                  <input
-                                    type="url"
-                                    value={apartment.videoUrl || ''}
-                                    onChange={(e) => updateApartment(apartment.id, { videoUrl: e.target.value })}
-                                    placeholder="https://www.youtube.com/watch?v=XXXXXXX"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
-                                  />
-                                  <p className="text-xs text-gray-500 mt-1">
-                                    Se configurar um vídeo, ele será usado como fundo na página do apartamento.
-                                  </p>
-                                </div>
-
-                                <div>
-                                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Segundo de Início do Vídeo
-                                  </label>
-                                  <input
-                                    type="number"
-                                    value={apartment.videoStartTime || 0}
-                                    onChange={(e) => updateApartment(apartment.id, { videoStartTime: parseInt(e.target.value) || 0 })}
-                                    min={0}
-                                    placeholder="0"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
-                                  />
-                                </div>
-
-                                <div>
-                                  <label className="flex items-center gap-3 cursor-pointer">
-                                    <input
-                                      type="checkbox"
-                                      checked={apartment.enableAnimation !== false}
-                                      onChange={(e) => updateApartment(apartment.id, { enableAnimation: e.target.checked })}
-                                      className="w-5 h-5 text-primary-500 border-gray-300 rounded focus:ring-primary-500"
-                                    />
-                                    <span className="text-sm font-medium text-gray-700">
-                                      Ativar animação Ken Burns (movimento na imagem)
-                                    </span>
-                                  </label>
-                                  <p className="text-xs text-gray-500 mt-1 ml-8">
-                                    Se não tiver vídeo configurado, a imagem terá um efeito de zoom suave.
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="border-t pt-6 mt-6">
                               <h4 className="font-semibold text-gray-900 mb-4">Calendário e Reservas</h4>
                               
                               <div className="space-y-4">
