@@ -33,8 +33,20 @@ class ContentPersistenceService {
         }),
       });
 
+      console.log('📡 Response status:', response.status, response.statusText);
+      console.log('📡 Response headers:', response.headers.get('content-type'));
+
       if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ Resposta de erro:', errorText);
         throw new Error(`Erro ao guardar: ${response.statusText}`);
+      }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('❌ Resposta não é JSON:', text);
+        throw new Error('Resposta do servidor não é JSON');
       }
 
       const result = await response.json();
