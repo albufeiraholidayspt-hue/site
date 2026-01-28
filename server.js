@@ -30,6 +30,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// ENDPOINT DE TESTE - NÃO DEPENDE DE NADA
+app.get('/api/ping', (req, res) => {
+  res.status(200).json({ 
+    status: 'OK', 
+    message: 'Server is running',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Validar DATABASE_URL
 if (!process.env.DATABASE_URL) {
   console.error('❌ ERRO CRÍTICO: DATABASE_URL não está configurado!');
