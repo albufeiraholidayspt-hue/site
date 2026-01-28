@@ -851,7 +851,7 @@ export function ApartmentDetail() {
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
                         {isLast && hasMore && (
                           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                            <span className="text-white font-bold text-lg md:text-2xl">+{apartment.images.length - limit}</span>
+                            <span className="text-white font-bold text-lg">+{apartment.images.length - limit}</span>
                           </div>
                         )}
                       </button>
