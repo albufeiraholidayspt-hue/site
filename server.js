@@ -14,9 +14,21 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(cors());
+// Middleware CORS com headers explícitos
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  exposedHeaders: ['Content-Type'],
+  credentials: false
+}));
 app.use(express.json({ limit: '50mb' }));
+
+// Log de todas as requests
+app.use((req, res, next) => {
+  console.log(`📨 ${req.method} ${req.path}`);
+  next();
+});
 
 // Conexão Neon PostgreSQL
 const sql = neon(process.env.DATABASE_URL);
@@ -49,7 +61,10 @@ app.post('/api/save-content', async (req, res) => {
 
     if (!content) {
       console.log('❌ Content vazio');
-      return res.status(400).setHeader('Content-Type', 'application/json').json({ error: 'Content is required' });
+      return res
+        .status(400)
+        .type('application/json')
+        .json({ error: 'Content is required' });
     }
 
     const lastUpdated = timestamp || new Date().toISOString();
@@ -77,22 +92,25 @@ app.post('/api/save-content', async (req, res) => {
 
     console.log('✅ Conteúdo guardado no Neon:', lastUpdated);
 
-    const response = {
-      success: true,
-      message: 'Content saved successfully',
-      timestamp: lastUpdated,
-    };
-
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(response);
+    // Enviar resposta com headers explícitos
+    return res
+      .status(200)
+      .type('application/json')
+      .json({
+        success: true,
+        message: 'Content saved successfully',
+        timestamp: lastUpdated,
+      });
 
   } catch (error) {
     console.error('❌ Erro ao guardar:', error);
-    res.setHeader('Content-Type', 'application/json');
-    res.status(500).json({
-      error: 'Failed to save content',
-      details: error.message,
-    });
+    return res
+      .status(500)
+      .type('application/json')
+      .json({
+        error: 'Failed to save content',
+        details: error.message,
+      });
   }
 });
 
@@ -104,11 +122,13 @@ app.get('/api/get-content', async (req, res) => {
 
     if (result.length === 0) {
       console.log('❌ Nenhum conteúdo encontrado');
-      res.setHeader('Content-Type', 'application/json');
-      return res.status(404).json({
-        error: 'Content not found',
-        message: 'No saved content available',
-      });
+      return res
+        .status(404)
+        .type('application/json')
+        .json({
+          error: 'Content not found',
+          message: 'No saved content available',
+        });
     }
 
     const row = result[0];
@@ -116,23 +136,25 @@ app.get('/api/get-content', async (req, res) => {
 
     console.log('✅ Conteúdo carregado do Neon:', row.last_updated);
 
-    const response = {
-      success: true,
-      content: content,
-      lastUpdated: row.last_updated,
-      version: row.version || '1.0',
-    };
-
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(response);
+    return res
+      .status(200)
+      .type('application/json')
+      .json({
+        success: true,
+        content: content,
+        lastUpdated: row.last_updated,
+        version: row.version || '1.0',
+      });
 
   } catch (error) {
     console.error('❌ Erro ao carregar:', error);
-    res.setHeader('Content-Type', 'application/json');
-    res.status(500).json({
-      error: 'Failed to load content',
-      details: error.message,
-    });
+    return res
+      .status(500)
+      .type('application/json')
+      .json({
+        error: 'Failed to load content',
+        details: error.message,
+      });
   }
 });
 
