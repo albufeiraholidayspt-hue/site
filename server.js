@@ -132,5 +132,5 @@ app.get('*', (req, res) => {
 // Iniciar servidor
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
-  console.log(`📁 Diretório de dados: ${DATA_DIR}`);
+  console.log(`�️ Base de dados: Neon PostgreSQL`);
 });
