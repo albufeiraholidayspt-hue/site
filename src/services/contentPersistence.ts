@@ -53,13 +53,8 @@ class ContentPersistenceService {
       console.log('✅ Conteúdo guardado com sucesso:', result);
 
     } catch (error) {
-      console.error('❌ Erro ao guardar conteúdo:', error);
-      // Fallback: guardar no localStorage
-      console.log('📦 A guardar no localStorage como fallback...');
-      localStorage.setItem('albufeira-holidays-backup', JSON.stringify({
-        content,
-        timestamp: new Date().toISOString(),
-      }));
+      console.error('❌ Erro ao guardar conteúdo no servidor:', error);
+      throw error; // Propagar erro para o utilizador saber que falhou
     } finally {
       this.isSaving = false;
     }
@@ -83,16 +78,7 @@ class ContentPersistenceService {
       return data.content;
 
     } catch (error) {
-      console.error('❌ Erro ao carregar conteúdo:', error);
-      
-      // Fallback: tentar carregar do localStorage
-      const backup = localStorage.getItem('albufeira-holidays-backup');
-      if (backup) {
-        console.log('📦 A carregar do localStorage (fallback)');
-        const data = JSON.parse(backup);
-        return data.content;
-      }
-
+      console.error('❌ Erro ao carregar conteúdo do servidor:', error);
       return null;
     }
   }

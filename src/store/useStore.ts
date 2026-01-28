@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
 // @ts-ignore - SeoSettings usado em outros ficheiros
 import { SiteContent, User, Apartment, Promotion, SeoSettings, PartialSeoSettings, SocialLinks, Review, AlgarveContent, AlgarveGalleryImage } from '../types';
 import { initialContent } from '../data/initialContent';
@@ -10,6 +9,7 @@ import { contentPersistenceService } from '../services/contentPersistence';
 interface AppState {
   content: SiteContent;
   user: User;
+  isLoaded: boolean;
   saveToServer: () => Promise<void>;
   loadFromServer: () => Promise<void>;
   updateHero: (hero: Partial<SiteContent['hero']>) => void;
@@ -41,24 +41,25 @@ const ADMIN_CREDENTIALS = {
   password: 'albufeira2024',
 };
 
-export const useStore = create<AppState>()(
-  persist(
-    (set, _get) => ({
-      content: initialContent,
-      user: {
-        username: '',
-        isAuthenticated: false,
-      },
-      saveToServer: async () => {
-        const state = _get();
-        await contentPersistenceService.saveContent(state.content);
-      },
-      loadFromServer: async () => {
-        const content = await contentPersistenceService.loadContent();
-        if (content) {
-          set({ content });
-        }
-      },
+export const useStore = create<AppState>()((set, _get) => ({
+  content: initialContent,
+  user: {
+    username: '',
+    isAuthenticated: false,
+  },
+  isLoaded: false,
+  saveToServer: async () => {
+    const state = _get();
+    await contentPersistenceService.saveContent(state.content);
+  },
+  loadFromServer: async () => {
+    const content = await contentPersistenceService.loadContent();
+    if (content) {
+      set({ content, isLoaded: true });
+    } else {
+      set({ isLoaded: true });
+    }
+  },
       updateHero: (hero) => {
         set((state) => ({
           content: {
@@ -313,126 +314,4 @@ export const useStore = create<AppState>()(
           throw error;
         }
       },
-    }),
-    {
-      name: 'albufeira-holidays-storage',
-      version: 24,
-      storage: createJSONStorage(() => localStorage),
-      migrate: (persistedState: unknown, version: number) => {
-        console.log('🔄 Migrando para versão:', version);
-        
-        const state = persistedState as AppState;
-        
-        // Versão 24: Adicionar locais em falta (Lagos, Sagres) e Google Maps URLs à galeria existente
-        if (version < 24 && state?.content?.algarve?.gallery?.images) {
-          console.log('✨ Adicionando locais em falta e Google Maps URLs à galeria');
-          
-          // Mapa de Google Maps URLs por título
-          const googleMapsUrls: Record<string, string> = {
-            'Praia da Marinha': 'https://maps.google.com/?q=Praia+da+Marinha,+Lagoa,+Portugal',
-            'Gruta de Benagil': 'https://maps.google.com/?q=Benagil+Cave,+Lagoa,+Portugal',
-            'Praia da Falésia': 'https://maps.google.com/?q=Praia+da+Falésia,+Albufeira,+Portugal',
-            'Faro': 'https://maps.google.com/?q=Faro,+Algarve,+Portugal',
-            'Albufeira': 'https://maps.google.com/?q=Albufeira,+Algarve,+Portugal',
-            'Ponta da Piedade': 'https://maps.google.com/?q=Ponta+da+Piedade,+Lagos,+Portugal',
-            'Lagos': 'https://maps.google.com/?q=Lagos,+Algarve,+Portugal',
-            'Sagres': 'https://maps.google.com/?q=Sagres,+Algarve,+Portugal',
-          };
-          
-          // Adicionar Google Maps URLs às imagens existentes
-          const updatedImages = state.content.algarve.gallery.images.map(img => ({
-            ...img,
-            googleMapsUrl: img.googleMapsUrl || googleMapsUrls[img.title] || '',
-          }));
-          
-          // Verificar quais locais estão em falta
-          const existingTitles = updatedImages.map(img => img.title);
-          const defaultGalleryImages = initialContent.algarve?.gallery?.images || [];
-          const missingLocations = defaultGalleryImages.filter(
-            img => !existingTitles.includes(img.title)
-          );
-          
-          // Separar Ponta da Piedade para colocar no final
-          const pontaDaPiedade = updatedImages.find(img => img.title === 'Ponta da Piedade');
-          const imagesWithoutPonta = updatedImages.filter(img => img.title !== 'Ponta da Piedade');
-          
-          // Adicionar Lagos e Sagres dos locais em falta (exceto Ponta da Piedade)
-          const lagosAndSagres = missingLocations.filter(img => 
-            img.title === 'Lagos' || img.title === 'Sagres'
-          );
-          const otherMissing = missingLocations.filter(img => 
-            img.title !== 'Lagos' && img.title !== 'Sagres' && img.title !== 'Ponta da Piedade'
-          );
-          
-          // Ordem final: imagens existentes (sem Ponta), Lagos, Sagres, outros em falta, Ponta da Piedade no final
-          const finalImages = [
-            ...imagesWithoutPonta,
-            ...lagosAndSagres,
-            ...otherMissing,
-            ...(pontaDaPiedade ? [pontaDaPiedade] : missingLocations.filter(img => img.title === 'Ponta da Piedade')),
-          ];
-          
-          console.log('📍 Locais em falta adicionados:', missingLocations.map(l => l.title));
-          console.log('📍 Ordem final:', finalImages.map(l => l.title));
-          
-          const defaultBeachItems = initialContent.algarve?.beaches?.items || [];
-          
-          return {
-            ...state,
-            content: {
-              ...state.content,
-              algarve: {
-                ...state.content.algarve,
-                gallery: {
-                  ...state.content.algarve.gallery,
-                  images: finalImages,
-                },
-                // Adicionar praias premiadas se não existirem
-                beaches: {
-                  ...state.content.algarve.beaches,
-                  items: state.content.algarve.beaches?.items || defaultBeachItems,
-                },
-              },
-            },
-          };
-        }
-        
-        // Se não existir conteúdo do Algarve, adicionar
-        if (state?.content && !state.content.algarve) {
-          console.log('✨ Adicionando conteúdo do Algarve');
-          return {
-            ...state,
-            content: {
-              ...state.content,
-              algarve: initialContent.algarve,
-            },
-          };
-        }
-        
-        // Atualizar minNights para 3 em todos os apartamentos
-        if (state?.content?.apartments) {
-          const updatedApartments = state.content.apartments.map(apt => ({
-            ...apt,
-            minNights: 3
-          }));
-          
-          // Verificar se algum apartamento tem minNights diferente de 3
-          const hasOldMinNights = state.content.apartments.some(apt => apt.minNights !== 3);
-          
-          if (hasOldMinNights) {
-            console.log('🔄 Atualizando estadia mínima para 3 noites em todos os apartamentos');
-            return {
-              ...state,
-              content: {
-                ...state.content,
-                apartments: updatedApartments,
-              },
-            };
-          }
-        }
-        
-        return persistedState;
-      },
-    }
-  )
-);
+}));
