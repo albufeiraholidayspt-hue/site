@@ -895,7 +895,11 @@ export function Algarve() {
               </div>
               
               <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-                {[...algarve.gallery.images].sort((a, b) => (a.heroOrder || 999) - (b.heroOrder || 999)).map((image, index) => {
+                {(() => {
+                  const sortedImages = [...algarve.gallery.images].sort((a, b) => (a.heroOrder || 999) - (b.heroOrder || 999));
+                  console.log('🎯 ORDEM DA GRELHA:', sortedImages.map(img => `${img.title} (heroOrder: ${img.heroOrder}, featured: ${img.featured})`));
+                  return sortedImages;
+                })().map((image, index) => {
                   const totalImages = algarve.gallery?.images.length || 0;
                   const isFirst = index === 0;
                   const isLast = index === totalImages - 1;
