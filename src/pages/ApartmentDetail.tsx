@@ -988,7 +988,7 @@ Küche - vollständig möbliert und ausgestattet mit allen Utensilien und Kleing
             {/* Sidebar */}
             <div className="lg:col-span-1">
               <div className="card-modern p-6 sticky top-24">
-                <h3 className="font-display text-xl font-bold text-gray-900 mb-6">
+                <h3 className="hidden md:block font-display text-xl font-bold text-gray-900 mb-6">
                   {(() => {
                     const currentLang = currentLanguage || 'pt';
                     if (currentLang === 'en') return 'Information';
