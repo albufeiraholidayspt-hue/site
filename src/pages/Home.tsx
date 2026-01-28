@@ -207,18 +207,36 @@ export function Home() {
                 key={apartment.id}
                 className="card-modern group"
               >
-                {/* Image */}
+                {/* Image or Video */}
                 <div className="relative h-56 overflow-hidden">
-                  <img
-                    src={optimizeCardImage(apartment.heroImage)}
-                    alt={apartment.name}
-                    loading="lazy"
-                    decoding="async"
-                    className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ${
-                      parseInt(apartment.id) % 2 === 0 ? 'animate-kenburns-alt' : 'animate-kenburns'
-                    }`}
-                    style={{ objectPosition: apartment.heroImagePosition || 'center' }}
-                  />
+                  {apartment.heroVideoUrl ? (
+                    <div className="absolute inset-0 bg-gray-900 overflow-hidden">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${getYouTubeVideoId(apartment.heroVideoUrl)}?start=${apartment.heroVideoStartTime || 0}&autoplay=1&mute=1&loop=1&playlist=${getYouTubeVideoId(apartment.heroVideoUrl)}&controls=0&showinfo=0&rel=0&modestbranding=1`}
+                        title={`${apartment.name} Video`}
+                        className="absolute top-1/2 left-1/2 w-full h-full pointer-events-none"
+                        style={{ 
+                          transform: 'translate(-50%, -50%) scale(1.5)',
+                          minWidth: '100%',
+                          minHeight: '100%'
+                        }}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                        frameBorder="0"
+                      />
+                    </div>
+                  ) : (
+                    <img
+                      src={optimizeCardImage(apartment.heroImage)}
+                      alt={apartment.name}
+                      loading="lazy"
+                      decoding="async"
+                      className={`w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ${
+                        parseInt(apartment.id) % 2 === 0 ? 'animate-kenburns-alt' : 'animate-kenburns'
+                      }`}
+                      style={{ objectPosition: apartment.heroImagePosition || 'center' }}
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                   
                   {/* Badge */}
