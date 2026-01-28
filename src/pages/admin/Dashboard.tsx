@@ -25,6 +25,7 @@ import { GalleryUploadCloudinary as GalleryUploadImgBB } from '../../components/
 import { AutoExport } from '../../components/AutoExport';
 import { useTranslation } from '../../i18n/simple';
 import '../../utils/contentSync'; // Importa para disponibilizar globalmente
+import { getYouTubeThumbnail, isYouTubeUrl } from '../../utils/youtube';
 
 // Lista de todas as comodidades disponíveis
 const AVAILABLE_FEATURES = [
@@ -1731,7 +1732,11 @@ export function Dashboard() {
                         >
                           <div className="flex items-center gap-4">
                             <img
-                              src={apartment.heroImage}
+                              src={
+                                isYouTubeUrl(apartment.heroImage)
+                                  ? getYouTubeThumbnail(apartment.heroImage) || apartment.heroImage
+                                  : apartment.heroImage
+                              }
                               alt={apartment.name}
                               className="w-16 h-16 rounded-lg object-cover"
                             />
