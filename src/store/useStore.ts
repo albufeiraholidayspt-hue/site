@@ -274,7 +274,7 @@ export const useStore = create<AppState>()(
     }),
     {
       name: 'albufeira-holidays-storage',
-      version: 25,
+      version: 24,
       storage: createJSONStorage(() => localStorage),
       migrate: (persistedState: unknown, version: number) => {
         console.log('🔄 Migrando para versão:', version);
