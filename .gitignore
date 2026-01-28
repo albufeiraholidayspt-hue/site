@@ -8,6 +8,11 @@ dist/
 .env
 .env.local
 .env.*.local
+.env.production
+
+# Backups (manter backups locais, não enviar para GitHub)
+backups/
+*.tar.gz
 
 # IDE
 .vscode/
@@ -23,3 +28,7 @@ npm-debug.log*
 
 # Local Netlify folder
 .netlify
+
+# Temporary files
+*.tmp
+*.temp
