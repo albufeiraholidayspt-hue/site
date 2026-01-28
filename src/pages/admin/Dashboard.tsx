@@ -20,8 +20,8 @@ import {
   ExternalLink,
 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
-import { ImageUploadImgBB } from '../../components/ImageUploadImgBB';
-import { GalleryUploadImgBB } from '../../components/GalleryUploadImgBB';
+import { ImageUploadCloudinary as ImageUploadImgBB } from '../../components/ImageUploadCloudinary';
+import { GalleryUploadCloudinary as GalleryUploadImgBB } from '../../components/GalleryUploadCloudinary';
 import { AutoExport } from '../../components/AutoExport';
 import { useTranslation } from '../../i18n/simple';
 import '../../utils/contentSync'; // Importa para disponibilizar globalmente

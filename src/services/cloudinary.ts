@@ -14,7 +14,7 @@ class CloudinaryService {
   private uploadPreset: string;
 
   constructor() {
-    this.cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'dqh8jxqxq';
+    this.cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'de6edaaft';
     this.uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'albufeira_holidays';
   }
 
