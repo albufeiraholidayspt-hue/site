@@ -136,6 +136,9 @@ app.get('/api/get-content', async (req, res) => {
   }
 });
 
+// Servir arquivos públicos (public) - para clear-cache.html, etc
+app.use(express.static(join(__dirname, 'public')));
+
 // Servir frontend estático (dist)
 app.use(express.static(join(__dirname, 'dist')));
 
