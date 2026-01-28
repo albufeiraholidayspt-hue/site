@@ -4,10 +4,13 @@ import { SiteContent, User, Apartment, Promotion, SeoSettings, PartialSeoSetting
 import { initialContent } from '../data/initialContent';
 import { translationService } from '../services/translationService';
 import { autoTranslateFields, fieldChanged } from '../hooks/useAutoTranslate';
+import { contentPersistenceService } from '../services/contentPersistence';
 
 interface AppState {
   content: SiteContent;
   user: User;
+  saveToServer: () => Promise<void>;
+  loadFromServer: () => Promise<void>;
   updateHero: (hero: Partial<SiteContent['hero']>) => void;
   updateAbout: (about: Partial<SiteContent['about']>) => void;
   updateContact: (contact: Partial<SiteContent['contact']>) => void;
@@ -45,35 +48,53 @@ export const useStore = create<AppState>()(
         username: '',
         isAuthenticated: false,
       },
-      updateHero: (hero) =>
+      saveToServer: async () => {
+        const state = _get();
+        await contentPersistenceService.saveContent(state.content);
+      },
+      loadFromServer: async () => {
+        const content = await contentPersistenceService.loadContent();
+        if (content) {
+          set({ content });
+        }
+      },
+      updateHero: (hero) => {
         set((state) => ({
           content: {
             ...state.content,
             hero: { ...state.content.hero, ...hero },
           },
-        })),
-      updateAbout: (about) =>
+        }));
+        _get().saveToServer();
+      },
+      updateAbout: (about) => {
         set((state) => ({
           content: {
             ...state.content,
             about: { ...state.content.about, ...about },
           },
-        })),
-      updateContact: (contact) =>
+        }));
+        _get().saveToServer();
+      },
+      updateContact: (contact) => {
         set((state) => ({
           content: {
             ...state.content,
             contact: { ...state.content.contact, ...contact },
           },
-        })),
-      updateBookingUrl: (url) =>
+        }));
+        _get().saveToServer();
+      },
+      updateBookingUrl: (url) => {
         set((state) => ({
           content: {
             ...state.content,
             bookingUrl: url,
           },
-        })),
-      updateApartment: (id, data) =>
+        }));
+        _get().saveToServer();
+      },
+      updateApartment: (id, data) => {
         set((state) => ({
           content: {
             ...state.content,
@@ -81,7 +102,9 @@ export const useStore = create<AppState>()(
               apt.id === id ? { ...apt, ...data } : apt
             ),
           },
-        })),
+        }));
+        _get().saveToServer();
+      },
       updateApartmentWithTranslation: async (id, data) => {
         const state = _get();
         const currentApartment = state.content.apartments.find(apt => apt.id === id);
@@ -125,15 +148,18 @@ export const useStore = create<AppState>()(
             ),
           },
         }));
+        _get().saveToServer();
       },
-      addPromotion: (promotion) =>
+      addPromotion: (promotion) => {
         set((state) => ({
           content: {
             ...state.content,
             promotions: [...(state.content.promotions || []), promotion],
           },
-        })),
-      updatePromotion: (id, data) =>
+        }));
+        _get().saveToServer();
+      },
+      updatePromotion: (id, data) => {
         set((state) => ({
           content: {
             ...state.content,
@@ -141,22 +167,28 @@ export const useStore = create<AppState>()(
               promo.id === id ? { ...promo, ...data } : promo
             ),
           },
-        })),
-      deletePromotion: (id) =>
+        }));
+        _get().saveToServer();
+      },
+      deletePromotion: (id) => {
         set((state) => ({
           content: {
             ...state.content,
             promotions: (state.content.promotions || []).filter((promo) => promo.id !== id),
           },
-        })),
-      addReview: (review) =>
+        }));
+        _get().saveToServer();
+      },
+      addReview: (review) => {
         set((state) => ({
           content: {
             ...state.content,
             reviews: [...(state.content.reviews || []), review],
           },
-        })),
-      updateReview: (id, data) =>
+        }));
+        _get().saveToServer();
+      },
+      updateReview: (id, data) => {
         set((state) => ({
           content: {
             ...state.content,
@@ -164,32 +196,36 @@ export const useStore = create<AppState>()(
               review.id === id ? { ...review, ...data } : review
             ),
           },
-        })),
-      deleteReview: (id) =>
+        }));
+        _get().saveToServer();
+      },
+      deleteReview: (id) => {
         set((state) => ({
           content: {
             ...state.content,
             reviews: (state.content.reviews || []).filter((review) => review.id !== id),
           },
-        })),
-      updateSeo: (seo: PartialSeoSettings) =>
-        set((state) => {
-          const currentSeo = state.content.seo || initialContent.seo;
-          const newSeo = { ...currentSeo, ...seo };
-          return {
-            content: {
-              ...state.content,
-              seo: newSeo as SeoSettings,
-            },
-          };
-        }),
-      updateSocialLinks: (links) =>
+        }));
+        _get().saveToServer();
+      },
+      updateSeo: (seo) => {
         set((state) => ({
           content: {
             ...state.content,
-            socialLinks: { ...initialContent.socialLinks!, ...(state.content.socialLinks || {}), ...links } as typeof initialContent.socialLinks,
+            seo: { ...state.content.seo, ...seo },
           },
-        })),
+        }));
+        _get().saveToServer();
+      },
+      updateSocialLinks: (links) => {
+        set((state) => ({
+          content: {
+            ...state.content,
+            socialLinks: { ...state.content.socialLinks, ...links },
+          },
+        }));
+        _get().saveToServer();
+      },
       updateAlgarve: (algarve) =>
         set((state) => {
           const currentAlgarve = state.content.algarve || {};
@@ -200,53 +236,56 @@ export const useStore = create<AppState>()(
             },
           };
         }),
-      addAlgarveImage: (image) =>
+      addAlgarveImage: (image) => {
         set((state) => ({
           content: {
             ...state.content,
             algarve: {
               ...state.content.algarve,
               gallery: {
-                title: state.content.algarve?.gallery?.title || 'Galeria do Algarve',
-                description: state.content.algarve?.gallery?.description || 'Imagens capturadas nos locais mais bonitos da região',
-                stats: state.content.algarve?.gallery?.stats || [],
-                images: [...(state.content.algarve?.gallery?.images || []), image],
+                ...state.content.algarve.gallery,
+                images: [
+                  ...(state.content.algarve.gallery?.images || []),
+                  image,
+                ],
               },
             },
           },
-        })),
-      updateAlgarveImage: (id, data) =>
+        }));
+        _get().saveToServer();
+      },
+      updateAlgarveImage: (id, data) => {
         set((state) => ({
           content: {
             ...state.content,
             algarve: {
               ...state.content.algarve,
               gallery: {
-                title: state.content.algarve?.gallery?.title || 'Galeria do Algarve',
-                description: state.content.algarve?.gallery?.description || 'Imagens capturadas nos locais mais bonitos da região',
-                stats: state.content.algarve?.gallery?.stats || [],
-                images: (state.content.algarve?.gallery?.images || []).map((img) =>
+                ...state.content.algarve.gallery,
+                images: (state.content.algarve.gallery?.images || []).map((img) =>
                   img.id === id ? { ...img, ...data } : img
                 ),
               },
             },
           },
-        })),
-      deleteAlgarveImage: (id) =>
+        }));
+        _get().saveToServer();
+      },
+      deleteAlgarveImage: (id) => {
         set((state) => ({
           content: {
             ...state.content,
             algarve: {
               ...state.content.algarve,
               gallery: {
-                title: state.content.algarve?.gallery?.title || 'Galeria do Algarve',
-                description: state.content.algarve?.gallery?.description || 'Imagens capturadas nos locais mais bonitos da região',
-                stats: state.content.algarve?.gallery?.stats || [],
-                images: (state.content.algarve?.gallery?.images || []).filter((img) => img.id !== id),
+                ...state.content.algarve.gallery,
+                images: (state.content.algarve.gallery?.images || []).filter((img) => img.id !== id),
               },
             },
           },
-        })),
+        }));
+        _get().saveToServer();
+      },
       login: (username, password) => {
         if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
           set({ user: { username, isAuthenticated: true } });
