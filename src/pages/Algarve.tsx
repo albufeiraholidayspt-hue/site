@@ -900,11 +900,6 @@ export function Algarve() {
                   console.log('🎯 ORDEM DA GRELHA:', sortedImages.map(img => `${img.title} (heroOrder: ${img.heroOrder}, featured: ${img.featured})`));
                   return sortedImages;
                 })().map((image, index) => {
-                  const totalImages = algarve.gallery?.images.length || 0;
-                  const isFirst = index === 0;
-                  const isLast = index === totalImages - 1;
-                  const isFirstOrLast = isFirst || isLast;
-                  
                   return (
                   <div 
                     key={image.id}
