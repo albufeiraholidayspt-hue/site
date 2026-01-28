@@ -37,6 +37,8 @@ export interface Apartment {
   images: string[];
   heroImage: string;
   heroImagePosition?: string;
+  heroVideoUrl?: string;
+  heroVideoStartTime?: number;
   icalUrl?: string;
   bookingUrl?: string;
   reviewsUrl?: string;

@@ -1914,6 +1914,53 @@ export function Dashboard() {
                               </p>
                             </div>
 
+                            {/* Vídeo YouTube na Imagem Principal */}
+                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                              <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                                <svg className="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                </svg>
+                                Vídeo YouTube (Opcional)
+                              </h4>
+                              <p className="text-sm text-gray-600 mb-4">
+                                Se configurar um vídeo, ele será usado como fundo da imagem principal
+                              </p>
+                              <div className="space-y-4">
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    URL do Vídeo YouTube
+                                  </label>
+                                  <input
+                                    type="url"
+                                    value={apartment.heroVideoUrl || ''}
+                                    onChange={(e) => updateApartment(apartment.id, { heroVideoUrl: e.target.value })}
+                                    placeholder="https://www.youtube.com/watch?v=XXXXXXXXX"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                  />
+                                  <p className="text-xs text-gray-500 mt-1">
+                                    Cole o URL completo do vídeo YouTube
+                                  </p>
+                                </div>
+
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Segundo de Início
+                                  </label>
+                                  <input
+                                    type="number"
+                                    value={apartment.heroVideoStartTime || 0}
+                                    onChange={(e) => updateApartment(apartment.id, { heroVideoStartTime: parseInt(e.target.value) || 0 })}
+                                    min={0}
+                                    placeholder="0"
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                                  />
+                                  <p className="text-xs text-gray-500 mt-1">
+                                    O vídeo começará a partir deste segundo (ex: 30 para começar aos 30 segundos)
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+
                             <GalleryUploadImgBB
                               label="Galeria de Imagens"
                               images={apartment.images}
