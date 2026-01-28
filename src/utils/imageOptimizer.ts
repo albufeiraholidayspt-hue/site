@@ -14,7 +14,7 @@
 const CLOUDINARY_CLOUD = 'de6edaaft';
 
 // Enable/disable Cloudinary optimization
-const ENABLE_OPTIMIZATION = false; // DESATIVADO - fetch mode é muito lento
+const ENABLE_OPTIMIZATION = true; // ATIVADO - otimiza imagens do Cloudinary direto
 
 /**
  * Optimizes an image URL using Cloudinary's fetch feature
@@ -37,21 +37,8 @@ export function optimizeImage(
     return url;
   }
 
-  // Skip if already a Cloudinary URL
-  if (url.includes('cloudinary.com') || url.includes('res.cloudinary.com')) {
-    return url;
-  }
-
   // Skip local URLs
   if (url.startsWith('/') || url.startsWith('./')) {
-    return url;
-  }
-
-  // Skip non-image URLs (but allow ibb.co and unsplash.com)
-  if (!url.match(/\.(jpg|jpeg|png|gif|webp|avif|bmp|tiff)(\?|$)/i) && 
-      !url.includes('ibb.co') && 
-      !url.includes('unsplash.com') &&
-      !url.includes('images.unsplash.com')) {
     return url;
   }
 
@@ -79,10 +66,17 @@ export function optimizeImage(
     transforms.push('c_fill');
   }
 
-  // Build Cloudinary fetch URL
   const transformString = transforms.join(',');
+
+  // Se já é URL do Cloudinary, inserir transformações
+  if (url.includes('res.cloudinary.com')) {
+    // URL formato: https://res.cloudinary.com/CLOUD/image/upload/v123/path/image.jpg
+    // Inserir transformações após /upload/
+    return url.replace(/\/upload\//, `/upload/${transformString}/`);
+  }
+
+  // Se não é Cloudinary, usar fetch mode (para URLs externas)
   const encodedUrl = encodeURIComponent(url);
-  
   return `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/image/fetch/${transformString}/${encodedUrl}`;
 }
 
@@ -94,9 +88,9 @@ export function optimizeHeroImage(url: string): string {
   // Detect mobile viewport for smaller images
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   return optimizeImage(url, {
-    width: isMobile ? 600 : 1400,
-    quality: isMobile ? 55 : 70,
-    format: 'webp'
+    width: isMobile ? 800 : 1400,
+    quality: isMobile ? 60 : 75,
+    format: 'auto'
   });
 }
 
@@ -118,9 +112,9 @@ export function optimizeHeroImageMobile(url: string): string {
 export function optimizeCardImage(url: string): string {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   return optimizeImage(url, {
-    width: isMobile ? 300 : 600,
-    quality: isMobile ? 50 : 65,
-    format: 'webp'
+    width: isMobile ? 400 : 800,
+    quality: isMobile ? 60 : 70,
+    format: 'auto'
   });
 }
 
@@ -129,9 +123,9 @@ export function optimizeCardImage(url: string): string {
  */
 export function optimizeThumbnail(url: string): string {
   return optimizeImage(url, {
-    width: 300,
-    quality: 60,
-    format: 'webp'
+    width: 400,
+    quality: 65,
+    format: 'auto'
   });
 }
 
