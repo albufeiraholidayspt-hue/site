@@ -22,6 +22,20 @@ export function Algarve() {
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [beachLightboxOpen, setBeachLightboxOpen] = useState(false);
   const [beachLightboxIndex, setBeachLightboxIndex] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Marcar como carregado após dados estarem disponíveis
+  useEffect(() => {
+    if (algarve) {
+      setIsLoading(false);
+    } else {
+      // Timeout de segurança - se após 2 segundos ainda não houver dados, mostrar botão de carregar
+      const timeout = setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+      return () => clearTimeout(timeout);
+    }
+  }, [algarve]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -454,6 +468,18 @@ export function Algarve() {
 
     return text;
   };
+
+  // Mostrar loading enquanto dados não carregam
+  if (isLoading) {
+    return (
+      <div className="bg-white min-h-screen pt-20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">A carregar página do Algarve...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!algarve) {
     const handleInitialize = () => {
