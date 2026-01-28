@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+// @ts-ignore - SeoSettings usado em outros ficheiros
 import { SiteContent, User, Apartment, Promotion, SeoSettings, PartialSeoSettings, SocialLinks, Review, AlgarveContent, AlgarveGalleryImage } from '../types';
 import { initialContent } from '../data/initialContent';
 import { translationService } from '../services/translationService';
