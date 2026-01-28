@@ -998,7 +998,8 @@ Küche - vollständig möbliert und ausgestattet mit allen Utensilien und Kleing
                   })()}
                 </h3>
 
-                <div className="space-y-4 mb-6">
+                {/* Informações de capacidade e estadia mínima - apenas Desktop */}
+                <div className="hidden md:block space-y-4 mb-6">
                   <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50">
                     <div className="flex items-center gap-3 text-gray-600">
                       <Users className="h-5 w-5 text-primary-500" />
