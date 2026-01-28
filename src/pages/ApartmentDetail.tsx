@@ -687,6 +687,30 @@ export function ApartmentDetail() {
                 </div>
               </div>
 
+              {/* Availability Calendar - Mobile */}
+              <div className="md:hidden mb-6">
+                <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
+                  <Calendar className="h-4 w-4 text-primary-500" />
+                  <span>{t('calendar.availability')}</span>
+                </div>
+                {apartment.icalUrl ? (
+                  <AvailabilityCalendar 
+                    icalUrl={apartment.icalUrl} 
+                    minNights={apartment.minNights}
+                    minNightsByMonth={apartment.minNightsByMonth}
+                    onDateSelection={(startDate, endDate, isValid) => {
+                      setSelectedDates({ start: startDate, end: endDate });
+                      setIsSelectionValid(isValid);
+                    }}
+                  />
+                ) : (
+                  <div className="bg-white rounded-xl border border-gray-200 p-4 text-center text-gray-500 text-sm">
+                    <Calendar className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                    <p>{t('calendar.checkAvailability')}</p>
+                  </div>
+                )}
+              </div>
+
               {/* Gallery */}
               <div>
                 <div className="flex items-center justify-between mb-6">
@@ -939,8 +963,8 @@ Küche - vollständig möbliert und ausgestattet mit allen Utensilien und Kleing
                   </div>
                 </div>
 
-                {/* Availability Calendar */}
-                <div className="mb-6">
+                {/* Availability Calendar - Desktop */}
+                <div className="hidden md:block mb-6">
                   <div className="flex items-center gap-2 text-gray-500 text-sm mb-3">
                     <Calendar className="h-4 w-4 text-primary-500" />
                     <span>{t('calendar.availability')}</span>
