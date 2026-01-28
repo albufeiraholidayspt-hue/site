@@ -174,12 +174,14 @@ export function Dashboard() {
 
   // Função chamada quando o utilizador sai do campo (blur) - traduz automaticamente
   const handleApartmentTextBlur = async (apartmentId: string, data: Partial<typeof content.apartments[0]>) => {
+    console.log('🔵 handleApartmentTextBlur chamado:', apartmentId, data);
     setIsTranslating(apartmentId);
     try {
       await updateApartmentWithTranslation(apartmentId, data);
+      console.log('✅ Tradução concluída');
       showSaved();
     } catch (error) {
-      console.error('Erro na tradução:', error);
+      console.error('❌ Erro na tradução:', error);
     } finally {
       setIsTranslating(null);
     }
