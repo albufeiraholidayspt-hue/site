@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useParams, Navigate, Link } from 'react-router-dom';
-import { Users, Moon, ArrowRight, ArrowLeft, Calendar, Facebook, Instagram, Star, ImageIcon } from 'lucide-react';
+import { useParams, Navigate } from 'react-router-dom';
+import { Users, Moon, ArrowRight, Calendar, Facebook, Instagram, Star, ImageIcon } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { FeatureIcon } from '../utils/featureIcons';
 import { AvailabilityCalendar } from '../components/AvailabilityCalendar';
@@ -102,21 +102,6 @@ export function ApartmentDetail() {
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
         </div>
-        
-        {/* Back button */}
-        <Link
-          to="/"
-          className="absolute top-24 left-4 sm:left-8 z-20 flex items-center gap-2 text-white/90 hover:text-white transition-colors bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full"
-        >
-          <ArrowLeft className="h-5 w-5" />
-          <span>{(() => {
-            const currentLang = currentLanguage || 'pt';
-            if (currentLang === 'en') return 'Back';
-            if (currentLang === 'fr') return 'Retour';
-            if (currentLang === 'de') return 'Zurück';
-            return 'Voltar';
-          })()}</span>
-        </Link>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 w-full">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-500 text-white text-sm mb-4 shadow-lg">
