@@ -1068,12 +1068,13 @@ Küche - vollständig möbliert und ausgestattet mit allen Utensilien und Kleing
                   )}
                 </div>
 
+                {/* Botão Reservar Agora - apenas Desktop (no mobile já aparece após calendário) */}
                 {selectedDates && isSelectionValid ? (
                   <a
                     href={`${apartment.bookingUrl || content.bookingUrl}&f_ini=${selectedDates.start}&f_fin=${selectedDates.end}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-primary w-full text-center inline-flex items-center justify-center gap-2"
+                    className="hidden md:flex btn-primary w-full text-center items-center justify-center gap-2"
                   >
                     {t('apartments.bookNow')}
                     <ArrowRight className="h-5 w-5" />
@@ -1081,7 +1082,7 @@ Küche - vollständig möbliert und ausgestattet mit allen Utensilien und Kleing
                 ) : (
                   <button
                     disabled
-                    className="btn-primary w-full text-center inline-flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
+                    className="hidden md:flex btn-primary w-full text-center items-center justify-center gap-2 opacity-50 cursor-not-allowed"
                   >
                     {t('apartments.bookNow')}
                     <ArrowRight className="h-5 w-5" />
