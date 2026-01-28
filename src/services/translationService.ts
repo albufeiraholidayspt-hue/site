@@ -8,11 +8,11 @@ export interface TranslationResult {
 
 class TranslationService {
   private apiKey: string;
-  private provider: 'libre' | 'myMemory' | 'google';
+  private provider: 'libre' | 'myMemory';
 
   constructor() {
     this.apiKey = import.meta.env.VITE_TRANSLATION_API_KEY || '';
-    // Prioritize free services: LibreTranslate -> MyMemory -> Google
+    // Prioritize free services: LibreTranslate -> MyMemory
     this.provider = this.apiKey ? 'libre' : 'myMemory';
   }
 
@@ -20,10 +20,8 @@ class TranslationService {
     try {
       if (this.provider === 'libre') {
         return await this.translateWithLibre(text, targetLanguage, sourceLanguage);
-      } else if (this.provider === 'myMemory') {
-        return await this.translateWithMyMemory(text, targetLanguage, sourceLanguage);
       } else {
-        return await this.translateWithGoogle(text, targetLanguage, sourceLanguage);
+        return await this.translateWithMyMemory(text, targetLanguage, sourceLanguage);
       }
     } catch (error) {
       console.error('Translation error:', error);
@@ -129,26 +127,6 @@ class TranslationService {
     throw new Error('MyMemory translation failed');
   }
 
-  private async translateWithGoogle(text: string, targetLanguage: string, sourceLanguage?: string): Promise<TranslationResult> {
-    const googleUrl = 'https://translation.googleapis.com/language/translate/v2';
-    
-    const response = await axios.post(
-      `${googleUrl}?key=${this.apiKey}`,
-      {
-        q: text,
-        source: sourceLanguage || 'auto',
-        target: targetLanguage,
-        format: 'text'
-      }
-    );
-
-    const translation = response.data.data.translations[0];
-    return {
-      translatedText: translation.translatedText,
-      sourceLanguage: translation.detectedSourceLanguage || sourceLanguage || 'auto',
-      targetLanguage
-    };
-  }
 
   async translateMultipleTexts(texts: string[], targetLanguage: string, sourceLanguage?: string): Promise<TranslationResult[]> {
     const results: TranslationResult[] = [];
@@ -237,12 +215,6 @@ class TranslationService {
           name: 'MyMemory',
           description: 'Serviço gratuito com limite de 10.000 palavras/dia',
           isFree: true
-        };
-      case 'google':
-        return {
-          name: 'Google Translate',
-          description: 'Serviço pago da Google Cloud',
-          isFree: false
         };
       default:
         return {
