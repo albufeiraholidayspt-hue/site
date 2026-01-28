@@ -1791,7 +1791,10 @@ export function Dashboard() {
                               <textarea
                                 value={apartment.description}
                                 onChange={(e) => handleApartmentTextChange(apartment.id, 'description', e.target.value)}
-                                onBlur={() => handleApartmentTextBlur(apartment.id, { description: apartment.description })}
+                                onBlur={(e) => {
+                                  console.log('🟢 onBlur disparado para description');
+                                  handleApartmentTextBlur(apartment.id, { description: e.target.value });
+                                }}
                                 rows={4}
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
                               />
@@ -1804,7 +1807,10 @@ export function Dashboard() {
                               <textarea
                                 value={apartment.additionalInfo || ''}
                                 onChange={(e) => handleApartmentTextChange(apartment.id, 'additionalInfo', e.target.value)}
-                                onBlur={() => handleApartmentTextBlur(apartment.id, { additionalInfo: apartment.additionalInfo })}
+                                onBlur={(e) => {
+                                  console.log('🟢 onBlur disparado para additionalInfo');
+                                  handleApartmentTextBlur(apartment.id, { additionalInfo: e.target.value });
+                                }}
                                 rows={4}
                                 placeholder="Regras da casa, instruções de check-in, informações sobre a zona, etc."
                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
