@@ -23,9 +23,15 @@ export async function autoTranslateField(
   }
 
   try {
-    for (const lang of TARGET_LANGUAGES) {
+    for (let i = 0; i < TARGET_LANGUAGES.length; i++) {
+      const lang = TARGET_LANGUAGES[i];
       const result = await translationService.translateText(text, lang, 'pt');
       translations[`${fieldName}_${lang}`] = result.translatedText;
+      
+      // Delay de 2 segundos entre idiomas para respeitar rate limit da API MyMemory
+      if (i < TARGET_LANGUAGES.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
     }
   } catch (error) {
     console.error('Auto-translation failed:', error);
