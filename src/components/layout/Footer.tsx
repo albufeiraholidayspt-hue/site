@@ -176,8 +176,8 @@ export function Footer() {
     </footer>
     
     {/* Container Laranja - Fora do footer */}
-    <div className="bg-orange-500 pt-6 pb-6 flex flex-col md:flex-row justify-center items-center gap-4">
-      <p className="text-white text-sm">
+    <div className="bg-orange-500 pt-6 pb-6 flex flex-col md:flex-row justify-center items-center gap-4 px-4">
+      <p className="text-white text-sm text-center md:text-left">
         © {new Date().getFullYear()} {content.contact.companyName}. 
         {(() => {
           const currentLang = currentLanguage || 'pt';
