@@ -44,10 +44,12 @@ initDatabase();
 // API: Guardar conteúdo
 app.post('/api/save-content', async (req, res) => {
   try {
+    console.log('📥 Recebido pedido save-content');
     const { content, timestamp } = req.body;
 
     if (!content) {
-      return res.status(400).json({ error: 'Content is required' });
+      console.log('❌ Content vazio');
+      return res.status(400).setHeader('Content-Type', 'application/json').json({ error: 'Content is required' });
     }
 
     const lastUpdated = timestamp || new Date().toISOString();
@@ -57,6 +59,7 @@ app.post('/api/save-content', async (req, res) => {
     
     if (existing.length > 0) {
       // Atualizar conteúdo existente
+      console.log('🔄 Atualizando conteúdo existente, ID:', existing[0].id);
       await sql`
         UPDATE site_content 
         SET content = ${JSON.stringify(content)}, 
@@ -65,6 +68,7 @@ app.post('/api/save-content', async (req, res) => {
       `;
     } else {
       // Inserir novo conteúdo
+      console.log('➕ Inserindo novo conteúdo');
       await sql`
         INSERT INTO site_content (content, last_updated) 
         VALUES (${JSON.stringify(content)}, ${lastUpdated})
@@ -73,14 +77,18 @@ app.post('/api/save-content', async (req, res) => {
 
     console.log('✅ Conteúdo guardado no Neon:', lastUpdated);
 
-    res.json({
+    const response = {
       success: true,
       message: 'Content saved successfully',
       timestamp: lastUpdated,
-    });
+    };
+
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json(response);
 
   } catch (error) {
     console.error('❌ Erro ao guardar:', error);
+    res.setHeader('Content-Type', 'application/json');
     res.status(500).json({
       error: 'Failed to save content',
       details: error.message,
@@ -91,9 +99,12 @@ app.post('/api/save-content', async (req, res) => {
 // API: Carregar conteúdo
 app.get('/api/get-content', async (req, res) => {
   try {
+    console.log('📥 Recebido pedido get-content');
     const result = await sql`SELECT * FROM site_content ORDER BY id DESC LIMIT 1`;
 
     if (result.length === 0) {
+      console.log('❌ Nenhum conteúdo encontrado');
+      res.setHeader('Content-Type', 'application/json');
       return res.status(404).json({
         error: 'Content not found',
         message: 'No saved content available',
@@ -105,15 +116,19 @@ app.get('/api/get-content', async (req, res) => {
 
     console.log('✅ Conteúdo carregado do Neon:', row.last_updated);
 
-    res.json({
+    const response = {
       success: true,
       content: content,
       lastUpdated: row.last_updated,
       version: row.version || '1.0',
-    });
+    };
+
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json(response);
 
   } catch (error) {
     console.error('❌ Erro ao carregar:', error);
+    res.setHeader('Content-Type', 'application/json');
     res.status(500).json({
       error: 'Failed to load content',
       details: error.message,
