@@ -3,7 +3,22 @@ import { useEffect } from 'react';
 
 // Sistema de backup automático para NUNCA MAIS perder dados
 export function DataBackup() {
-  const { content } = useStore();
+  const { content, loadFromServer } = useStore();
+
+  // CARREGAR DADOS DO SERVIDOR QUANDO A APP INICIA
+  useEffect(() => {
+    const loadServerData = async () => {
+      try {
+        console.log('🌐 A carregar dados do servidor...');
+        await loadFromServer();
+        console.log('✅ Dados carregados do servidor com sucesso!');
+      } catch (error) {
+        console.error('❌ Erro ao carregar do servidor:', error);
+      }
+    };
+
+    loadServerData();
+  }, []); // Executar apenas uma vez quando o componente monta
 
   useEffect(() => {
     // Salvar automaticamente a cada 30 segundos
