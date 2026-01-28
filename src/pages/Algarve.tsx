@@ -908,26 +908,24 @@ export function Algarve() {
                   return (
                   <div 
                     key={image.id}
-                    className={`group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer ${
-                      image.featured ? 'md:col-span-2 lg:col-span-3' : ''
-                    } ${isFirstOrLast ? 'col-span-2 md:col-span-1' : ''}`}
+                    className="group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
                     onClick={() => {
                       setLightboxIndex(index);
                       setLightboxOpen(true);
                     }}
                   >
-                    <div className={image.featured ? 'aspect-w-16 aspect-h-8' : 'aspect-w-4 aspect-h-3'}>
+                    <div className="aspect-w-4 aspect-h-3">
                       <img
                         src={optimizeThumbnail(image.imageUrl)}
                         alt={image.title}
                         loading="lazy"
                         decoding="async"
-                        className={`w-full ${image.featured ? 'h-64 md:h-96' : 'h-64'} object-cover group-hover:scale-105 transition-transform duration-500`}
+                        className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="absolute bottom-4 left-4 right-4 text-white">
-                        <h3 className={`font-semibold ${image.featured ? 'text-xl' : 'text-lg'} mb-1`}>
+                        <h3 className="font-semibold text-lg mb-1">
                           {translateContent(image.title)}
                         </h3>
                         <p className="text-sm text-white/90">{translateContent(image.description)}</p>
