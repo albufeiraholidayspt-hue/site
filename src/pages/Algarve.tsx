@@ -633,9 +633,8 @@ export function Algarve() {
                             <img 
                               src={optimizeCardImage(beach.imageUrl)} 
                               alt={beach.name}
-                              loading={index < 3 ? "eager" : "lazy"}
+                              loading="eager"
                               decoding="async"
-                              fetchPriority={index < 3 ? "high" : "auto"}
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             />
                             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
@@ -749,9 +748,8 @@ export function Algarve() {
                         <img 
                           src={optimizeCardImage(item.imageUrl)} 
                           alt={item.title}
-                          loading={index < 3 ? "eager" : "lazy"}
+                          loading="eager"
                           decoding="async"
-                          fetchPriority={index < 3 ? "high" : "auto"}
                           className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
