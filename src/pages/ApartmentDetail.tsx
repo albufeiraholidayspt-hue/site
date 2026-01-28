@@ -24,6 +24,7 @@ export function ApartmentDetail() {
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [selectedDates, setSelectedDates] = useState<{ start: string; end: string } | null>(null);
   const [isSelectionValid, setIsSelectionValid] = useState(false);
+  const [showAllAmenities, setShowAllAmenities] = useState(false);
 
   const apartment = content.apartments.find((apt) => apt.slug === slug);
 
@@ -271,8 +272,8 @@ export function ApartmentDetail() {
                 <h3 className="font-display text-2xl font-bold text-gray-900 mb-6">
                   {t('apartment.amenityTitle')}
                 </h3>
-                <div className="grid grid-cols-5 sm:grid-cols-5 md:grid-cols-6 gap-1">
-                  {apartment.features.map((feature) => (
+                <div className={`grid grid-cols-5 sm:grid-cols-5 md:grid-cols-6 gap-1 ${!showAllAmenities ? 'md:grid' : ''}`}>
+                  {apartment.features.slice(0, showAllAmenities ? apartment.features.length : 5).map((feature) => (
                     <div
                       key={feature}
                       className="flex items-center gap-1 p-1 rounded-md bg-gray-50 border border-gray-100"
@@ -672,6 +673,36 @@ export function ApartmentDetail() {
                     </div>
                   ))}
                 </div>
+                
+                {/* Botão para expandir/colapsar comodidades - Mobile */}
+                {apartment.features.length > 5 && (
+                  <button
+                    onClick={() => setShowAllAmenities(!showAllAmenities)}
+                    className="md:hidden mt-4 text-primary-600 hover:text-primary-700 font-medium text-sm flex items-center gap-2"
+                  >
+                    {showAllAmenities ? (
+                      <>
+                        {(() => {
+                          const currentLang = currentLanguage || 'pt';
+                          if (currentLang === 'en') return '- Hide amenities';
+                          if (currentLang === 'fr') return '- Masquer les équipements';
+                          if (currentLang === 'de') return '- Ausstattung ausblenden';
+                          return '- Ocultar comodidades';
+                        })()}
+                      </>
+                    ) : (
+                      <>
+                        {(() => {
+                          const currentLang = currentLanguage || 'pt';
+                          if (currentLang === 'en') return `+ ${apartment.features.length - 5} more amenities`;
+                          if (currentLang === 'fr') return `+ ${apartment.features.length - 5} équipements supplémentaires`;
+                          if (currentLang === 'de') return `+ ${apartment.features.length - 5} weitere Ausstattungen`;
+                          return `+ ${apartment.features.length - 5} comodidades`;
+                        })()}
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
 
               {/* Availability Calendar - Mobile */}
