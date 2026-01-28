@@ -713,6 +713,68 @@ export function ApartmentDetail() {
                 )}
               </div>
 
+              {/* Booking Information - Mobile */}
+              <div className="md:hidden mb-6">
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50">
+                    <div className="flex items-center gap-3 text-gray-600">
+                      <Users className="h-5 w-5 text-primary-500" />
+                      <span>{(() => {
+                        const currentLang = currentLanguage || 'pt';
+                        if (currentLang === 'en') return 'Capacity';
+                        if (currentLang === 'fr') return 'Capacité';
+                        if (currentLang === 'de') return 'Kapazität';
+                        return 'Capacidade';
+                      })()}</span>
+                    </div>
+                    <span className="font-semibold text-gray-900">
+                      {apartment.capacity} PAX
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-xl bg-gray-50">
+                    <div className="flex items-center gap-3 text-gray-600">
+                      <Moon className="h-5 w-5 text-primary-500" />
+                      <span>{(() => {
+                        const currentLang = currentLanguage || 'pt';
+                        if (currentLang === 'en') return 'Minimum Stay';
+                        if (currentLang === 'fr') return 'Séjour Minimum';
+                        if (currentLang === 'de') return 'Mindestaufenthalt';
+                        return 'Estadia mínima';
+                      })()}</span>
+                    </div>
+                    <span className="font-semibold text-gray-900">
+                      {apartment.minNights} {(() => {
+                        const currentLang = currentLanguage || 'pt';
+                        if (currentLang === 'en') return 'nights';
+                        if (currentLang === 'fr') return 'nuits';
+                        if (currentLang === 'de') return 'Nächte';
+                        return 'noites';
+                      })()}
+                    </span>
+                  </div>
+                </div>
+
+                {selectedDates && isSelectionValid ? (
+                  <a
+                    href={`${apartment.bookingUrl || content.bookingUrl}&f_ini=${selectedDates.start}&f_fin=${selectedDates.end}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary w-full text-center inline-flex items-center justify-center gap-2"
+                  >
+                    {t('apartments.bookNow')}
+                    <ArrowRight className="h-5 w-5" />
+                  </a>
+                ) : (
+                  <button
+                    disabled
+                    className="btn-primary w-full text-center inline-flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
+                  >
+                    {t('apartments.bookNow')}
+                    <ArrowRight className="h-5 w-5" />
+                  </button>
+                )}
+              </div>
+
               {/* Gallery */}
               <div>
                 <div className="flex items-center justify-between mb-6">
