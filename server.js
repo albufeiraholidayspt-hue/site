@@ -167,24 +167,24 @@ app.get('/api/get-content', async (req, res) => {
   }
 });
 
-// Servir arquivos públicos (public) - para clear-cache.html, etc
-app.use(express.static(join(__dirname, 'public')));
-
-// Servir frontend estático (dist)
-app.use(express.static(join(__dirname, 'dist')));
-
-// Todas as outras rotas retornam index.html (SPA)
-app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, 'dist', 'index.html'));
-});
-
-// Error handler global
+// Error handler global (ANTES do catch-all)
 app.use((err, req, res, next) => {
   console.error('❌ Erro não tratado:', err);
   res.status(500).type('application/json').json({
     error: 'Internal server error',
     message: err.message
   });
+});
+
+// Servir arquivos públicos (public) - para clear-cache.html, etc
+app.use(express.static(join(__dirname, 'public')));
+
+// Servir frontend estático (dist)
+app.use(express.static(join(__dirname, 'dist')));
+
+// Todas as outras rotas retornam index.html (SPA) - DEVE SER O ÚLTIMO
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, 'dist', 'index.html'));
 });
 
 // Iniciar servidor
