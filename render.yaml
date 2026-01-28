@@ -1,23 +1,29 @@
 services:
-  # Static Site
-  type: web
-  name: albufeira-holidays
-  envVars:
-    - key: VITE_IMGBB_API_KEY
-      value: dbd2aebb695d29ee20f3fc151c316242
-    - key: VITE_CLOUDINARY_CLOUD_NAME
-      value: dqh8jxqxq
-    - key: VITE_CLOUDINARY_API_KEY
-      value: 154852278618715
-    - key: VITE_CLOUDINARY_API_SECRET
-      value: tdIVQUu2HL7iN2vAMK8Sqawfsa8
-    - key: VITE_CLOUDINARY_UPLOAD_PRESET
-      value: albufeira_holidays
-    - key: VITE_SUPABASE_URL
-      value: https://lposelwkdhpfgyqpxeyw.supabase.co
-    - key: VITE_SUPABASE_ANON_KEY
-      value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxwb3NlbHdrZGhwZmd5cXB4ZXl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MDM2MzUsImV4cCI6MjA4MzI3OTYzNX0.Nf6IgklIQTEkbI85JBa_7q9P8lAUJay-lTtHM882qFw
-  buildCommand: "npm run build"
-  publishDir: "dist"
-  nodeVersion: "18"
-  autoDeploy: true
+  - type: web
+    name: albufeira-holidays
+    env: node
+    buildCommand: "npm install && npm run build"
+    startCommand: "npm start"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_HOST
+        value: PLACEHOLDER_PLANETSCALE_HOST
+      - key: DATABASE_USERNAME
+        value: PLACEHOLDER_PLANETSCALE_USERNAME
+      - key: DATABASE_PASSWORD
+        value: PLACEHOLDER_PLANETSCALE_PASSWORD
+      - key: VITE_IMGBB_API_KEY
+        value: dbd2aebb695d29ee20f3fc151c316242
+      - key: VITE_CLOUDINARY_CLOUD_NAME
+        value: dqh8jxqxq
+      - key: VITE_CLOUDINARY_API_KEY
+        value: 154852278618715
+      - key: VITE_CLOUDINARY_API_SECRET
+        value: tdIVQUu2HL7iN2vAMK8Sqawfsa8
+      - key: VITE_CLOUDINARY_UPLOAD_PRESET
+        value: albufeira_holidays
+      - key: VITE_SUPABASE_URL
+        value: https://lposelwkdhpfgyqpxeyw.supabase.co
+      - key: VITE_SUPABASE_ANON_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxwb3NlbHdrZGhwZmd5cXB4ZXl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3MDM2MzUsImV4cCI6MjA4MzI3OTYzNX0.Nf6IgklIQTEkbI85JBa_7q9P8lAUJay-lTtHM882qFw
