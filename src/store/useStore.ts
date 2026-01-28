@@ -226,7 +226,7 @@ export const useStore = create<AppState>()(
         }));
         _get().saveToServer();
       },
-      updateAlgarve: (algarve) =>
+      updateAlgarve: (algarve) => {
         set((state) => {
           const currentAlgarve = state.content.algarve || {};
           return {
@@ -235,7 +235,9 @@ export const useStore = create<AppState>()(
               algarve: { ...currentAlgarve, ...algarve },
             },
           };
-        }),
+        });
+        _get().saveToServer();
+      },
       addAlgarveImage: (image) => {
         set((state) => ({
           content: {
