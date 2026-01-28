@@ -60,7 +60,57 @@ class TranslationService {
 
   private async translateWithMyMemory(text: string, targetLanguage: string, sourceLanguage?: string): Promise<TranslationResult> {
     const myMemoryUrl = 'https://api.mymemory.translated.net/get';
+    const MAX_LENGTH = 500; // MyMemory free tier limit
     
+    // Se o texto for muito longo, divide em partes
+    if (text.length > MAX_LENGTH) {
+      const sentences = text.split(/\n\n|\. /);
+      let translatedParts: string[] = [];
+      let currentChunk = '';
+      
+      for (const sentence of sentences) {
+        if ((currentChunk + sentence).length > MAX_LENGTH && currentChunk) {
+          // Traduz o chunk atual
+          const response = await axios.get(myMemoryUrl, {
+            params: {
+              q: currentChunk,
+              langpair: `${sourceLanguage || 'pt'}|${targetLanguage}`
+            }
+          });
+          
+          if (response.data.responseStatus === 200) {
+            translatedParts.push(response.data.responseData.translatedText);
+          }
+          
+          currentChunk = sentence;
+          await new Promise(resolve => setTimeout(resolve, 100)); // Delay entre requests
+        } else {
+          currentChunk += (currentChunk ? '. ' : '') + sentence;
+        }
+      }
+      
+      // Traduz o último chunk
+      if (currentChunk) {
+        const response = await axios.get(myMemoryUrl, {
+          params: {
+            q: currentChunk,
+            langpair: `${sourceLanguage || 'pt'}|${targetLanguage}`
+          }
+        });
+        
+        if (response.data.responseStatus === 200) {
+          translatedParts.push(response.data.responseData.translatedText);
+        }
+      }
+      
+      return {
+        translatedText: translatedParts.join('. '),
+        sourceLanguage: sourceLanguage || 'pt',
+        targetLanguage
+      };
+    }
+    
+    // Texto curto - traduz normalmente
     const response = await axios.get(myMemoryUrl, {
       params: {
         q: text,
