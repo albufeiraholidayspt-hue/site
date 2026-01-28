@@ -30,6 +30,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Validar DATABASE_URL
+if (!process.env.DATABASE_URL) {
+  console.error('❌ ERRO CRÍTICO: DATABASE_URL não está configurado!');
+  console.error('Configure a variável de ambiente DATABASE_URL no Render');
+  process.exit(1);
+}
+
+console.log('✅ DATABASE_URL configurado');
+
 // Conexão Neon PostgreSQL
 const sql = neon(process.env.DATABASE_URL);
 
@@ -169,8 +178,20 @@ app.get('*', (req, res) => {
   res.sendFile(join(__dirname, 'dist', 'index.html'));
 });
 
+// Error handler global
+app.use((err, req, res, next) => {
+  console.error('❌ Erro não tratado:', err);
+  res.status(500).type('application/json').json({
+    error: 'Internal server error',
+    message: err.message
+  });
+});
+
 // Iniciar servidor
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando na porta ${PORT}`);
-  console.log(`�️ Base de dados: Neon PostgreSQL`);
+  console.log(`🗄️ Base de dados: Neon PostgreSQL`);
+  console.log(`📡 Endpoints disponíveis:`);
+  console.log(`   POST /api/save-content`);
+  console.log(`   GET  /api/get-content`);
 });
