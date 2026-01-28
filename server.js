@@ -4,6 +4,7 @@
 
 import express from 'express';
 import cors from 'cors';
+import compression from 'compression';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import pg from 'pg';
@@ -15,6 +16,9 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Compressão GZIP para reduzir tamanho das respostas em 70-80%
+app.use(compression());
 
 // Middleware CORS com headers explícitos
 app.use(cors({

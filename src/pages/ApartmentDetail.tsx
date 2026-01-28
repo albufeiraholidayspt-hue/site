@@ -28,6 +28,16 @@ export function ApartmentDetail() {
 
   const apartment = content.apartments.find((apt) => apt.slug === slug);
 
+  // Pré-carregar imagens do lightbox para abertura instantânea
+  useEffect(() => {
+    if (apartment?.images) {
+      apartment.images.forEach((imageUrl) => {
+        const img = new Image();
+        img.src = imageUrl;
+      });
+    }
+  }, [apartment?.images]);
+
   // Update SEO meta tags
   useEffect(() => {
     if (apartment) {
