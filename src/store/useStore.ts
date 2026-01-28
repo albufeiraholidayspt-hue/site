@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { SiteContent, User, Apartment, Promotion, SeoSettings, PartialSeoSettings, SocialLinks, Review, AlgarveContent, AlgarveGalleryImage } from '../types';
+import { SiteContent, User, Apartment, Promotion, PartialSeoSettings, SocialLinks, Review, AlgarveContent, AlgarveGalleryImage } from '../types';
 import { initialContent } from '../data/initialContent';
 import { translationService } from '../services/translationService';
 import { autoTranslateFields, fieldChanged } from '../hooks/useAutoTranslate';
@@ -214,7 +214,7 @@ export const useStore = create<AppState>()(
             ...state.content,
             seo: { ...state.content.seo, ...seo },
           },
-        }));
+        }) as any);
         _get().saveToServer();
       },
       updateSocialLinks: (links) => {
@@ -243,17 +243,17 @@ export const useStore = create<AppState>()(
           content: {
             ...state.content,
             algarve: {
-              ...state.content.algarve,
+              ...(state.content.algarve || {}),
               gallery: {
-                ...state.content.algarve.gallery,
+                ...(state.content.algarve?.gallery || {}),
                 images: [
-                  ...(state.content.algarve.gallery?.images || []),
+                  ...(state.content.algarve?.gallery?.images || []),
                   image,
                 ],
               },
             },
           },
-        }));
+        }) as any);
         _get().saveToServer();
       },
       updateAlgarveImage: (id, data) => {
@@ -261,16 +261,16 @@ export const useStore = create<AppState>()(
           content: {
             ...state.content,
             algarve: {
-              ...state.content.algarve,
+              ...(state.content.algarve || {}),
               gallery: {
-                ...state.content.algarve.gallery,
-                images: (state.content.algarve.gallery?.images || []).map((img) =>
+                ...(state.content.algarve?.gallery || {}),
+                images: (state.content.algarve?.gallery?.images || []).map((img) =>
                   img.id === id ? { ...img, ...data } : img
                 ),
               },
             },
           },
-        }));
+        }) as any);
         _get().saveToServer();
       },
       deleteAlgarveImage: (id) => {
@@ -278,14 +278,14 @@ export const useStore = create<AppState>()(
           content: {
             ...state.content,
             algarve: {
-              ...state.content.algarve,
+              ...(state.content.algarve || {}),
               gallery: {
-                ...state.content.algarve.gallery,
-                images: (state.content.algarve.gallery?.images || []).filter((img) => img.id !== id),
+                ...(state.content.algarve?.gallery || {}),
+                images: (state.content.algarve?.gallery?.images || []).filter((img) => img.id !== id),
               },
             },
           },
-        }));
+        }) as any);
         _get().saveToServer();
       },
       login: (username, password) => {
