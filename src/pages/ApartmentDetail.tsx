@@ -272,8 +272,8 @@ export function ApartmentDetail() {
                 <h3 className="font-display text-2xl font-bold text-gray-900 mb-6">
                   {t('apartment.amenityTitle')}
                 </h3>
-                <div className={`grid grid-cols-5 sm:grid-cols-5 md:grid-cols-6 gap-1 ${!showAllAmenities ? 'md:grid' : ''}`}>
-                  {apartment.features.slice(0, showAllAmenities ? apartment.features.length : 5).map((feature) => (
+                <div className="grid grid-cols-5 sm:grid-cols-5 md:grid-cols-6 gap-1">
+                  {(typeof window !== 'undefined' && window.innerWidth >= 768 ? apartment.features : apartment.features.slice(0, showAllAmenities ? apartment.features.length : 5)).map((feature) => (
                     <div
                       key={feature}
                       className="flex items-center gap-1 p-1 rounded-md bg-gray-50 border border-gray-100"
