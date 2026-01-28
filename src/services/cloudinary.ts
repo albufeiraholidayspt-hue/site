@@ -19,7 +19,7 @@ class CloudinaryService {
   }
 
   /**
-   * Upload de imagem para Cloudinary (com assinatura do servidor)
+   * Upload de imagem para Cloudinary (unsigned - sem preset)
    * @param file - Ficheiro de imagem
    * @param folder - Pasta no Cloudinary (opcional)
    * @returns URL permanente da imagem
@@ -35,12 +35,11 @@ class CloudinaryService {
         throw new Error('Erro ao obter assinatura do servidor');
       }
 
-      const { signature, timestamp, cloudName, apiKey, uploadPreset } = await signatureResponse.json();
+      const { signature, timestamp, cloudName, apiKey } = await signatureResponse.json();
 
-      // Upload com assinatura
+      // Upload com assinatura (sem upload_preset)
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('upload_preset', uploadPreset);
       formData.append('folder', folder);
       formData.append('api_key', apiKey);
       formData.append('timestamp', timestamp.toString());

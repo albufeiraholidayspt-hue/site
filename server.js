@@ -141,18 +141,17 @@ app.post('/api/upload-cloudinary', async (req, res) => {
     const crypto = await import('crypto');
     
     const timestamp = Math.round(new Date().getTime() / 1000);
-    const uploadPreset = process.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'albufeira_holidays';
+    const folder = 'albufeira-holidays';
     
-    // Gerar assinatura manualmente
-    const paramsToSign = `timestamp=${timestamp}&upload_preset=${uploadPreset}${process.env.VITE_CLOUDINARY_API_SECRET}`;
+    // Gerar assinatura manualmente (sem upload_preset)
+    const paramsToSign = `folder=${folder}&timestamp=${timestamp}${process.env.VITE_CLOUDINARY_API_SECRET}`;
     const signature = crypto.createHash('sha1').update(paramsToSign).digest('hex');
 
     res.json({
       signature,
       timestamp,
       cloudName: process.env.VITE_CLOUDINARY_CLOUD_NAME,
-      apiKey: process.env.VITE_CLOUDINARY_API_KEY,
-      uploadPreset
+      apiKey: process.env.VITE_CLOUDINARY_API_KEY
     });
   } catch (error) {
     console.error('❌ Erro ao gerar assinatura Cloudinary:', error);
