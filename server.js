@@ -1,12 +1,12 @@
 // Servidor Express para API de persistência de dados
 // Serve o frontend estático + API endpoints
-// Base de dados: PlanetScale (MySQL serverless)
+// Base de dados: Neon (PostgreSQL serverless - 3GB gratuito)
 
 import express from 'express';
 import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { connect } from '@planetscale/database';
+import { neon } from '@neondatabase/serverless';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,28 +18,22 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
-// Conexão PlanetScale
-const config = {
-  host: process.env.DATABASE_HOST,
-  username: process.env.DATABASE_USERNAME,
-  password: process.env.DATABASE_PASSWORD,
-};
-
-const conn = connect(config);
+// Conexão Neon PostgreSQL
+const sql = neon(process.env.DATABASE_URL);
 
 // Criar tabela se não existir
 async function initDatabase() {
   try {
-    await conn.execute(`
+    await sql`
       CREATE TABLE IF NOT EXISTS site_content (
-        id INT PRIMARY KEY AUTO_INCREMENT,
-        content JSON NOT NULL,
-        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        id SERIAL PRIMARY KEY,
+        content JSONB NOT NULL,
+        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         version VARCHAR(10) DEFAULT '1.0'
       )
-    `);
+    `;
     
-    console.log('✅ Base de dados PlanetScale inicializada');
+    console.log('✅ Base de dados Neon PostgreSQL inicializada');
   } catch (error) {
     console.error('❌ Erro ao inicializar base de dados:', error);
   }
@@ -59,23 +53,25 @@ app.post('/api/save-content', async (req, res) => {
     const lastUpdated = timestamp || new Date().toISOString();
 
     // Verificar se já existe conteúdo
-    const existing = await conn.execute('SELECT id FROM site_content LIMIT 1');
+    const existing = await sql`SELECT id FROM site_content LIMIT 1`;
     
-    if (existing.rows.length > 0) {
+    if (existing.length > 0) {
       // Atualizar conteúdo existente
-      await conn.execute(
-        'UPDATE site_content SET content = ?, last_updated = ? WHERE id = ?',
-        [JSON.stringify(content), lastUpdated, existing.rows[0].id]
-      );
+      await sql`
+        UPDATE site_content 
+        SET content = ${JSON.stringify(content)}, 
+            last_updated = ${lastUpdated}
+        WHERE id = ${existing[0].id}
+      `;
     } else {
       // Inserir novo conteúdo
-      await conn.execute(
-        'INSERT INTO site_content (content, last_updated) VALUES (?, ?)',
-        [JSON.stringify(content), lastUpdated]
-      );
+      await sql`
+        INSERT INTO site_content (content, last_updated) 
+        VALUES (${JSON.stringify(content)}, ${lastUpdated})
+      `;
     }
 
-    console.log('✅ Conteúdo guardado no PlanetScale:', lastUpdated);
+    console.log('✅ Conteúdo guardado no Neon:', lastUpdated);
 
     res.json({
       success: true,
@@ -95,19 +91,19 @@ app.post('/api/save-content', async (req, res) => {
 // API: Carregar conteúdo
 app.get('/api/get-content', async (req, res) => {
   try {
-    const result = await conn.execute('SELECT * FROM site_content ORDER BY id DESC LIMIT 1');
+    const result = await sql`SELECT * FROM site_content ORDER BY id DESC LIMIT 1`;
 
-    if (result.rows.length === 0) {
+    if (result.length === 0) {
       return res.status(404).json({
         error: 'Content not found',
         message: 'No saved content available',
       });
     }
 
-    const row = result.rows[0];
+    const row = result[0];
     const content = typeof row.content === 'string' ? JSON.parse(row.content) : row.content;
 
-    console.log('✅ Conteúdo carregado do PlanetScale:', row.last_updated);
+    console.log('✅ Conteúdo carregado do Neon:', row.last_updated);
 
     res.json({
       success: true,

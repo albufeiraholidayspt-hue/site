@@ -7,12 +7,8 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
-      - key: DATABASE_HOST
-        value: PLACEHOLDER_PLANETSCALE_HOST
-      - key: DATABASE_USERNAME
-        value: PLACEHOLDER_PLANETSCALE_USERNAME
-      - key: DATABASE_PASSWORD
-        value: PLACEHOLDER_PLANETSCALE_PASSWORD
+      - key: DATABASE_URL
+        value: PLACEHOLDER_NEON_DATABASE_URL
       - key: VITE_IMGBB_API_KEY
         value: dbd2aebb695d29ee20f3fc151c316242
       - key: VITE_CLOUDINARY_CLOUD_NAME

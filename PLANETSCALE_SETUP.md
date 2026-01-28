@@ -1,37 +1,40 @@
-# Configuração PlanetScale
+# Configuração Neon PostgreSQL (3GB Gratuito)
 
 ## Passo 1: Criar Conta
-1. Vai a: https://auth.planetscale.com/sign-up
-2. Cria conta (Google/GitHub ou email)
+1. Vai a: https://neon.tech
+2. Clica "Sign Up" (Google/GitHub ou email)
+3. **100% GRATUITO** - sem cartão de crédito
 
-## Passo 2: Criar Base de Dados
-1. Clica "Create database"
+## Passo 2: Criar Projeto
+1. Após login, clica "Create a project"
 2. Nome: `albufeira-holidays`
-3. Região: **Europe West (Frankfurt)**
-4. Clica "Create database"
+3. Região: **Europe (Frankfurt)** (mais perto de Portugal)
+4. PostgreSQL version: **16** (mais recente)
+5. Clica "Create Project"
 
-## Passo 3: Obter Credenciais
-1. Na página da base de dados, clica "Connect"
-2. Clica "Create password"
-3. Nome da password: `render-production`
-4. Copia as credenciais:
-   - `DATABASE_HOST`
-   - `DATABASE_USERNAME`
-   - `DATABASE_PASSWORD`
+## Passo 3: Obter Connection String
+1. Na página do projeto, vê a secção "Connection Details"
+2. Copia o **DATABASE_URL** (connection string completa)
+3. Formato: `postgresql://user:password@host/database?sslmode=require`
 
 ## Passo 4: Configurar no Render
 1. Vai ao dashboard do Render
 2. Seleciona o serviço `albufeira-holidays`
 3. Vai a "Environment"
-4. Adiciona as 3 variáveis:
-   - `DATABASE_HOST` = (valor copiado)
-   - `DATABASE_USERNAME` = (valor copiado)
-   - `DATABASE_PASSWORD` = (valor copiado)
+4. Adiciona a variável:
+   - `DATABASE_URL` = (connection string copiada)
 5. Clica "Save Changes"
 
 ## Passo 5: Deploy
-O Render vai fazer redeploy automático com as novas variáveis.
+O Render vai fazer redeploy automático com a nova variável.
 
 ## Verificação
 Após deploy, acede ao backoffice e testa guardar alterações.
-Os dados devem persistir no PlanetScale (5GB gratuito).
+Os dados devem persistir no Neon (3GB gratuito para sempre).
+
+## Plano Gratuito Neon
+✅ 3GB storage
+✅ PostgreSQL 16
+✅ Serverless
+✅ Backup automático
+✅ **GRATUITO PARA SEMPRE**
