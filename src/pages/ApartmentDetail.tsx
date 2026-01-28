@@ -844,7 +844,7 @@ export function ApartmentDetail() {
                         <img
                           src={optimizeThumbnail(image)}
                           alt={`${apartment.name} - Imagem ${index + 1}`}
-                          loading="eager"
+                          loading={index < 3 ? "eager" : "lazy"}
                           decoding="async"
                           className="w-full h-32 md:h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                         />

@@ -14,7 +14,7 @@
 const CLOUDINARY_CLOUD = 'de6edaaft';
 
 // Enable/disable Cloudinary optimization
-const ENABLE_OPTIMIZATION = true;
+const ENABLE_OPTIMIZATION = false; // DESATIVADO - fetch mode é muito lento
 
 /**
  * Optimizes an image URL using Cloudinary's fetch feature

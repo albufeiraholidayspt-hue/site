@@ -61,12 +61,23 @@ class ContentPersistenceService {
   }
 
   /**
-   * Carregar conteúdo do servidor
+   * Carregar conteúdo do servidor com cache
    */
   async loadContent(): Promise<SiteContent | null> {
     try {
-      console.log('📥 A carregar conteúdo do servidor...');
+      // Verificar cache primeiro (válido por 30 minutos)
+      const cached = localStorage.getItem('site_content_cache');
+      const cacheTime = localStorage.getItem('site_content_cache_time');
+      
+      if (cached && cacheTime) {
+        const age = Date.now() - parseInt(cacheTime);
+        if (age < 30 * 60 * 1000) { // 30 minutos
+          console.log('✅ Conteúdo carregado do cache (', Math.round(age / 1000), 's)');
+          return JSON.parse(cached);
+        }
+      }
 
+      console.log('📥 A carregar conteúdo do servidor...');
       const response = await fetch(this.loadApiUrl);
 
       if (!response.ok) {
@@ -74,11 +85,24 @@ class ContentPersistenceService {
       }
 
       const data = await response.json();
-      console.log('✅ Conteúdo carregado do servidor');
+      
+      // Guardar no cache
+      localStorage.setItem('site_content_cache', JSON.stringify(data.content));
+      localStorage.setItem('site_content_cache_time', Date.now().toString());
+      
+      console.log('✅ Conteúdo carregado do servidor e guardado em cache');
       return data.content;
 
     } catch (error) {
       console.error('❌ Erro ao carregar conteúdo do servidor:', error);
+      
+      // Tentar usar cache antigo em caso de erro
+      const cached = localStorage.getItem('site_content_cache');
+      if (cached) {
+        console.log('⚠️ Usando cache antigo devido a erro');
+        return JSON.parse(cached);
+      }
+      
       return null;
     }
   }
