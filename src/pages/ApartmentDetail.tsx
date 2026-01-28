@@ -878,6 +878,19 @@ export function ApartmentDetail() {
                     <p className="text-gray-600 leading-relaxed whitespace-pre-line">
                       {(() => {
                         const currentLang = currentLanguage || 'pt';
+                        
+                        // Usar traduções da base de dados
+                        if (currentLang === 'en' && apartment.additionalInfo_en) {
+                          return apartment.additionalInfo_en;
+                        }
+                        if (currentLang === 'fr' && apartment.additionalInfo_fr) {
+                          return apartment.additionalInfo_fr;
+                        }
+                        if (currentLang === 'de' && apartment.additionalInfo_de) {
+                          return apartment.additionalInfo_de;
+                        }
+                        
+                        // Fallback para português
                         const additionalInfo = apartment.additionalInfo;
                         
                         // Tradução automática para informações adicionais
