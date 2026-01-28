@@ -908,7 +908,6 @@ export function Algarve() {
                     ...(featuredImages.length > 1 ? featuredImages.slice(1) : []),
                   ];
                   
-                  console.log('🎯 ORDEM DA GRELHA:', orderedImages.map(img => `${img.title} (heroOrder: ${img.heroOrder}, featured: ${img.featured})`));
                   return orderedImages;
                 })().map((image, index) => {
                   return (

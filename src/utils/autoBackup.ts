@@ -57,10 +57,11 @@ class AutoBackupService {
       // 4. Limpar backups antigos (manter últimos 7 dias)
       this.cleanOldBackups();
 
-      // 5. Upload para Cloudinary (backup cloud) - apenas 1x por dia
-      if (this.shouldUploadToCloud()) {
-        await this.uploadToCloud(backup);
-      }
+      // 5. Upload para Cloudinary desativado (requer autenticação server-side)
+      // Backup local no localStorage é suficiente
+      // if (this.shouldUploadToCloud()) {
+      //   await this.uploadToCloud(backup);
+      // }
 
       this.lastBackup = new Date();
       console.log('✅ Backup automático concluído:', new Date().toLocaleString());
