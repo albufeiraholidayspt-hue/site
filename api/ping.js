@@ -1,8 +1,8 @@
 // Vercel Serverless Function - Health check
-module.exports = (req, res) => {
+export default function handler(req, res) {
   res.status(200).json({ 
     status: 'OK', 
     message: 'Vercel Serverless Functions working',
     timestamp: new Date().toISOString()
   });
-};
+}

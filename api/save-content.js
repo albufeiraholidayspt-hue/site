@@ -1,7 +1,5 @@
 // Vercel Serverless Function - Guardar conteúdo
-const { neon } = require('@neondatabase/serverless');
-
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -35,38 +33,29 @@ module.exports = async (req, res) => {
       return res.status(500).json({ error: 'Database not configured' });
     }
 
-    const sql = neon(process.env.DATABASE_URL);
     const lastUpdated = timestamp || new Date().toISOString();
 
-    // Criar tabela se não existir
-    await sql`
-      CREATE TABLE IF NOT EXISTS site_content (
-        id SERIAL PRIMARY KEY,
-        content JSONB NOT NULL,
-        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        version VARCHAR(10) DEFAULT '1.0'
-      )
-    `;
+    // Usar Neon HTTP API
+    const neonResponse = await fetch(`${process.env.DATABASE_URL.replace('postgresql://', 'https://').split('@')[1].split('/')[0]}/sql`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.DATABASE_URL.split(':')[2].split('@')[0]}`
+      },
+      body: JSON.stringify({
+        query: `
+          INSERT INTO site_content (content, last_updated) 
+          VALUES ($1, $2)
+          ON CONFLICT (id) DO UPDATE 
+          SET content = $1, last_updated = $2
+          RETURNING id
+        `,
+        params: [JSON.stringify(content), lastUpdated]
+      })
+    });
 
-    // Verificar se já existe conteúdo
-    const existing = await sql`SELECT id FROM site_content LIMIT 1`;
-    
-    if (existing.length > 0) {
-      // Atualizar conteúdo existente
-      console.log('🔄 Atualizando conteúdo existente, ID:', existing[0].id);
-      await sql`
-        UPDATE site_content 
-        SET content = ${JSON.stringify(content)}, 
-            last_updated = ${lastUpdated}
-        WHERE id = ${existing[0].id}
-      `;
-    } else {
-      // Inserir novo conteúdo
-      console.log('➕ Inserindo novo conteúdo');
-      await sql`
-        INSERT INTO site_content (content, last_updated) 
-        VALUES (${JSON.stringify(content)}, ${lastUpdated})
-      `;
+    if (!neonResponse.ok) {
+      throw new Error(`Neon API error: ${neonResponse.statusText}`);
     }
 
     console.log('✅ Conteúdo guardado no Neon:', lastUpdated);

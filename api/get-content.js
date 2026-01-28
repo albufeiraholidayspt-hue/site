@@ -1,7 +1,5 @@
 // Vercel Serverless Function - Carregar conteúdo
-const { neon } = require('@neondatabase/serverless');
-
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -28,11 +26,25 @@ module.exports = async (req, res) => {
       return res.status(500).json({ error: 'Database not configured' });
     }
 
-    const sql = neon(process.env.DATABASE_URL);
-    
-    const result = await sql`SELECT * FROM site_content ORDER BY id DESC LIMIT 1`;
+    // Usar Neon HTTP API
+    const neonResponse = await fetch(`${process.env.DATABASE_URL.replace('postgresql://', 'https://').split('@')[1].split('/')[0]}/sql`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.DATABASE_URL.split(':')[2].split('@')[0]}`
+      },
+      body: JSON.stringify({
+        query: 'SELECT * FROM site_content ORDER BY id DESC LIMIT 1'
+      })
+    });
 
-    if (result.length === 0) {
+    if (!neonResponse.ok) {
+      throw new Error(`Neon API error: ${neonResponse.statusText}`);
+    }
+
+    const result = await neonResponse.json();
+
+    if (!result.rows || result.rows.length === 0) {
       console.log('❌ Nenhum conteúdo encontrado');
       return res.status(404).json({
         error: 'Content not found',
@@ -40,7 +52,7 @@ module.exports = async (req, res) => {
       });
     }
 
-    const row = result[0];
+    const row = result.rows[0];
     const content = typeof row.content === 'string' ? JSON.parse(row.content) : row.content;
 
     console.log('✅ Conteúdo carregado do Neon:', row.last_updated);
