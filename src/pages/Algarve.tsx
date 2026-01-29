@@ -538,21 +538,30 @@ export function Algarve() {
         {/* Background Slideshow */}
         <div className="absolute inset-0">
           {currentSlideData?.type === 'video' ? (
-            <YouTubePlayer
-              videoUrl={currentSlideData.data.youtubeUrl}
-              placeholderImage={optimizeHeroImage(
-                algarve.gallery?.images?.[0]?.imageUrl || 
-                currentSlideData.data.thumbnailUrl || 
-                ''
-              )}
-              title="Algarve Video"
-              className="h-full"
-              autoplay={true}
-              muted={true}
-              loop={true}
-              controls={false}
-              startTime={22}
-            />
+            (() => {
+              // Usar imagem "Sagres" (heroOrder: 7) como placeholder
+              const sagresImage = algarve.gallery?.images?.find(
+                img => img.title === 'Sagres' || img.heroOrder === 7
+              );
+              const placeholderImg = sagresImage?.imageUrl || 
+                                     algarve.gallery?.images?.[0]?.imageUrl || 
+                                     currentSlideData.data.thumbnailUrl || 
+                                     '';
+              
+              return (
+                <YouTubePlayer
+                  videoUrl={currentSlideData.data.youtubeUrl}
+                  placeholderImage={optimizeHeroImage(placeholderImg)}
+                  title="Algarve Video"
+                  className="h-full"
+                  autoplay={true}
+                  muted={true}
+                  loop={true}
+                  controls={false}
+                  startTime={22}
+                />
+              );
+            })()
           ) : currentSlideData?.type === 'image' ? (
             <img
               src={optimizeHeroImage(currentSlideData.data.imageUrl)}
