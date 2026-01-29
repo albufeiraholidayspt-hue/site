@@ -76,7 +76,7 @@ export function Home() {
         {/* Background */}
         <div className="absolute inset-0">
           {content.hero.videoUrl ? (
-            <div className="absolute inset-0 bg-gray-900 overflow-hidden">
+            <div className="absolute inset-0 overflow-hidden">
               <iframe
                 src={`https://www.youtube.com/embed/${getYouTubeVideoId(content.hero.videoUrl)}?start=${content.hero.videoStartTime || 0}&autoplay=1&mute=1&loop=1&playlist=${getYouTubeVideoId(content.hero.videoUrl)}&controls=0&showinfo=0&rel=0&modestbranding=1`}
                 title="Hero Video"
@@ -212,7 +212,7 @@ export function Home() {
                 {/* Image or Video */}
                 <div className="relative h-56 overflow-hidden">
                   {apartment.heroVideoUrl ? (
-                    <div className="absolute inset-0 bg-gray-900 overflow-hidden">
+                    <div className="absolute inset-0 overflow-hidden">
                       <iframe
                         src={`https://www.youtube.com/embed/${getYouTubeVideoId(apartment.heroVideoUrl)}?start=${apartment.heroVideoStartTime || 0}&autoplay=1&mute=1&loop=1&playlist=${getYouTubeVideoId(apartment.heroVideoUrl)}&controls=0&showinfo=0&rel=0&modestbranding=1`}
                         title={`${apartment.name} Video`}
@@ -435,7 +435,7 @@ export function Home() {
       {content.about.videoUrl && (
         <section className="py-16 bg-gray-50" ref={videoContainerRef}>
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-gray-900" style={{ aspectRatio: '16/9' }}>
+            <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl" style={{ aspectRatio: '16/9' }}>
               {isVideoVisible ? (
                 <iframe
                   ref={videoRef}
