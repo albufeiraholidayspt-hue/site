@@ -30,6 +30,13 @@ export function YouTubePlayer({
   useEffect(() => {
     setIsLoaded(false);
     setImageLoaded(false);
+    
+    // Timeout de segurança: se imagem não carregar em 3s, marca como carregada
+    const timeout = setTimeout(() => {
+      setImageLoaded(true);
+    }, 3000);
+    
+    return () => clearTimeout(timeout);
   }, [videoUrl, placeholderImage]);
 
   const getYouTubeVideoId = (url: string) => {
