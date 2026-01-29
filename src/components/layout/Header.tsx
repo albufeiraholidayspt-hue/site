@@ -79,7 +79,7 @@ export function Header() {
             <img 
               src="/ah-logo.png" 
               alt="Albufeira Holidays" 
-              className="h-12 md:h-16 w-auto transition-transform group-hover:scale-105"
+              className="h-7 md:h-10 w-auto transition-transform group-hover:scale-105"
             />
           </Link>
 
