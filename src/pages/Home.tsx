@@ -77,22 +77,25 @@ export function Home() {
         {/* Background */}
         <div className="absolute inset-0">
           {content.hero.videoUrl ? (
-            <YouTubePlayer
-              videoUrl={content.hero.videoUrl}
-              placeholderImage={optimizeHeroImage(
-                content.hero.backgroundImage || 
-                content.hero.backgroundImages?.[0] || 
-                content.apartments[0]?.heroImage || 
-                ''
-              )}
-              title="Hero Video"
-              className="h-full"
-              autoplay={true}
-              muted={true}
-              loop={true}
-              controls={false}
-              startTime={content.hero.videoStartTime || 0}
-            />
+            (() => {
+              const images = content.hero.backgroundImages || [content.hero.backgroundImage];
+              const validImages = images.filter((img: string) => img && img.trim() !== '');
+              const firstImage = validImages[0] || content.apartments[0]?.heroImage || '';
+              
+              return (
+                <YouTubePlayer
+                  videoUrl={content.hero.videoUrl}
+                  placeholderImage={optimizeHeroImage(firstImage)}
+                  title="Hero Video"
+                  className="h-full"
+                  autoplay={true}
+                  muted={true}
+                  loop={true}
+                  controls={false}
+                  startTime={content.hero.videoStartTime || 0}
+                />
+              );
+            })()
           ) : (
             <div className="absolute inset-0">
               {(() => {
