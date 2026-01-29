@@ -7,14 +7,7 @@ import { AvailabilityCalendar } from '../components/AvailabilityCalendar';
 import { ImageLightbox } from '../components/ImageLightbox';
 import { useTranslation } from '../i18n/simple';
 import { optimizeHeroImage, optimizeThumbnail } from '../utils/imageOptimizer';
-
-// Extract YouTube video ID from URL
-const getYouTubeVideoId = (url: string): string => {
-  if (!url) return '';
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : '';
-};
+import { YouTubePlayer } from '../components/YouTubePlayer';
 
 export function ApartmentDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -85,23 +78,12 @@ export function ApartmentDetail() {
       <section className="relative h-[60vh] min-h-[400px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
           {apartment.heroVideoUrl ? (
-            <div className="absolute inset-0 bg-gray-900 overflow-hidden">
-              <iframe
-                src={`https://www.youtube.com/embed/${getYouTubeVideoId(apartment.heroVideoUrl)}?start=${apartment.heroVideoStartTime || 0}&autoplay=1&mute=1&loop=1&playlist=${getYouTubeVideoId(apartment.heroVideoUrl)}&controls=0&showinfo=0&rel=0&modestbranding=1`}
-                title={`${apartment.name} Video`}
-                className="absolute top-1/2 left-1/2 pointer-events-none"
-                style={{ 
-                  transform: 'translate(-50%, -50%)',
-                  width: '100vw',
-                  height: '56.25vw', // 16:9 aspect ratio
-                  minWidth: '177.77vh', // 16:9 aspect ratio
-                  minHeight: '100vh'
-                }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                frameBorder="0"
-              />
-            </div>
+            <YouTubePlayer
+              videoUrl={apartment.heroVideoUrl}
+              placeholderImage={optimizeHeroImage(apartment.heroImage)}
+              title={`${apartment.name} Video`}
+              className="h-full"
+            />
           ) : (
             <img
               src={optimizeHeroImage(apartment.heroImage)}
