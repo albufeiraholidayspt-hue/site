@@ -4,6 +4,7 @@ import { Users, Moon, ArrowRight, Sparkles, Calendar, Tag, Star, Quote } from 'l
 import { useStore } from '../store/useStore';
 import { FeatureIcon } from '../utils/featureIcons';
 import { AvailabilityCalendar } from '../components/AvailabilityCalendar';
+import { YouTubePlayer } from '../components/YouTubePlayer';
 import { useTranslation } from '../i18n/simple';
 import { optimizeCardImage, optimizeHeroImage } from '../utils/imageOptimizer';
 
@@ -76,23 +77,17 @@ export function Home() {
         {/* Background */}
         <div className="absolute inset-0">
           {content.hero.videoUrl ? (
-            <div className="absolute inset-0 overflow-hidden">
-              <iframe
-                src={`https://www.youtube.com/embed/${getYouTubeVideoId(content.hero.videoUrl)}?start=${content.hero.videoStartTime || 0}&autoplay=1&mute=1&loop=1&playlist=${getYouTubeVideoId(content.hero.videoUrl)}&controls=0&showinfo=0&rel=0&modestbranding=1`}
-                title="Hero Video"
-                className="absolute top-1/2 left-1/2 pointer-events-none"
-                style={{ 
-                  transform: 'translate(-50%, -50%)',
-                  width: '100vw',
-                  height: '56.25vw', // 16:9 aspect ratio
-                  minWidth: '177.77vh', // 16:9 aspect ratio
-                  minHeight: '100vh'
-                }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                frameBorder="0"
-              />
-            </div>
+            <YouTubePlayer
+              videoUrl={content.hero.videoUrl}
+              placeholderImage={optimizeHeroImage(content.hero.backgroundImage || content.hero.backgroundImages?.[0] || '')}
+              title="Hero Video"
+              className="h-full"
+              autoplay={true}
+              muted={true}
+              loop={true}
+              controls={false}
+              startTime={content.hero.videoStartTime || 0}
+            />
           ) : (
             <div className="absolute inset-0">
               {(() => {
