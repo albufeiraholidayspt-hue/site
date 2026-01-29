@@ -38,7 +38,7 @@ export function YouTubePlayer({
   const embedUrl = `https://www.youtube.com/embed/${videoId}?start=${startTime}&autoplay=${autoplay ? 1 : 0}&mute=${muted ? 1 : 0}&loop=${loop ? 1 : 0}&playlist=${loop ? videoId : ''}&controls=${controls ? 1 : 0}&showinfo=0&rel=0&modestbranding=1`;
 
   return (
-    <div className={`relative w-full bg-gray-900 ${className}`}>
+    <div className={`relative w-full ${className}`}>
       {/* Placeholder Image - sempre visível, fade out quando vídeo carrega */}
       <img
         src={placeholderImage}
