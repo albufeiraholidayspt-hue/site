@@ -84,6 +84,11 @@ export function ApartmentDetail() {
               placeholderImage={optimizeHeroImage(apartment.heroImage)}
               title={`${apartment.name} Video`}
               className="h-full"
+              autoplay={true}
+              muted={true}
+              loop={true}
+              controls={false}
+              startTime={apartment.heroVideoStartTime || 0}
             />
           ) : (
             <img
