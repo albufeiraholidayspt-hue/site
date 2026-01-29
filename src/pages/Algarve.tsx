@@ -3,15 +3,9 @@ import { Sparkles, MapPin } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { ImageLightbox } from '../components/ImageLightbox';
 import { WeatherWidget } from '../components/WeatherWidget';
+import { YouTubePlayer } from '../components/YouTubePlayer';
 import { useTranslation } from '../i18n/simple';
 import { optimizeHeroImage, optimizeCardImage, optimizeThumbnail } from '../utils/imageOptimizer';
-
-const getYouTubeVideoId = (url: string): string => {
-  if (!url) return '';
-  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-  const match = url.match(regExp);
-  return (match && match[2].length === 11) ? match[2] : '';
-};
 
 export function Algarve() {
   const { content, updateAlgarve } = useStore();
@@ -544,23 +538,21 @@ export function Algarve() {
         {/* Background Slideshow */}
         <div className="absolute inset-0">
           {currentSlideData?.type === 'video' ? (
-            <div className="absolute inset-0 bg-gray-900 overflow-hidden">
-              <iframe
-                src={`https://www.youtube.com/embed/${getYouTubeVideoId(currentSlideData.data.youtubeUrl)}?start=22&autoplay=1&mute=1&loop=1&playlist=${getYouTubeVideoId(currentSlideData.data.youtubeUrl)}&controls=0&showinfo=0&rel=0&modestbranding=1`}
-                title="Algarve Video"
-                className="absolute top-1/2 left-1/2 pointer-events-none"
-                style={{ 
-                  transform: 'translate(-50%, -50%)',
-                  width: '177.77vh',
-                  height: '56.25vw',
-                  minWidth: '100%',
-                  minHeight: '100%'
-                }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                frameBorder="0"
-              />
-            </div>
+            <YouTubePlayer
+              videoUrl={currentSlideData.data.youtubeUrl}
+              placeholderImage={optimizeHeroImage(
+                algarve.gallery?.images?.[0]?.imageUrl || 
+                currentSlideData.data.thumbnailUrl || 
+                ''
+              )}
+              title="Algarve Video"
+              className="h-full"
+              autoplay={true}
+              muted={true}
+              loop={true}
+              controls={false}
+              startTime={22}
+            />
           ) : currentSlideData?.type === 'image' ? (
             <img
               src={optimizeHeroImage(currentSlideData.data.imageUrl)}
