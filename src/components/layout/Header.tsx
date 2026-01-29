@@ -77,11 +77,9 @@ export function Header() {
         <div className="flex justify-between items-center h-16 md:h-20">
           <Link to="/" className="flex items-center gap-3 group">
             <img 
-              src="/logo-symbol-small.png" 
+              src="/logo.png" 
               alt="Albufeira Holidays" 
-              width="64"
-              height="64"
-              className="h-16 md:h-20 w-auto rounded-lg transition-transform group-hover:scale-105"
+              className="h-12 md:h-16 w-auto transition-transform group-hover:scale-105"
             />
           </Link>
 
