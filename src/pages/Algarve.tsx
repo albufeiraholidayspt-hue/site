@@ -11,7 +11,6 @@ export function Algarve() {
   const { content, updateAlgarve } = useStore();
   const { currentLanguage } = useTranslation();
   const algarve = content.algarve;
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [beachLightboxOpen, setBeachLightboxOpen] = useState(false);
@@ -149,19 +148,7 @@ export function Algarve() {
     }
   }, [algarve, updateAlgarve]);
 
-  // Slideshow automático
-  useEffect(() => {
-    if (!algarve?.gallery?.images) return;
-    
-    const totalSlides = (algarve.gallery.images.length || 0) + (algarve.video ? 1 : 0);
-    if (totalSlides <= 1) return;
-
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % totalSlides);
-    }, 6000); // Muda a cada 6 segundos
-
-    return () => clearInterval(interval);
-  }, [algarve]);
+  // Slideshow removido - apenas vídeo fixo como homepage e apartamentos
 
   // Translations for Algarve page content
   const getAlgarveText = (key: string, fallback: string): string => {
@@ -501,43 +488,15 @@ export function Algarve() {
     );
   }
 
-  // Preparar slides (vídeo + imagens) - apenas os que estão habilitados para o hero
-  const slides: Array<{ type: 'video' | 'image'; data: any; order: number }> = [];
-  
-  // Adicionar vídeo se estiver habilitado
-  if (algarve.video && algarve.video.enabledInHero !== false) {
-    slides.push({ 
-      type: 'video', 
-      data: algarve.video,
-      order: algarve.video.heroOrder ?? 0
-    });
-  }
-  
-  // Adicionar imagens que estão habilitadas para o hero
-  if (algarve.gallery?.images) {
-    algarve.gallery.images
-      .filter(img => img.enabledInHero !== false)
-      .forEach(img => {
-        slides.push({ 
-          type: 'image', 
-          data: img,
-          order: img.heroOrder ?? 999
-        });
-      });
-  }
-
-  // Ordenar slides pela ordem definida
-  slides.sort((a, b) => a.order - b.order);
-
-  const currentSlideData = slides[currentSlide] || slides[0];
+  // Vídeo fixo - sem slideshow
 
   return (
     <div className="bg-white min-h-screen">
-      {/* Hero com Slideshow */}
+      {/* Hero com Vídeo Fixo */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Slideshow */}
+        {/* Background Vídeo */}
         <div className="absolute inset-0">
-          {currentSlideData?.type === 'video' ? (
+          {algarve.video?.youtubeUrl ? (
             (() => {
               // Usar imagem "Sagres" (heroOrder: 7) como placeholder
               const sagresImage = algarve.gallery?.images?.find(
@@ -545,12 +504,11 @@ export function Algarve() {
               );
               const placeholderImg = sagresImage?.imageUrl || 
                                      algarve.gallery?.images?.[0]?.imageUrl || 
-                                     currentSlideData.data.thumbnailUrl || 
                                      '';
               
               return (
                 <YouTubePlayer
-                  videoUrl={currentSlideData.data.youtubeUrl}
+                  videoUrl={algarve.video.youtubeUrl}
                   placeholderImage={optimizeHeroImage(placeholderImg)}
                   title="Algarve Video"
                   className="h-full"
@@ -562,14 +520,14 @@ export function Algarve() {
                 />
               );
             })()
-          ) : currentSlideData?.type === 'image' ? (
+          ) : algarve.gallery?.images?.[0] ? (
             <img
-              src={optimizeHeroImage(currentSlideData.data.imageUrl)}
-              alt={currentSlideData.data.title}
+              src={optimizeHeroImage(algarve.gallery.images[0].imageUrl)}
+              alt={algarve.gallery.images[0].title}
               loading="eager"
               decoding="async"
               className="w-full h-full object-cover animate-kenburns"
-              style={{ objectPosition: currentSlideData.data.imagePosition || 'center' }}
+              style={{ objectPosition: algarve.gallery.images[0].imagePosition || 'center' }}
             />
           ) : null}
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -601,19 +559,6 @@ export function Algarve() {
           )}
         </div>
 
-        {/* Slide Indicators */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                index === currentSlide ? 'bg-white w-8' : 'bg-white/50'
-              }`}
-              aria-label={`Ir para slide ${index + 1}`}
-            />
-          ))}
-        </div>
       </section>
 
       {/* Content Section */}
