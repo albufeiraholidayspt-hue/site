@@ -173,6 +173,48 @@ app.post('/api/upload-cloudinary', async (req, res) => {
   }
 });
 
+// API: Proxy para iCal (resolver CORS)
+app.get('/api/proxy-ical', async (req, res) => {
+  try {
+    const { url } = req.query;
+    
+    if (!url) {
+      return res.status(400).json({ error: 'URL parameter is required' });
+    }
+
+    console.log('📅 Fetching iCal from:', url);
+
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; AlbufeiraHolidays/1.0)',
+        'Accept': 'text/calendar,text/plain,*/*'
+      }
+    });
+
+    if (!response.ok) {
+      console.error('❌ iCal fetch failed:', response.status);
+      return res.status(response.status).json({ error: 'Failed to fetch iCal' });
+    }
+
+    const data = await response.text();
+    
+    if (!data || !data.trim()) {
+      console.error('❌ iCal data is empty');
+      return res.status(404).json({ error: 'Empty iCal data' });
+    }
+
+    console.log('✅ iCal fetched successfully:', data.length, 'bytes');
+    
+    res.set('Content-Type', 'text/calendar');
+    res.set('Cache-Control', 'public, max-age=3600'); // Cache por 1 hora
+    res.send(data);
+
+  } catch (error) {
+    console.error('❌ Erro ao fazer proxy iCal:', error);
+    res.status(500).json({ error: 'Failed to proxy iCal', details: error.message });
+  }
+});
+
 // API: Carregar conteúdo
 app.get('/api/get-content', async (req, res) => {
   try {

@@ -119,7 +119,7 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
         setLoading(false);
         console.log('iCal fetch timeout - usando modo livre');
         setBookedDates([]);
-      }, 8000); // Reduzido para 8 segundos
+      }, 10000); // 10 segundos
 
       try {
         // Cache localStorage para evitar requests repetidos
@@ -138,10 +138,33 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
           return;
         }
 
-        // Ir direto para o proxy público (site é estático, não tem backend)
-        // O proxy próprio /api/proxy-ical não existe no Render
+        // Tentar primeiro o nosso backend proxy (Railway)
+        try {
+          console.log('🔄 Tentando backend proxy...');
+          const response = await fetch(`/api/proxy-ical?url=${encodeURIComponent(icalUrl)}`);
+          
+          if (response.ok) {
+            const data = await response.text();
+            if (data && data.trim() && (data.includes('BEGIN:VCALENDAR') || data.includes('DTSTART'))) {
+              // Salvar no cache
+              localStorage.setItem(cacheKey, data);
+              localStorage.setItem(`${cacheKey}-time`, now.toString());
+              
+              const parsed = parseIcal(data);
+              console.log('✅ iCal via backend proxy:', parsed.length, 'reservas');
+              setBookedDates(parsed);
+              setLoading(false);
+              clearTimeout(timeoutId);
+              return;
+            }
+          } else {
+            console.log('⚠️ Backend proxy retornou:', response.status);
+          }
+        } catch (backendError) {
+          console.log('⚠️ Backend proxy falhou:', backendError);
+        }
 
-        // Se proxy rápido falhar, tentar um proxy público apenas
+        // Fallback: tentar proxy público
         try {
           console.log('🔄 Tentando proxy público...');
           const response = await fetch(`https://corsproxy.io/?${encodeURIComponent(icalUrl)}`, {
@@ -158,7 +181,7 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
               localStorage.setItem(`${cacheKey}-time`, now.toString());
               
               const parsed = parseIcal(data);
-              console.log('✅ iCal via proxy público:', parsed.length, 'datas');
+              console.log('✅ iCal via proxy público:', parsed.length, 'reservas');
               setBookedDates(parsed);
               setLoading(false);
               clearTimeout(timeoutId);
@@ -166,7 +189,7 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
             }
           }
         } catch (publicError) {
-          console.log('Proxy público falhou também');
+          console.log('⚠️ Proxy público falhou também');
         }
 
         // Se tudo falhar, usar modo livre
