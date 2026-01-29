@@ -39,22 +39,14 @@ export function YouTubePlayer({
 
   return (
     <div className={`relative w-full ${className}`}>
-      {/* Placeholder Image - fade out quando vídeo carrega */}
-      <div 
-        className={`absolute inset-0 transition-opacity duration-1000 ${
-          isLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'
+      {/* Placeholder Image - sempre visível, fade out quando vídeo carrega */}
+      <img
+        src={placeholderImage}
+        alt={title || 'Vídeo'}
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+          isLoaded ? 'opacity-0' : 'opacity-100'
         }`}
-      >
-        <img
-          src={placeholderImage}
-          alt={title || 'Vídeo'}
-          className="w-full h-full object-cover"
-        />
-        {/* Loading indicator subtil */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-          <div className="w-16 h-16 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
-        </div>
-      </div>
+      />
 
       {/* YouTube iframe - fade in quando carrega */}
       <iframe
@@ -73,7 +65,7 @@ export function YouTubePlayer({
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
         frameBorder="0"
-        onLoad={() => setTimeout(() => setIsLoaded(true), 500)}
+        onLoad={() => setTimeout(() => setIsLoaded(true), 1000)}
       />
     </div>
   );
