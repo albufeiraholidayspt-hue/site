@@ -24,10 +24,12 @@ export function YouTubePlayer({
   startTime = 0
 }: YouTubePlayerProps) {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   // Reset estado quando videoUrl ou placeholderImage mudam (nova página)
   useEffect(() => {
     setIsLoaded(false);
+    setImageLoaded(false);
   }, [videoUrl, placeholderImage]);
 
   const getYouTubeVideoId = (url: string) => {
@@ -42,25 +44,32 @@ export function YouTubePlayer({
 
   const embedUrl = `https://www.youtube.com/embed/${videoId}?start=${startTime}&autoplay=${autoplay ? 1 : 0}&mute=${muted ? 1 : 0}&loop=${loop ? 1 : 0}&playlist=${loop ? videoId : ''}&controls=${controls ? 1 : 0}&showinfo=0&rel=0&modestbranding=1`;
 
+  // Só fazer fade quando AMBOS estiverem prontos: imagem carregada E vídeo carregado
+  const shouldShowVideo = isLoaded && imageLoaded;
+
   return (
     <div className={`relative w-full ${className}`}>
       {/* Placeholder Image - sempre visível, fade out quando vídeo carrega */}
-      <img
-        src={placeholderImage}
-        alt={title || 'Vídeo'}
-        loading="eager"
-        decoding="async"
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1500 ${
-          isLoaded ? 'opacity-0' : 'opacity-100'
-        }`}
-      />
+      {placeholderImage && (
+        <img
+          src={placeholderImage}
+          alt={title || 'Vídeo'}
+          loading="eager"
+          decoding="async"
+          onLoad={() => setImageLoaded(true)}
+          onError={() => setImageLoaded(true)}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1500 ${
+            shouldShowVideo ? 'opacity-0' : 'opacity-100'
+          }`}
+        />
+      )}
 
       {/* YouTube iframe - fade in quando carrega */}
       <iframe
         src={embedUrl}
         title={title || 'YouTube video'}
         className={`absolute top-1/2 left-1/2 pointer-events-none transition-opacity duration-1500 ${
-          isLoaded ? 'opacity-100' : 'opacity-0'
+          shouldShowVideo ? 'opacity-100' : 'opacity-0'
         }`}
         style={{ 
           transform: 'translate(-50%, -50%)',
@@ -72,7 +81,7 @@ export function YouTubePlayer({
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
         frameBorder="0"
-        onLoad={() => setTimeout(() => setIsLoaded(true), 1500)}
+        onLoad={() => setTimeout(() => setIsLoaded(true), 2000)}
       />
     </div>
   );
