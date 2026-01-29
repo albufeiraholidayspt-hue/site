@@ -38,12 +38,14 @@ export function YouTubePlayer({
   const embedUrl = `https://www.youtube.com/embed/${videoId}?start=${startTime}&autoplay=${autoplay ? 1 : 0}&mute=${muted ? 1 : 0}&loop=${loop ? 1 : 0}&playlist=${loop ? videoId : ''}&controls=${controls ? 1 : 0}&showinfo=0&rel=0&modestbranding=1`;
 
   return (
-    <div className={`relative w-full ${className}`}>
+    <div className={`relative w-full bg-gray-900 ${className}`}>
       {/* Placeholder Image - sempre visível, fade out quando vídeo carrega */}
       <img
         src={placeholderImage}
         alt={title || 'Vídeo'}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+        loading="eager"
+        decoding="async"
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1500 ${
           isLoaded ? 'opacity-0' : 'opacity-100'
         }`}
       />
@@ -52,7 +54,7 @@ export function YouTubePlayer({
       <iframe
         src={embedUrl}
         title={title || 'YouTube video'}
-        className={`absolute top-1/2 left-1/2 pointer-events-none transition-opacity duration-1000 ${
+        className={`absolute top-1/2 left-1/2 pointer-events-none transition-opacity duration-1500 ${
           isLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         style={{ 
@@ -65,7 +67,7 @@ export function YouTubePlayer({
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
         frameBorder="0"
-        onLoad={() => setTimeout(() => setIsLoaded(true), 1000)}
+        onLoad={() => setTimeout(() => setIsLoaded(true), 1500)}
       />
     </div>
   );
