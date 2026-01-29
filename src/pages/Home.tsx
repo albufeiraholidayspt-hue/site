@@ -79,7 +79,12 @@ export function Home() {
           {content.hero.videoUrl ? (
             <YouTubePlayer
               videoUrl={content.hero.videoUrl}
-              placeholderImage={optimizeHeroImage(content.hero.backgroundImage || content.hero.backgroundImages?.[0] || '')}
+              placeholderImage={optimizeHeroImage(
+                content.hero.backgroundImage || 
+                content.hero.backgroundImages?.[0] || 
+                content.apartments[0]?.heroImage || 
+                ''
+              )}
               title="Hero Video"
               className="h-full"
               autoplay={true}
