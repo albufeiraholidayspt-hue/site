@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight, ImageIcon, MapPin } from 'lucide-react';
+import { optimizeLightboxImage, optimizeThumbnail } from '../utils/imageOptimizer';
 
 export interface LightboxImage {
   imageUrl: string;
@@ -91,7 +92,7 @@ export function ImageLightbox({ images, initialIndex = 0, isOpen, onClose }: Ima
       {/* Main image with info */}
       <div className="relative max-w-[90vw] max-h-[80vh]">
         <img
-          src={images[currentIndex].imageUrl}
+          src={optimizeLightboxImage(images[currentIndex].imageUrl)}
           alt={images[currentIndex].title || `Imagem ${currentIndex + 1}`}
           className="max-w-full max-h-[80vh] object-contain rounded-lg"
         />
@@ -149,7 +150,7 @@ export function ImageLightbox({ images, initialIndex = 0, isOpen, onClose }: Ima
               }`}
             >
               <img
-                src={image.imageUrl}
+                src={optimizeThumbnail(image.imageUrl)}
                 alt={image.title || `Miniatura ${index + 1}`}
                 className="w-full h-full object-cover"
               />

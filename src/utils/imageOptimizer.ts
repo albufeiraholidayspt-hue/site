@@ -130,6 +130,18 @@ export function optimizeThumbnail(url: string): string {
 }
 
 /**
+ * Optimizes an image for lightbox/full view (mobile-friendly)
+ */
+export function optimizeLightboxImage(url: string): string {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+  return optimizeImage(url, {
+    width: isMobile ? 1200 : 1920,
+    quality: isMobile ? 70 : 80,
+    format: 'auto'
+  });
+}
+
+/**
  * Optimizes an image for Open Graph sharing
  */
 export function optimizeOgImage(url: string): string {

@@ -28,12 +28,13 @@ export function ApartmentDetail() {
 
   const apartment = content.apartments.find((apt) => apt.slug === slug);
 
-  // Pré-carregar imagens do lightbox para abertura instantânea
+  // Pré-carregar imagens do lightbox para abertura instantânea (versão otimizada)
   useEffect(() => {
     if (apartment?.images) {
+      const { optimizeLightboxImage } = require('../utils/imageOptimizer');
       apartment.images.forEach((imageUrl) => {
         const img = new Image();
-        img.src = imageUrl;
+        img.src = optimizeLightboxImage(imageUrl);
       });
     }
   }, [apartment?.images]);
