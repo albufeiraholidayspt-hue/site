@@ -4,12 +4,8 @@ export const initialContent: SiteContent = {
   hero: {
     title: 'Albufeira Holidays',
     subtitle: 'Apartamentos de férias no coração de Albufeira com vista mar. Desfrute das suas férias em paz e conforto.',
-    backgroundImage: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80',
-    backgroundImages: [
-      'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80',
-      'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=1920&q=80',
-      'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1920&q=80',
-    ],
+    backgroundImage: '',
+    backgroundImages: [],
     videoUrl: '',
     videoStartTime: 0,
     enableAnimation: true,
@@ -17,7 +13,7 @@ export const initialContent: SiteContent = {
   about: {
     title: 'Bem-vindo ao Algarve',
     description: 'Descubra o melhor do Algarve nos nossos apartamentos de luxo em Albufeira. Localizados no centro da cidade, com vista mar deslumbrante, os nossos espaços oferecem todo o conforto para umas férias inesquecíveis. Estacionamento privado, elevador panorâmico e acesso fácil às melhores praias.',
-    image: 'https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&q=80',
+    image: '',
     videoUrl: 'https://www.youtube.com/watch?v=9dQqiVTNTj4',
     videoStartTime: 22,
   },
@@ -32,7 +28,7 @@ export const initialContent: SiteContent = {
     hero: {
       title: 'O Algarve',
       subtitle: 'O extremo mais meridional de Portugal com mais dias de sol do que a Califórnia!',
-      backgroundImage: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      backgroundImage: '',
     },
     video: {
       title: 'Descubra a Beleza do Algarve',
@@ -66,22 +62,7 @@ export const initialContent: SiteContent = {
           description: 'Bares, restaurantes, espreguiçadeiras e desportos aquáticos',
         },
       ],
-      items: [
-        {
-          name: 'Praia da Marinha',
-          description: 'Considerada uma das praias mais bonitas do mundo, a Praia da Marinha é famosa pelas suas impressionantes formações rochosas, águas cristalinas e falésias douradas. Um verdadeiro paraíso para mergulho e snorkeling.',
-          imageUrl: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
-          googleMapsUrl: 'https://maps.google.com/?q=Praia+da+Marinha,+Lagoa,+Portugal',
-          awards: ['Bandeira Azul', 'Top 100 Praias do Mundo'],
-        },
-        {
-          name: 'Praia da Falésia',
-          description: 'Com mais de 6 km de extensão, a Praia da Falésia é conhecida pelas suas espetaculares falésias de tons vermelhos e laranja. Uma das praias mais fotogénicas do Algarve, perfeita para longas caminhadas à beira-mar.',
-          imageUrl: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=1000&q=80',
-          googleMapsUrl: 'https://maps.google.com/?q=Praia+da+Falésia,+Albufeira,+Portugal',
-          awards: ['Bandeira Azul', 'Praia de Qualidade de Ouro'],
-        },
-      ],
+      items: [],
     },
     climate: {
       title: 'O Tempo no Algarve',
