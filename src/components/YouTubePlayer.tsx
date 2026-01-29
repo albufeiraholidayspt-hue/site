@@ -58,7 +58,7 @@ export function YouTubePlayer({
           decoding="async"
           onLoad={() => setImageLoaded(true)}
           onError={() => setImageLoaded(true)}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1500 ${
+          className={`absolute inset-0 w-full h-full object-cover animate-kenburns transition-opacity duration-1500 ${
             shouldShowVideo ? 'opacity-0' : 'opacity-100'
           }`}
         />
