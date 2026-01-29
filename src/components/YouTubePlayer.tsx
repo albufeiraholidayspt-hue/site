@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface YouTubePlayerProps {
   videoUrl: string;
@@ -24,6 +24,11 @@ export function YouTubePlayer({
   startTime = 0
 }: YouTubePlayerProps) {
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Reset estado quando videoUrl ou placeholderImage mudam (nova página)
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [videoUrl, placeholderImage]);
 
   const getYouTubeVideoId = (url: string) => {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
