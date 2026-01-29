@@ -75,9 +75,9 @@ export function Header() {
     )}>
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-20">
-          <Link to="/" className="flex items-center gap-3 group ml-4">
+          <Link to="/" className="flex items-center gap-3 group">
             <img 
-              src="/ah-logo.png?v=2" 
+              src="/ah-logo.png?v=3" 
               alt="Albufeira Holidays" 
               className="h-7 md:h-10 w-auto transition-transform group-hover:scale-105"
             />
