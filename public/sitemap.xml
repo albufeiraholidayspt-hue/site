@@ -40,8 +40,22 @@
   <!-- Outras páginas -->
   <url>
     <loc>https://albufeiraholidays.pt/contacto</loc>
-    <lastmod>2026-01-29</lastmod>
+    <lastmod>2026-02-01</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://albufeiraholidays.pt/faq</loc>
+    <lastmod>2026-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://albufeiraholidays.pt/blog</loc>
+    <lastmod>2026-02-01</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   

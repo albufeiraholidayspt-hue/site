@@ -15,6 +15,8 @@ const Contact = lazy(() => import('./pages/Contact').then(m => ({ default: m.Con
 const Algarve = lazy(() => import('./pages/Algarve').then(m => ({ default: m.Algarve })));
 const RentACar = lazy(() => import('./pages/RentACar').then(m => ({ default: m.RentACar })));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
+const FAQ = lazy(() => import('./pages/FAQ').then(m => ({ default: m.FAQ })));
+const Blog = lazy(() => import('./pages/Blog').then(m => ({ default: m.Blog })));
 const Login = lazy(() => import('./pages/admin/Login').then(m => ({ default: m.Login })));
 const Dashboard = lazy(() => import('./pages/admin/Dashboard').then(m => ({ default: m.Dashboard })));
 const UploadDemo = lazy(() => import('./pages/UploadDemo'));
@@ -70,6 +72,8 @@ function App() {
             <Route index element={<Home />} />
             <Route path="apartamento/:slug" element={<ApartmentDetail />} />
             <Route path="contacto" element={<Contact />} />
+            <Route path="faq" element={<FAQ />} />
+            <Route path="blog" element={<Blog />} />
             <Route path="politica-privacidade" element={<PrivacyPolicy />} />
             <Route path="algarve" element={<Algarve />} />
             <Route path="rent-a-car" element={<RentACar />} />
