@@ -2,6 +2,44 @@
   command = "npm run build"
   publish = "dist"
 
+# Redirects para URLs problemáticas do Search Console
+[[redirects]]
+  from = "/albufeira"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/albufeira/"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/env"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/env/"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/en"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/en/"
+  to = "/"
+  status = 301
+
+# Redirect old privacy URL
+[[redirects]]
+  from = "/privacidade"
+  to = "/politica-privacidade"
+  status = 301
+
+# SPA fallback - deve ser o último
 [[redirects]]
   from = "/*"
   to = "/index.html"

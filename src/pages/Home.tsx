@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Users, Moon, ArrowRight, Sparkles, Calendar, Tag, Star, Quote } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { FeatureIcon } from '../utils/featureIcons';
@@ -71,9 +72,31 @@ export function Home() {
   }, []);
 
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <>
+      <Helmet>
+        <title>Albufeira Holidays | Luxury Vacation Rentals & Holiday Apartments with Sea View</title>
+        <meta name="description" content="Beachfront vacation rentals in Albufeira old town. Bright spacious apartments with panoramic sea views, air-conditioning, free WiFi. Steps from Peneco, Pescadores & Santa Eulalia beaches." />
+        <meta name="keywords" content="albufeira vacation rentals, holiday apartments algarve, sea view apartments, beachfront accommodation, albufeira old town, luxury rentals portugal" />
+        <link rel="canonical" href="https://albufeiraholidays.pt/" />
+        
+        <meta property="og:title" content="Albufeira Holidays | Luxury Vacation Rentals & Holiday Apartments with Sea View" />
+        <meta property="og:description" content="Beachfront vacation rentals in Albufeira old town. Bright spacious apartments with panoramic sea views, air-conditioning, free WiFi." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://albufeiraholidays.pt/" />
+        <meta property="og:image" content="https://res.cloudinary.com/de6edaaft/image/upload/w_1200,h_630,c_fill,f_auto,q_80/v1769626460/albufeira-holidays/gallery/zumfud2v8eiq0dnuguuq.jpg" />
+        
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Albufeira Holidays | Luxury Vacation Rentals" />
+        <meta name="twitter:description" content="Beachfront vacation rentals in Albufeira old town with panoramic sea views." />
+        <meta name="twitter:image" content="https://res.cloudinary.com/de6edaaft/image/upload/w_1200,h_630,c_fill,f_auto,q_80/v1769626460/albufeira-holidays/gallery/zumfud2v8eiq0dnuguuq.jpg" />
+        
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+      </Helmet>
+      
+      <div className="bg-white">
+        {/* Hero Section */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0">
           {content.hero.videoUrl ? (
@@ -578,6 +601,7 @@ export function Home() {
           </a>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

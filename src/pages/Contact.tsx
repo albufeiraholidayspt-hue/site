@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Phone, Mail, MapPin, ArrowRight, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import emailjs from '@emailjs/browser';
@@ -57,9 +58,25 @@ export function Contact() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen pt-20">
-      {/* Hero Section */}
-      <section className="bg-orange-500 py-12 md:py-16">
+    <>
+      <Helmet>
+        <title>Contact Us | Albufeira Holidays - Vacation Rentals</title>
+        <meta name="description" content="Get in touch with Albufeira Holidays for vacation rental inquiries. Contact us via phone, email or visit our office in Albufeira old town." />
+        <meta name="keywords" content="contact albufeira holidays, vacation rental contact, albufeira accommodation inquiry, holiday apartments contact" />
+        <link rel="canonical" href="https://albufeiraholidays.pt/contacto" />
+        
+        <meta property="og:title" content="Contact Us | Albufeira Holidays" />
+        <meta property="og:description" content="Get in touch with Albufeira Holidays for vacation rental inquiries." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://albufeiraholidays.pt/contacto" />
+        
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+      </Helmet>
+      
+      <div className="bg-gray-50 min-h-screen pt-20">
+        {/* Hero Section */}
+        <section className="bg-orange-500 py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="font-display text-3xl md:text-4xl font-bold text-white mb-4">
@@ -281,6 +298,7 @@ export function Contact() {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   );
 }

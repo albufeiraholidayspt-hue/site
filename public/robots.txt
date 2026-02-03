@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Disallow admin pages
+Disallow: /admin
+Disallow: /admin/*
+
+# Disallow utility pages
+Disallow: /upload-demo
+Disallow: /reset.html
+Disallow: /reset-data.html
+Disallow: /reset-algarve.html
+Disallow: /force-reset.html
+Disallow: /clear-cache.html
+
+# Disallow non-existent language paths
+Disallow: /env/
+Disallow: /env
+Disallow: /albufeira/
+Disallow: /albufeira
+
+# Sitemap
+Sitemap: https://albufeiraholidays.pt/sitemap.xml

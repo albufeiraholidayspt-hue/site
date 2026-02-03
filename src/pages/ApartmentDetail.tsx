@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Users, Moon, ArrowRight, Calendar, Facebook, Instagram, Star, ImageIcon } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { FeatureIcon } from '../utils/featureIcons';
@@ -33,50 +34,77 @@ export function ApartmentDetail() {
     }
   }, [apartment?.images]);
 
-  // Update SEO meta tags
-  useEffect(() => {
-    if (apartment) {
-      const title = apartment.seoTitle || `${apartment.name} - Albufeira Holidays`;
-      const description = apartment.seoDescription || apartment.description.substring(0, 160);
-      const ogImage = apartment.ogImage || apartment.heroImage;
-      const url = window.location.href;
-
-      document.title = title;
-      
-      // Update or create meta tags
-      const updateMeta = (name: string, content: string, isProperty = false) => {
-        const attr = isProperty ? 'property' : 'name';
-        let meta = document.querySelector(`meta[${attr}="${name}"]`);
-        if (!meta) {
-          meta = document.createElement('meta');
-          meta.setAttribute(attr, name);
-          document.head.appendChild(meta);
-        }
-        meta.setAttribute('content', content);
-      };
-
-      updateMeta('description', description);
-      updateMeta('keywords', apartment.seoKeywords || 'apartamento, albufeira, férias, algarve');
-      updateMeta('og:title', title, true);
-      updateMeta('og:description', description, true);
-      updateMeta('og:image', ogImage, true);
-      updateMeta('og:url', url, true);
-      updateMeta('og:type', 'website', true);
-      updateMeta('twitter:card', 'summary_large_image');
-      updateMeta('twitter:title', title);
-      updateMeta('twitter:description', description);
-      updateMeta('twitter:image', ogImage);
-    }
-  }, [apartment]);
-
   if (!apartment) {
     return <Navigate to="/" replace />;
   }
 
+  // SEO data
+  const seoTitle = apartment.seoTitle || `${apartment.name} - Luxury Vacation Apartment | Albufeira Holidays`;
+  const seoDescription = apartment.seoDescription || apartment.description.substring(0, 160);
+  const seoKeywords = apartment.seoKeywords || `${apartment.name}, albufeira apartment, vacation rental, sea view, algarve, portugal, holiday apartment, luxury accommodation`;
+  const ogImage = apartment.ogImage || apartment.heroImage;
+  const canonicalUrl = `https://albufeiraholidays.pt/apartamento/${apartment.slug}`;
+
   return (
-    <div className="bg-white min-h-screen">
-      {/* Hero */}
-      <section className="relative h-[60vh] min-h-[400px] flex items-end overflow-hidden">
+    <>
+      <Helmet>
+        <title>{seoTitle}</title>
+        <meta name="description" content={seoDescription} />
+        <meta name="keywords" content={seoKeywords} />
+        <link rel="canonical" href={canonicalUrl} />
+        
+        {/* Open Graph */}
+        <meta property="og:title" content={seoTitle} />
+        <meta property="og:description" content={seoDescription} />
+        <meta property="og:type" content="product" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content="Albufeira Holidays" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={seoTitle} />
+        <meta name="twitter:description" content={seoDescription} />
+        <meta name="twitter:image" content={ogImage} />
+        
+        {/* Additional SEO */}
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+        
+        {/* Schema.org structured data */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Accommodation",
+            "name": apartment.name,
+            "description": apartment.description,
+            "image": apartment.images || [apartment.heroImage],
+            "url": canonicalUrl,
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Rua Latino Coelho, Edifício Varandamar",
+              "addressLocality": "Albufeira",
+              "addressRegion": "Algarve",
+              "postalCode": "8200-109",
+              "addressCountry": "PT"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": "37.0887034",
+              "longitude": "-8.2491702"
+            },
+            "numberOfRooms": apartment.capacity,
+            "occupancy": {
+              "@type": "QuantitativeValue",
+              "value": apartment.capacity
+            }
+          })}
+        </script>
+      </Helmet>
+      
+      <div className="bg-white min-h-screen">
+        {/* Hero */}
+        <section className="relative h-[60vh] min-h-[400px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
           {apartment.heroVideoUrl ? (
             <YouTubePlayer
@@ -1202,6 +1230,7 @@ Küche - vollständig möbliert und ausgestattet mit allen Utensilien und Kleing
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
       />
-    </div>
+      </div>
+    </>
   );
 }
