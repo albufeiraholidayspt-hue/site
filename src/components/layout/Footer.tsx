@@ -70,13 +70,24 @@ export function Footer() {
             </h3>
             <div className="space-y-1 md:space-y-3">
               <p className="text-sm text-gray-600 font-medium md:hidden">ALBUFEIRA HOLIDAYS</p>
-              <a
-                href={`tel:${content.contact.phone.replace(/\s/g, '')}`}
-                className="flex items-center justify-center gap-2 text-gray-600 hover:text-orange-500 transition-colors"
-              >
-                <Phone className="h-4 w-4 md:h-5 md:w-5 text-orange-500" />
-                <span className="text-sm md:text-sm">{content.contact.phone}</span>
-              </a>
+              <div className="flex items-center justify-center gap-2">
+                <a
+                  href={`tel:${content.contact.phone.replace(/\s/g, '')}`}
+                  className="flex items-center gap-2 text-gray-600 hover:text-orange-500 transition-colors"
+                >
+                  <Phone className="h-4 w-4 md:h-5 md:w-5 text-orange-500" />
+                  <span className="text-sm md:text-sm">{content.contact.phone}</span>
+                </a>
+                <a
+                  href="https://whatsa.me/351962104415"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-orange-500 hover:text-orange-600 transition-colors"
+                  title="WhatsApp"
+                >
+                  <MessageCircle className="h-4 w-4 md:h-5 md:w-5" />
+                </a>
+              </div>
               <a
                 href={`mailto:${content.contact.email}`}
                 className="flex items-center justify-center gap-2 text-gray-600 hover:text-orange-500 transition-colors"
