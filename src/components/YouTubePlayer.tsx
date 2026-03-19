@@ -55,7 +55,7 @@ export function YouTubePlayer({
   const shouldShowVideo = isLoaded && imageLoaded;
 
   return (
-    <div className={`relative w-full bg-orange-500 ${className}`}>
+    <div className={`relative w-full ${className}`}>
       {/* Placeholder Image - sempre visível, fade out quando vídeo carrega */}
       {placeholderImage && (
         <img
