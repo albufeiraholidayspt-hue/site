@@ -101,14 +101,13 @@ export function Home() {
         <div className="absolute inset-0">
           {content.hero.videoUrl ? (
             (() => {
-              const images = content.hero.backgroundImages || [content.hero.backgroundImage];
-              const validImages = images.filter((img: string) => img && img.trim() !== '');
-              const firstImage = validImages[0] || content.apartments[0]?.heroImage || '';
+              // Usar URL fixa que corresponde ao preload do HTML para carregamento instantâneo
+              const heroImageUrl = 'https://res.cloudinary.com/de6edaaft/image/upload/w_1920,h_1080,c_fill,f_auto,q_auto/v1769626460/albufeira-holidays/gallery/zumfud2v8eiq0dnuguuq.jpg';
               
               return (
                 <YouTubePlayer
                   videoUrl={content.hero.videoUrl}
-                  placeholderImage={optimizeHeroImage(firstImage)}
+                  placeholderImage={heroImageUrl}
                   title="Hero Video"
                   className="h-full"
                   autoplay={true}

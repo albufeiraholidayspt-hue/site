@@ -61,14 +61,13 @@ export function YouTubePlayer({
         <img
           src={placeholderImage}
           alt={title || 'Vídeo'}
-          loading="eager"
-          decoding="async"
           fetchPriority="high"
           onLoad={() => setImageLoaded(true)}
           onError={() => setImageLoaded(true)}
           className={`absolute inset-0 w-full h-full object-cover animate-kenburns transition-opacity duration-1500 ${
             isLoaded ? 'opacity-0' : 'opacity-100'
           }`}
+          style={{ opacity: 1 }}
         />
       )}
 
