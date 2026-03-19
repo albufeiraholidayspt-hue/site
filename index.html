@@ -287,19 +287,48 @@
     </div>
     
     <script>
-      // Remove loading screen when page is fully loaded and hero image is ready
-      window.addEventListener('load', function() {
-        // Wait longer to ensure hero image is fully loaded
-        setTimeout(function() {
-          const loadingScreen = document.getElementById('loading-screen');
-          if (loadingScreen) {
-            loadingScreen.classList.add('fade-out');
-            setTimeout(function() {
-              loadingScreen.remove();
-            }, 500);
+      // Remove loading screen only when hero image is fully loaded
+      (function() {
+        let pageLoaded = false;
+        let heroImageLoaded = false;
+        
+        function checkAndRemoveLoading() {
+          if (pageLoaded && heroImageLoaded) {
+            const loadingScreen = document.getElementById('loading-screen');
+            if (loadingScreen) {
+              loadingScreen.classList.add('fade-out');
+              setTimeout(function() {
+                loadingScreen.remove();
+              }, 500);
+            }
           }
-        }, 2000); // Increased from 500ms to 2000ms
-      });
+        }
+        
+        // Wait for page to load
+        window.addEventListener('load', function() {
+          pageLoaded = true;
+          checkAndRemoveLoading();
+        });
+        
+        // Preload and wait for hero image
+        const heroImage = new Image();
+        heroImage.onload = function() {
+          heroImageLoaded = true;
+          checkAndRemoveLoading();
+        };
+        heroImage.onerror = function() {
+          heroImageLoaded = true; // Continue even if image fails
+          checkAndRemoveLoading();
+        };
+        heroImage.src = 'https://res.cloudinary.com/de6edaaft/image/upload/w_1920,h_1080,c_fill,f_auto,q_auto/v1769626460/albufeira-holidays/gallery/zumfud2v8eiq0dnuguuq.jpg';
+        
+        // Fallback: remove loading after 5 seconds maximum
+        setTimeout(function() {
+          heroImageLoaded = true;
+          pageLoaded = true;
+          checkAndRemoveLoading();
+        }, 5000);
+      })();
     </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
