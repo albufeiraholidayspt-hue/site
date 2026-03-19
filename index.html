@@ -274,7 +274,7 @@
   <body>
     <!-- Loading Screen -->
     <div id="loading-screen" class="loading-screen">
-      <img src="/logo-symbol-small.png" alt="Albufeira Holidays" class="loading-logo" />
+      <img src="/AH-ICON-PNG.png" alt="Albufeira Holidays" class="loading-logo" />
       <div class="loading-text">Bem-vindo a Albufeira Holidays</div>
       <div class="loading-spinner"></div>
     </div>
@@ -287,8 +287,9 @@
     </div>
     
     <script>
-      // Remove loading screen when page is fully loaded
+      // Remove loading screen when page is fully loaded and hero image is ready
       window.addEventListener('load', function() {
+        // Wait longer to ensure hero image is fully loaded
         setTimeout(function() {
           const loadingScreen = document.getElementById('loading-screen');
           if (loadingScreen) {
@@ -297,7 +298,7 @@
               loadingScreen.remove();
             }, 500);
           }
-        }, 500);
+        }, 2000); // Increased from 500ms to 2000ms
       });
     </script>
     <script type="module" src="/src/main.tsx"></script>
