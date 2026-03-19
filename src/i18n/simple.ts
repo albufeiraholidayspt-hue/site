@@ -546,7 +546,7 @@ const translations = {
     // Promo
     'promo.code': 'Code',
     'promo.copied': '✓ Copied!',
-    'promo.discount': 'Promo',
+    'promo.discount': 'Discount',
     
     // Common
     'common.loading': 'Loading...',
@@ -835,7 +835,7 @@ const translations = {
     // Promo
     'promo.code': 'Code',
     'promo.copied': '✓ Copié!',
-    'promo.discount': 'Promo',
+    'promo.discount': 'Réduction',
     
     // Common
     'common.loading': 'Chargement...',
@@ -1124,7 +1124,7 @@ const translations = {
     // Promo
     'promo.code': 'Code',
     'promo.copied': '✓ Kopiert!',
-    'promo.discount': 'Promo',
+    'promo.discount': 'Rabatt',
     
     // Common
     'common.loading': 'Laden...',
@@ -1406,7 +1406,7 @@ const translations = {
     // Promo
     'promo.code': 'Code',
     'promo.copied': '✓ Kopiert!',
-    'promo.discount': 'Promo',
+    'promo.discount': 'Rabatt',
     
     // Common
     'common.loading': 'Laden...',
