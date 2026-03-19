@@ -241,10 +241,13 @@
         pointer-events: none;
       }
       .loading-logo {
-        width: 120px;
-        height: 120px;
+        max-width: 150px;
+        max-height: 150px;
+        width: auto;
+        height: auto;
         margin-bottom: 2rem;
         animation: pulse 2s ease-in-out infinite;
+        object-fit: contain;
       }
       .loading-text {
         color: white;
