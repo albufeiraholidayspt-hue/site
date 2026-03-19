@@ -55,7 +55,7 @@ export function YouTubePlayer({
   const shouldShowVideo = isLoaded && imageLoaded;
 
   return (
-    <div className={`relative w-full ${className}`}>
+    <div className={`relative w-full bg-orange-500 ${className}`}>
       {/* Placeholder Image - sempre visível, fade out quando vídeo carrega */}
       {placeholderImage && (
         <img
@@ -63,10 +63,11 @@ export function YouTubePlayer({
           alt={title || 'Vídeo'}
           loading="eager"
           decoding="async"
+          fetchPriority="high"
           onLoad={() => setImageLoaded(true)}
           onError={() => setImageLoaded(true)}
           className={`absolute inset-0 w-full h-full object-cover animate-kenburns transition-opacity duration-1500 ${
-            shouldShowVideo ? 'opacity-0' : 'opacity-100'
+            isLoaded ? 'opacity-0' : 'opacity-100'
           }`}
         />
       )}
