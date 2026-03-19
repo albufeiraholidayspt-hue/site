@@ -278,9 +278,30 @@
     <!-- Loading Screen -->
     <div id="loading-screen" class="loading-screen">
       <img src="/AH-ICON-PNG.png" alt="Albufeira Holidays" class="loading-logo" />
-      <div class="loading-text">Bem-vindo a Albufeira Holidays</div>
+      <div id="loading-text" class="loading-text">Bem-vindo a Albufeira Holidays</div>
       <div class="loading-spinner"></div>
     </div>
+    
+    <script>
+      // Translate loading text based on browser language
+      (function() {
+        const lang = navigator.language || navigator.userLanguage;
+        const langCode = lang.split('-')[0].toLowerCase();
+        
+        const translations = {
+          'pt': 'Bem-vindo a Albufeira Holidays',
+          'en': 'Welcome to Albufeira Holidays',
+          'fr': 'Bienvenue à Albufeira Holidays',
+          'de': 'Willkommen bei Albufeira Holidays',
+          'es': 'Bienvenido a Albufeira Holidays'
+        };
+        
+        const loadingText = document.getElementById('loading-text');
+        if (loadingText && translations[langCode]) {
+          loadingText.textContent = translations[langCode];
+        }
+      })();
+    </script>
     
     <div id="root">
       <noscript>
