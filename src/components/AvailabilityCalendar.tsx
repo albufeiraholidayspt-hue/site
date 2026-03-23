@@ -293,9 +293,12 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
     }
     
     // Permitir selecionar datas de check-out (disponíveis a partir das 12:00)
-    // Apenas bloquear se for data ocupada E não for check-out
+    // E permitir datas de check-in quando já temos uma data de início selecionada (para usar como check-out)
     const isCheckOut = isCheckOutDate(clickedDate);
-    if (isDateBooked(clickedDate) && !isCheckOut) {
+    const isCheckIn = isCheckInDate(clickedDate);
+    const canSelectAsCheckout = selectedStartDate && isCheckIn; // Pode usar check-in de outra como nosso check-out
+    
+    if (isDateBooked(clickedDate) && !isCheckOut && !canSelectAsCheckout) {
       setMessage({ type: 'error', text: (() => {
         const currentLang = currentLanguage || 'pt';
         if (currentLang === 'en') return 'This date is occupied. Please select another date.';
@@ -468,7 +471,9 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
     const selected = isDateSelected(day);
     const inRange = isDateInSelectedRange(day);
     // Datas de check-out são clicáveis (disponíveis a partir das 12:00)
-    const clickable = !past && (!booked || checkOut);
+    // Datas de check-in também são clicáveis quando há uma data de início selecionada (para usar como check-out)
+    const canUseAsCheckout = selectedStartDate && checkIn;
+    const clickable = !past && (!booked || checkOut || canUseAsCheckout);
 
     calendarDays.push(
       <div
