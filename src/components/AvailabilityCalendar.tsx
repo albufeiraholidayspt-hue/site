@@ -214,8 +214,26 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
       const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
       const startDate = new Date(booking.start.getFullYear(), booking.start.getMonth(), booking.start.getDate());
       const endDate = new Date(booking.end.getFullYear(), booking.end.getMonth(), booking.end.getDate());
-      // Include both start and end dates in the booking period
-      return checkDate >= startDate && checkDate <= endDate;
+      // Check-in day is occupied, check-out day is available (guest leaves at 12:00)
+      return checkDate >= startDate && checkDate < endDate;
+    });
+  };
+
+  // Check if a date is a check-in date
+  const isCheckInDate = (date: Date): boolean => {
+    return bookedDates.some(booking => {
+      const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const startDate = new Date(booking.start.getFullYear(), booking.start.getMonth(), booking.start.getDate());
+      return checkDate.getTime() === startDate.getTime();
+    });
+  };
+
+  // Check if a date is a check-out date
+  const isCheckOutDate = (date: Date): boolean => {
+    return bookedDates.some(booking => {
+      const checkDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+      const endDate = new Date(booking.end.getFullYear(), booking.end.getMonth(), booking.end.getDate());
+      return checkDate.getTime() === endDate.getTime();
     });
   };
 
@@ -274,8 +292,10 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
       return;
     }
     
-    // Não permitir selecionar datas ocupadas
-    if (isDateBooked(clickedDate)) {
+    // Permitir selecionar datas de check-out (disponíveis a partir das 12:00)
+    // Apenas bloquear se for data ocupada E não for check-out
+    const isCheckOut = isCheckOutDate(clickedDate);
+    if (isDateBooked(clickedDate) && !isCheckOut) {
       setMessage({ type: 'error', text: (() => {
         const currentLang = currentLanguage || 'pt';
         if (currentLang === 'en') return 'This date is occupied. Please select another date.';
@@ -360,9 +380,20 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
       }
       
       // Verificar datas ocupadas no período
+      // Permitir que o check-out coincida com check-in de outra reserva
       let hasBookedDates = false;
       for (let d = new Date(selectedStartDate); d < clickedDate; d.setDate(d.getDate() + 1)) {
-        if (isDateBooked(d)) {
+        // Verificar se a data está ocupada
+        // Se for a data de check-out selecionada e for também check-in de outra, permitir
+        const currentDate = new Date(d);
+        const isLastDay = currentDate.getTime() === new Date(clickedDate.getTime() - 24*60*60*1000).getTime();
+        const isCheckInOfAnother = isCheckInDate(clickedDate);
+        
+        if (isDateBooked(currentDate)) {
+          // Se for o último dia antes do check-out E o check-out coincide com check-in, permitir
+          if (isLastDay && isCheckInOfAnother) {
+            continue;
+          }
           hasBookedDates = true;
           break;
         }
@@ -430,6 +461,8 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
   for (let day = 1; day <= daysInMonth; day++) {
     const date = new Date(year, month, day);
     const booked = isDateBooked(date);
+    const checkIn = isCheckInDate(date);
+    const checkOut = isCheckOutDate(date);
     const past = isPast(day);
     const today = isToday(day);
     const selected = isDateSelected(day);
@@ -441,17 +474,37 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
         key={day}
         onClick={() => handleDateClick(day)}
         className={`
-          h-8 flex items-center justify-center text-sm rounded-md transition-colors cursor-pointer
+          h-8 flex items-center justify-center text-sm rounded-md transition-colors cursor-pointer relative overflow-hidden
           ${past ? 'text-gray-300 cursor-not-allowed' : ''}
-          ${booked && !past ? 'bg-red-100 text-red-600 cursor-not-allowed' : ''}
-          ${!booked && !past && !selected && !inRange ? 'bg-green-50 text-green-700 hover:bg-green-100' : ''}
-          ${selected ? 'bg-primary-500 text-white font-bold shadow-lg transform scale-110' : ''}
+          ${booked && !past && !checkIn && !checkOut ? 'bg-red-100 text-red-600 cursor-not-allowed' : ''}
+          ${!booked && !past && !selected && !inRange && !checkOut ? 'bg-green-50 text-green-700 hover:bg-green-100' : ''}
+          ${selected ? 'bg-primary-500 text-white font-bold shadow-lg transform scale-110 z-10' : ''}
           ${inRange && !selected ? 'bg-primary-100 text-primary-700' : ''}
           ${today && !selected ? 'ring-2 ring-primary-300 font-bold bg-primary-50' : ''}
+          ${checkIn && !past ? 'bg-red-100 text-red-600 cursor-not-allowed' : ''}
+          ${checkOut && !past && !selected ? 'bg-green-50 text-green-700 hover:bg-green-100' : ''}
         `}
-        title={clickable ? 'Clique para selecionar datas' : booked ? 'Indisponível' : 'Data passada'}
+        title={
+          checkIn ? 'Check-in - Ocupado' :
+          checkOut ? 'Check-out - Disponível a partir das 12:00' :
+          clickable ? 'Clique para selecionar datas' : 
+          booked ? 'Indisponível' : 
+          'Data passada'
+        }
       >
-        {day}
+        {checkOut && !past && !selected && (
+          <div className="absolute inset-0 flex">
+            <div className="w-1/2 bg-gradient-to-r from-red-100 to-red-50" />
+            <div className="w-1/2 bg-gradient-to-r from-green-50 to-green-100" />
+          </div>
+        )}
+        {checkIn && !past && !selected && (
+          <div className="absolute inset-0 flex">
+            <div className="w-1/2 bg-gradient-to-r from-green-100 to-green-50" />
+            <div className="w-1/2 bg-gradient-to-r from-red-50 to-red-100" />
+          </div>
+        )}
+        <span className="relative z-10">{day}</span>
       </div>
     );
   }
