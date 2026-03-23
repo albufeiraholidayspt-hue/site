@@ -467,7 +467,8 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
     const today = isToday(day);
     const selected = isDateSelected(day);
     const inRange = isDateInSelectedRange(day);
-    const clickable = !past && !booked;
+    // Datas de check-out são clicáveis (disponíveis a partir das 12:00)
+    const clickable = !past && (!booked || checkOut);
 
     calendarDays.push(
       <div
