@@ -56,7 +56,7 @@ export function AboutUs() {
           className="absolute inset-0 bg-cover"
           style={{
             backgroundImage: 'url(https://res.cloudinary.com/de6edaaft/image/upload/v1774623455/albufeira-holidays/footer/footer-background.jpg)',
-            backgroundPosition: 'center 70%'
+            backgroundPosition: 'center 85%'
           }}
         />
         {/* Overlay alaranjado */}
