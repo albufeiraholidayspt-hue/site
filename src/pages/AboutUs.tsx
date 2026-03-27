@@ -53,9 +53,10 @@ export function AboutUs() {
       <div className="relative text-white py-20 overflow-hidden">
         {/* Foto de fundo */}
         <div 
-          className="absolute inset-0 bg-cover bg-bottom"
+          className="absolute inset-0 bg-cover"
           style={{
-            backgroundImage: 'url(https://res.cloudinary.com/de6edaaft/image/upload/v1774623455/albufeira-holidays/footer/footer-background.jpg)'
+            backgroundImage: 'url(https://res.cloudinary.com/de6edaaft/image/upload/v1774623455/albufeira-holidays/footer/footer-background.jpg)',
+            backgroundPosition: 'center 70%'
           }}
         />
         {/* Overlay alaranjado */}
