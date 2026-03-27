@@ -98,7 +98,7 @@ export function AboutUs() {
                 <p className="text-gray-600 mb-2">
                   {t('aboutUs.closing')}
                 </p>
-                <p className="text-2xl font-semibold text-primary-600">
+                <p className="text-3xl md:text-4xl text-primary-600" style={{ fontFamily: "'Dancing Script', cursive", fontWeight: 600 }}>
                   {t('aboutUs.signature')}
                 </p>
               </div>
