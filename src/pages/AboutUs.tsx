@@ -106,6 +106,40 @@ export function AboutUs() {
           </div>
         </div>
 
+        {/* Marina Prudente Section */}
+        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12 mt-12">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="order-2 md:order-1">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                {t('aboutUs.signature')}
+              </h2>
+              <p className="text-lg text-gray-600 mb-4">
+                {t('aboutUs.closing')}
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                {t('aboutUs.paragraph1')}
+              </p>
+            </div>
+            <div className="order-1 md:order-2">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                <img 
+                  src="https://res.cloudinary.com/de6edaaft/image/upload/v1/albufeira-holidays/team/marina-prudente.jpg"
+                  alt="Marina Prudente - Gerente Albufeira Holidays"
+                  className="w-full h-auto object-cover"
+                  onError={(e) => {
+                    // Fallback para imagem placeholder se a foto ainda não foi carregada
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800';
+                  }}
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
+                  <p className="text-white font-semibold text-xl">{t('aboutUs.signature')}</p>
+                  <p className="text-white/90 text-sm">Gerente | Manager</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Additional Info Cards */}
         <div className="grid md:grid-cols-3 gap-6 mt-12">
           <div className="bg-white rounded-xl shadow-lg p-6 text-center">
