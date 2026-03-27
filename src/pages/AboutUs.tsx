@@ -82,19 +82,19 @@ export function AboutUs() {
                 {t('aboutUs.welcome')}
               </p>
 
-              <p>
+              <p className="text-justify">
                 {t('aboutUs.paragraph1')}
               </p>
 
-              <p>
+              <p className="text-justify">
                 {t('aboutUs.paragraph2')}
               </p>
 
-              <p>
+              <p className="text-justify">
                 {t('aboutUs.paragraph3')}
               </p>
 
-              <p className="italic text-gray-600">
+              <p className="italic text-gray-600 text-justify">
                 {t('aboutUs.paragraph4')}
               </p>
 
