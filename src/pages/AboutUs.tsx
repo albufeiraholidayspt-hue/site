@@ -1,11 +1,54 @@
 import { useTranslation } from '../i18n/simple';
+import { Helmet } from 'react-helmet-async';
 import { Users } from 'lucide-react';
 
 export function AboutUs() {
-  const { t } = useTranslation();
+  const { t, currentLanguage } = useTranslation();
+
+  // SEO content based on language
+  const seoContent = {
+    pt: {
+      title: 'Sobre Nós | Albufeira Holidays - Apartamentos de Férias',
+      description: 'Conheça a Albufeira Holidays, empresa familiar dedicada a proporcionar experiências de estadia únicas em Albufeira. Atendimento personalizado e qualidade em cada detalhe.',
+      keywords: 'sobre albufeira holidays, empresa familiar albufeira, apartamentos férias albufeira, alojamento local albufeira, marina prudente'
+    },
+    en: {
+      title: 'About Us | Albufeira Holidays - Vacation Rentals',
+      description: 'Meet Albufeira Holidays, a family business dedicated to providing unique stay experiences in Albufeira. Personalized service and quality in every detail.',
+      keywords: 'about albufeira holidays, family business albufeira, vacation rentals albufeira, holiday apartments albufeira, marina prudente'
+    },
+    fr: {
+      title: 'À Propos de Nous | Albufeira Holidays - Locations de Vacances',
+      description: 'Découvrez Albufeira Holidays, entreprise familiale dédiée à offrir des expériences de séjour uniques à Albufeira. Service personnalisé et qualité dans chaque détail.',
+      keywords: 'à propos albufeira holidays, entreprise familiale albufeira, locations vacances albufeira, appartements vacances albufeira, marina prudente'
+    },
+    de: {
+      title: 'Über Uns | Albufeira Holidays - Ferienwohnungen',
+      description: 'Lernen Sie Albufeira Holidays kennen, ein Familienunternehmen, das einzigartige Aufenthaltserlebnisse in Albufeira bietet. Persönlicher Service und Qualität in jedem Detail.',
+      keywords: 'über albufeira holidays, familienunternehmen albufeira, ferienwohnungen albufeira, ferienappartements albufeira, marina prudente'
+    }
+  };
+
+  const currentSeo = seoContent[currentLanguage as keyof typeof seoContent] || seoContent.pt;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <>
+      <Helmet>
+        <title>{currentSeo.title}</title>
+        <meta name="description" content={currentSeo.description} />
+        <meta name="keywords" content={currentSeo.keywords} />
+        <link rel="canonical" href="https://albufeiraholidays.pt/sobre-nos" />
+        
+        <meta property="og:title" content={currentSeo.title} />
+        <meta property="og:description" content={currentSeo.description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://albufeiraholidays.pt/sobre-nos" />
+        
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+      </Helmet>
+
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
       <div className="relative bg-primary-600 text-white py-20">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-20"></div>
@@ -90,6 +133,7 @@ export function AboutUs() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }
