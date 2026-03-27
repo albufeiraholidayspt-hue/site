@@ -1,6 +1,6 @@
 import { useTranslation } from '../i18n/simple';
 import { Helmet } from 'react-helmet-async';
-import { Users } from 'lucide-react';
+import { Users, Home, Heart, Star } from 'lucide-react';
 
 export function AboutUs() {
   const { t, currentLanguage } = useTranslation();
@@ -144,7 +144,7 @@ export function AboutUs() {
         <div className="grid md:grid-cols-3 gap-6 mt-12">
           <div className="bg-white rounded-xl shadow-lg p-6 text-center">
             <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">🏠</span>
+              <Home className="w-6 h-6 text-primary-600" />
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">{t('aboutUs.card1Title')}</h3>
             <p className="text-gray-600 text-sm">{t('aboutUs.card1Text')}</p>
@@ -152,7 +152,7 @@ export function AboutUs() {
 
           <div className="bg-white rounded-xl shadow-lg p-6 text-center">
             <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">❤️</span>
+              <Heart className="w-6 h-6 text-primary-600" />
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">{t('aboutUs.card2Title')}</h3>
             <p className="text-gray-600 text-sm">{t('aboutUs.card2Text')}</p>
@@ -160,7 +160,7 @@ export function AboutUs() {
 
           <div className="bg-white rounded-xl shadow-lg p-6 text-center">
             <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">⭐</span>
+              <Star className="w-6 h-6 text-primary-600" />
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">{t('aboutUs.card3Title')}</h3>
             <p className="text-gray-600 text-sm">{t('aboutUs.card3Text')}</p>
