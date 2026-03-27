@@ -50,8 +50,16 @@ export function AboutUs() {
 
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
-      <div className="relative bg-primary-600 text-white py-20">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-20"></div>
+      <div className="relative text-white py-20 overflow-hidden">
+        {/* Foto de fundo */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: 'url(https://res.cloudinary.com/de6edaaft/image/upload/v1774623455/albufeira-holidays/footer/footer-background.jpg)'
+          }}
+        />
+        {/* Overlay alaranjado */}
+        <div className="absolute inset-0 bg-primary-600/85"></div>
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full mb-6">
             <Users className="w-8 h-8" />
