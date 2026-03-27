@@ -255,6 +255,25 @@ const translations = {
     'calendar.checkAvailability': 'Consulte a disponibilidade ao reservar',
     'calendar.clearSelection': 'Limpar seleção',
     'calendar.clear': 'Limpar',
+    
+    // About Us
+    'aboutUs.title': 'Sobre Nós',
+    'aboutUs.subtitle': 'Albufeira Holidays',
+    'aboutUs.welcome': 'Bem-vindo à Albufeira Holidays.',
+    'aboutUs.paragraph1': 'Somos uma empresa familiar dedicada a proporcionar experiências de estadia verdadeiramente distintas, onde o conforto, a atenção ao detalhe e a excelência no serviço se unem de forma harmoniosa.',
+    'aboutUs.paragraph2': 'Acreditamos que cada hóspede é único, e é por isso que asseguramos um acompanhamento próximo, atento e totalmente personalizado ao longo de toda a sua estadia, mantendo-nos sempre disponíveis para antecipar e responder a cada necessidade.',
+    'aboutUs.paragraph3': 'O seu bem-estar é a nossa maior prioridade. O nosso compromisso é que se sinta genuinamente em casa, envolvido por um ambiente de confiança, cuidado e qualidade pensado ao mais ínfimo detalhe para lhe proporcionar uma experiência memorável.',
+    'aboutUs.paragraph4': 'Mais que uma hospedagem, somos o detalhe, a experiência e os momentos que ficam.',
+    'aboutUs.paragraph5': 'Não alugamos apartamentos, criamos memórias!',
+    'aboutUs.closing': 'Com muita dedicação',
+    'aboutUs.signature': 'Marina Prudente',
+    'aboutUs.card1Title': 'Empresa Familiar',
+    'aboutUs.card1Text': 'Dedicação e cuidado em cada detalhe',
+    'aboutUs.card2Title': 'Atendimento Personalizado',
+    'aboutUs.card2Text': 'Sempre disponíveis para si',
+    'aboutUs.card3Title': 'Experiências Únicas',
+    'aboutUs.card3Text': 'Criamos memórias inesquecíveis',
+    
     // Promo
     'promo.code': 'Código',
     'promo.copied': '✓ Copiado!',
@@ -542,6 +561,24 @@ const translations = {
     'calendar.checkAvailability': 'Check availability when booking',
     'calendar.clearSelection': 'Clear selection',
     'calendar.clear': 'Clear',
+    
+    // About Us
+    'aboutUs.title': 'About Us',
+    'aboutUs.subtitle': 'Albufeira Holidays',
+    'aboutUs.welcome': 'Welcome to Albufeira Holidays.',
+    'aboutUs.paragraph1': 'We are a family business dedicated to providing truly distinctive stay experiences, where comfort, attention to detail and excellence in service come together harmoniously.',
+    'aboutUs.paragraph2': 'We believe that each guest is unique, which is why we ensure close, attentive and fully personalized support throughout your stay, always remaining available to anticipate and respond to every need.',
+    'aboutUs.paragraph3': 'Your well-being is our top priority. Our commitment is that you feel genuinely at home, surrounded by an environment of trust, care and quality designed down to the smallest detail to provide you with a memorable experience.',
+    'aboutUs.paragraph4': 'More than accommodation, we are the detail, the experience and the moments that remain.',
+    'aboutUs.paragraph5': 'We don\'t rent apartments, we create memories!',
+    'aboutUs.closing': 'With much dedication',
+    'aboutUs.signature': 'Marina Prudente',
+    'aboutUs.card1Title': 'Family Business',
+    'aboutUs.card1Text': 'Dedication and care in every detail',
+    'aboutUs.card2Title': 'Personalized Service',
+    'aboutUs.card2Text': 'Always available for you',
+    'aboutUs.card3Title': 'Unique Experiences',
+    'aboutUs.card3Text': 'We create unforgettable memories',
     
     // Promo
     'promo.code': 'Code',
@@ -832,6 +869,24 @@ const translations = {
     'calendar.clearSelection': 'Effacer la sélection',
     'calendar.clear': 'Effacer',
     
+    // About Us
+    'aboutUs.title': 'À Propos de Nous',
+    'aboutUs.subtitle': 'Albufeira Holidays',
+    'aboutUs.welcome': 'Bienvenue à Albufeira Holidays.',
+    'aboutUs.paragraph1': 'Nous sommes une entreprise familiale dédiée à offrir des expériences de séjour vraiment distinctives, où le confort, l\'attention aux détails et l\'excellence du service s\'unissent harmonieusement.',
+    'aboutUs.paragraph2': 'Nous croyons que chaque invité est unique, c\'est pourquoi nous assurons un accompagnement proche, attentif et entièrement personnalisé tout au long de votre séjour, restant toujours disponibles pour anticiper et répondre à chaque besoin.',
+    'aboutUs.paragraph3': 'Votre bien-être est notre priorité absolue. Notre engagement est que vous vous sentiez véritablement chez vous, entouré d\'un environnement de confiance, de soin et de qualité pensé dans les moindres détails pour vous offrir une expérience mémorable.',
+    'aboutUs.paragraph4': 'Plus qu\'un hébergement, nous sommes le détail, l\'expérience et les moments qui restent.',
+    'aboutUs.paragraph5': 'Nous ne louons pas d\'appartements, nous créons des souvenirs!',
+    'aboutUs.closing': 'Avec beaucoup de dévouement',
+    'aboutUs.signature': 'Marina Prudente',
+    'aboutUs.card1Title': 'Entreprise Familiale',
+    'aboutUs.card1Text': 'Dévouement et soin dans chaque détail',
+    'aboutUs.card2Title': 'Service Personnalisé',
+    'aboutUs.card2Text': 'Toujours disponibles pour vous',
+    'aboutUs.card3Title': 'Expériences Uniques',
+    'aboutUs.card3Text': 'Nous créons des souvenirs inoubliables',
+    
     // Promo
     'promo.code': 'Code',
     'promo.copied': '✓ Copié!',
@@ -1120,6 +1175,24 @@ const translations = {
     'calendar.checkAvailability': 'Verfügbarkeit bei Buchung prüfen',
     'calendar.clearSelection': 'Auswahl löschen',
     'calendar.clear': 'Löschen',
+    
+    // About Us
+    'aboutUs.title': 'Über Uns',
+    'aboutUs.subtitle': 'Albufeira Holidays',
+    'aboutUs.welcome': 'Willkommen bei Albufeira Holidays.',
+    'aboutUs.paragraph1': 'Wir sind ein Familienunternehmen, das sich der Bereitstellung wirklich unverwechselbarer Aufenthaltserlebnisse widmet, bei denen Komfort, Liebe zum Detail und Exzellenz im Service harmonisch zusammenkommen.',
+    'aboutUs.paragraph2': 'Wir glauben, dass jeder Gast einzigartig ist, weshalb wir während Ihres gesamten Aufenthalts eine enge, aufmerksame und vollständig personalisierte Betreuung gewährleisten und stets verfügbar bleiben, um jedes Bedürfnis vorherzusehen und darauf zu reagieren.',
+    'aboutUs.paragraph3': 'Ihr Wohlbefinden ist unsere oberste Priorität. Unser Engagement ist, dass Sie sich wirklich wie zu Hause fühlen, umgeben von einer Umgebung des Vertrauens, der Fürsorge und der Qualität, die bis ins kleinste Detail durchdacht ist, um Ihnen ein unvergessliches Erlebnis zu bieten.',
+    'aboutUs.paragraph4': 'Mehr als eine Unterkunft sind wir das Detail, das Erlebnis und die Momente, die bleiben.',
+    'aboutUs.paragraph5': 'Wir vermieten keine Wohnungen, wir schaffen Erinnerungen!',
+    'aboutUs.closing': 'Mit viel Hingabe',
+    'aboutUs.signature': 'Marina Prudente',
+    'aboutUs.card1Title': 'Familienunternehmen',
+    'aboutUs.card1Text': 'Hingabe und Sorgfalt in jedem Detail',
+    'aboutUs.card2Title': 'Persönlicher Service',
+    'aboutUs.card2Text': 'Immer für Sie verfügbar',
+    'aboutUs.card3Title': 'Einzigartige Erlebnisse',
+    'aboutUs.card3Text': 'Wir schaffen unvergessliche Erinnerungen',
     
     // Promo
     'promo.code': 'Code',

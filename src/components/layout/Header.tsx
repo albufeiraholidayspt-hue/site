@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Home, Phone, Building2, MapPin, Car } from 'lucide-react';
+import { Menu, X, Home, Phone, Building2, MapPin, Car, Users } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { useTranslation } from '../../i18n/simple';
 import { cn } from '../../lib/utils';
@@ -41,6 +41,13 @@ export function Header() {
       href: `/apartamento/${apt.slug}`,
       icon: Building2,
     })),
+    { name: (() => {
+      const currentLang = currentLanguage || 'pt';
+      if (currentLang === 'en') return 'About Us';
+      if (currentLang === 'fr') return 'À Propos de Nous';
+      if (currentLang === 'de') return 'Über Uns';
+      return 'Sobre Nós';
+    })(), href: '/sobre-nos', icon: Users },
     { name: (() => {
       const currentLang = currentLanguage || 'pt';
       if (currentLang === 'en') return 'Algarve';

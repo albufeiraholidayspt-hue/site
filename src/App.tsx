@@ -13,6 +13,7 @@ import { autoBackupService } from './utils/autoBackup';
 const ApartmentDetail = lazy(() => import('./pages/ApartmentDetail').then(m => ({ default: m.ApartmentDetail })));
 const Contact = lazy(() => import('./pages/Contact').then(m => ({ default: m.Contact })));
 const Algarve = lazy(() => import('./pages/Algarve').then(m => ({ default: m.Algarve })));
+const AboutUs = lazy(() => import('./pages/AboutUs').then(m => ({ default: m.AboutUs })));
 const RentACar = lazy(() => import('./pages/RentACar').then(m => ({ default: m.RentACar })));
 const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy').then(m => ({ default: m.PrivacyPolicy })));
 const FAQ = lazy(() => import('./pages/FAQ').then(m => ({ default: m.FAQ })));
@@ -75,6 +76,7 @@ function App() {
             <Route path="faq" element={<FAQ />} />
             <Route path="blog" element={<Blog />} />
             <Route path="politica-privacidade" element={<PrivacyPolicy />} />
+            <Route path="sobre-nos" element={<AboutUs />} />
             <Route path="algarve" element={<Algarve />} />
             <Route path="rent-a-car" element={<RentACar />} />
             <Route path="upload-demo" element={<UploadDemo />} />
