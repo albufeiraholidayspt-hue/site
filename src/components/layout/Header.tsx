@@ -75,12 +75,26 @@ export function Header() {
 
   return (
     <header className={cn(
-      'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+      'fixed top-0 left-0 right-0 z-50 transition-all duration-300 relative overflow-hidden',
       isScrolled 
-        ? 'bg-white/95 backdrop-blur-xl shadow-md' 
-        : 'bg-white/80 backdrop-blur-sm'
+        ? 'shadow-md' 
+        : ''
     )}>
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Imagem de fundo */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage: 'url(https://res.cloudinary.com/de6edaaft/image/upload/v1774623455/albufeira-holidays/footer/footer-background.jpg)'
+        }}
+      />
+      {/* Overlay alaranjado */}
+      <div className={cn(
+        'absolute inset-0 transition-all duration-300',
+        isScrolled 
+          ? 'bg-orange-500/95 backdrop-blur-xl' 
+          : 'bg-orange-500/90 backdrop-blur-sm'
+      )} />
+      <nav className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 md:h-20">
           <Link to="/" className="flex items-center gap-3 group lg:ml-4">
             <img 
@@ -104,7 +118,7 @@ export function Header() {
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 text-gray-600 hover:text-white hover:bg-primary-600"
+                  className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 text-white hover:text-orange-100 hover:bg-white/10"
                 >
                   {item.name}
                 </a>
@@ -115,8 +129,8 @@ export function Header() {
                   className={cn(
                     'px-4 py-2 rounded-full text-sm font-medium transition-all duration-300',
                     isActive(item.href)
-                      ? 'bg-gray-100 text-gray-700'
-                      : 'text-gray-600 hover:text-white hover:bg-primary-600'
+                      ? 'bg-white/20 text-white'
+                      : 'text-white hover:text-orange-100 hover:bg-white/10'
                   )}
                 >
                   {item.name}
@@ -128,7 +142,7 @@ export function Header() {
               href={content.bookingUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-4 btn-primary text-sm py-2 px-6"
+              className="ml-4 bg-white text-orange-600 hover:bg-orange-50 text-sm py-2 px-6 rounded-full font-semibold transition-colors"
             >
               {(() => {
                 const currentLang = currentLanguage || 'pt';
@@ -143,7 +157,7 @@ export function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors"
+            className="lg:hidden p-2 rounded-xl text-white hover:bg-white/10 transition-colors"
             aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
             aria-expanded={isMenuOpen}
           >
@@ -153,7 +167,7 @@ export function Header() {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-gray-100 bg-white">
+          <div className="lg:hidden py-4 border-t border-white/20 bg-orange-600/50 backdrop-blur-sm">
             <div className="flex flex-col gap-1">
               {navigation.map((item) => (
                 item.external ? (
@@ -163,7 +177,7 @@ export function Header() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => setIsMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-gray-600 hover:text-white hover:bg-primary-600"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-white hover:text-orange-100 hover:bg-white/10"
                   >
                     <item.icon className="h-5 w-5" />
                     {item.name}
@@ -176,8 +190,8 @@ export function Header() {
                     className={cn(
                       'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300',
                       isActive(item.href)
-                        ? 'bg-gray-100 text-gray-700'
-                        : 'text-gray-600 hover:text-white hover:bg-primary-600'
+                        ? 'bg-white/20 text-white'
+                        : 'text-white hover:text-orange-100 hover:bg-white/10'
                     )}
                   >
                     <item.icon className="h-5 w-5" />
@@ -189,7 +203,7 @@ export function Header() {
                 href={content.bookingUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-2 btn-primary text-center"
+                className="mt-2 bg-white text-orange-600 hover:bg-orange-50 py-3 px-6 rounded-full font-semibold transition-colors text-center"
               >
                 {(() => {
                   const currentLang = currentLanguage || 'pt';

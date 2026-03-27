@@ -192,18 +192,9 @@ export function Footer() {
       </div>
     </footer>
     
-    {/* Container Laranja com foto de fundo - Fora do footer */}
-    <div className="relative pt-6 pb-6 flex flex-col md:flex-row justify-center items-center gap-4 px-4 overflow-hidden">
-      {/* Imagem de fundo */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: 'url(https://res.cloudinary.com/de6edaaft/image/upload/v1774623455/albufeira-holidays/footer/footer-background.jpg)'
-        }}
-      />
-      {/* Overlay laranja */}
-      <div className="absolute inset-0 bg-orange-500/90" />
-      <p className="relative z-10 text-white text-sm text-center md:text-left">
+    {/* Container Laranja - Fora do footer */}
+    <div className="bg-orange-500 pt-6 pb-6 flex flex-col md:flex-row justify-center items-center gap-4 px-4">
+      <p className="text-white text-sm text-center md:text-left">
         © {new Date().getFullYear()} {content.contact.companyName}. 
         {(() => {
           const currentLang = currentLanguage || 'pt';
@@ -213,7 +204,7 @@ export function Footer() {
           return 'Todos os direitos reservados.';
         })()}
       </p>
-      <div className="relative z-10 flex items-center gap-4">
+      <div className="flex items-center gap-4">
         <Link
           to="/politica-privacidade"
           className="text-white hover:text-orange-100 text-sm transition-colors"
