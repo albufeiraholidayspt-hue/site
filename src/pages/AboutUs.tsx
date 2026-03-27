@@ -124,7 +124,7 @@ export function AboutUs() {
               <p className="text-lg text-gray-600 mb-4">
                 {t('aboutUs.closing')}
               </p>
-              <p className="text-gray-700 leading-relaxed">
+              <p className="text-gray-700 leading-relaxed text-justify">
                 {t('aboutUs.paragraph1')}
               </p>
             </div>
