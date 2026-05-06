@@ -430,8 +430,14 @@ export function AvailabilityCalendar({ icalUrl, minNights = 1, minNightsByMonth,
       setTimeout(() => setMessage(null), 5000);
       
       if (onDateSelection) {
-        const startDateStr = selectedStartDate.toISOString().split('T')[0];
-        const endDateStr = clickedDate.toISOString().split('T')[0];
+        const formatLocalDate = (date: Date) => {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          return `${year}-${month}-${day}`;
+        };
+        const startDateStr = formatLocalDate(selectedStartDate);
+        const endDateStr = formatLocalDate(clickedDate);
         onDateSelection(startDateStr, endDateStr, true);
       }
     }
